@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.whitewoodcity</groupId>
+  <artifactId>fxcity</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>fxcity</name>
+  <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.</description>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <source.version>21</source.version>
+    <fxgl.version>17.3</fxgl.version>
+    <atlantafx.version>2.0.1</atlantafx.version>
+
+    <maven.compiler.version>3.11.0</maven.compiler.version>
+
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+
+    <jar.finalName>${project.name}</jar.finalName>
+
+    <junit.jupiter.version>5.9.2</junit.jupiter.version>
+    <junit.platform.version>1.9.2</junit.platform.version>
+    <hamcrest.version>1.3</hamcrest.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.github.almasb</groupId>
+      <artifactId>fxgl</artifactId>
+      <version>${fxgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.mkpaz</groupId>
+      <artifactId>atlantafx-base</artifactId>
+      <version>${atlantafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!--    <repositories>-->
+  <!--        <repository>-->
+  <!--            <id>oss.sonatype.org-snapshot</id>-->
+  <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+  <!--        </repository>-->
+  <!--    </repositories>-->
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Compile java -->
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.version}</version>
+          <configuration>
+            <release>${source.version}</release>
+            <compilerArgs>
+              <arg>--module-version</arg>
+              <arg>${project.version}</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <finalName>${jar.finalName}</finalName>
+  </build>
+</project>
