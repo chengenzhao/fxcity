@@ -177,17 +177,17 @@ public class Index implements ReplaceableGameScene, ExitService {
     //menu
     var gridpane = new GridPane();
 
-    var start = new Text("New Game");
+    var start = new Text("Side-scroll");
     start.setFont(FXGL.getAssetLoader().loadFont("Lato-Bold.ttf").newFont(50));
     start.setFill(Color.WHITE);
     start.setEffect(new Bloom());
 
-    var load = new Text("Load Game");
+    var load = new Text("Roguelike");
     load.fontProperty().bind(start.fontProperty());
     load.fillProperty().bind(start.fillProperty());
     load.effectProperty().bind(start.effectProperty());
 
-    var config = new Text("Setting");
+    var config = new Text("Dialog");
     config.fontProperty().bind(start.fontProperty());
     config.fillProperty().bind(start.fillProperty());
     config.effectProperty().bind(start.effectProperty());
