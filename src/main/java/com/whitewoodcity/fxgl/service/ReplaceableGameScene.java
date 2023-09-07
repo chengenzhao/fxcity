@@ -34,7 +34,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
   }
 
   default void replaceGameScene(GameScene gameScene, Map<KeyCode, Runnable> keyPresses, Map<KeyCode, Runnable> keyReleases, Map<KeyCode, Runnable> keyActions, GameSubScene... gameSubScenes) {
-    replaceGameScene("Xtrike", gameScene,keyPresses,keyReleases,keyActions,gameSubScenes);
+    replaceGameScene("Xtrike", gameScene, keyPresses, keyReleases, keyActions, gameSubScenes);
   }
 
   default void replaceGameScene(String logoString, GameScene gameScene, Map<KeyCode, Runnable> keyPresses, Map<KeyCode, Runnable> keyReleases, Map<KeyCode, Runnable> keyActions, GameSubScene... gameSubScenes) {
@@ -147,48 +147,29 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     }).toList();
     setGameScene(gameScenes);
 
-    var gameWorldScenes = scenes.stream().filter(scene -> {
-      if (scene instanceof ConcurrentGameSubScene concurrentGameSubScene)
-        return concurrentGameSubScene.isGWScene();
-      else return true;
-    }).map(scene -> {
-      if (scene instanceof ConcurrentGameSubScene concurrentGameSubScene)
-        return concurrentGameSubScene.getGameScene();
-      else return (GameScene) scene;
-    }).toList();
-    setGameWorldScenes(gameWorldScenes);
-
-    var uiScenes = scenes.stream().filter(scene -> {
-      if (scene instanceof ConcurrentGameSubScene concurrentGameSubScene)
-        return concurrentGameSubScene.isUIScene();
-      else return true;
-    }).map(scene -> {
-      if (scene instanceof ConcurrentGameSubScene concurrentGameSubScene)
-        return concurrentGameSubScene.getGameScene();
-      else return (GameScene) scene;
-    }).toList();
-    setUIScenes(uiScenes);
-
     var input = initInput(keyPresses, keyReleases, keyActions);
-    initGame(gameWorldScenes.stream().map(GameScene::getGameWorld).toList(), input);
-    initPhysics(gameWorldScenes.stream().map(GameScene::getPhysicsWorld).toList(), input);
-    initUI(gameScene.getViewport(), uiScenes.get(uiScenes.size() - 1), input);
+    initGame(gameScenes.stream().map(GameScene::getGameWorld).toList(), input);
+    initPhysics(gameScenes.stream().map(GameScene::getPhysicsWorld).toList(), input);
+    initUI(gameScene.getViewport(), gameScenes.get(gameScenes.size() - 1), input);
   }
 
   default void setGameScene(List<GameScene> gameScenes) {
-    setGameScene(gameScenes.get(0));
+    var mainScene = gameScenes.getFirst();
+    setGameScene(mainScene);
+
+    gameScenes.stream().skip(1).forEach(scene -> {
+      var camera = scene.getViewport().getCamera();
+      scene.getViewport().bindToEntity(camera, 0, 0);
+
+      camera.xProperty().bind(mainScene.getViewport().xProperty());
+      camera.yProperty().bind(mainScene.getViewport().yProperty());
+
+//      scene.getViewport().setX(mainScene.getViewport().getX());
+//      scene.getViewport().setY(mainScene.getViewport().getY());
+    });
   }
 
   default void setGameScene(GameScene gameScene) {
-  }
-
-  default void setGameWorldScenes(List<GameScene> gameWorldScenes) {
-    var zeroScene = gameWorldScenes.get(0);
-    gameWorldScenes.stream().skip(1).forEach(scene ->
-      scene.getContentRoot().translateXProperty().bind(zeroScene.getViewport().xProperty().negate()));
-  }
-
-  default void setUIScenes(List<GameScene> uiScenes) {
   }
 
   default XInput initInput(Map<KeyCode, Runnable> keyPresses, Map<KeyCode, Runnable> keyReleases, Map<KeyCode, Runnable> keyActions) {
@@ -222,7 +203,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
   default void asyncLoadResources(AsyncLabel label) {
   }
 
-  default void postInit(){
+  default void postInit() {
 
   }
 }
