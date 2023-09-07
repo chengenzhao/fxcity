@@ -25,5 +25,7 @@ module com.whitewoodcity.fxcity {
   opens com.whitewoodcity.javafx.theme;//for css&bss files
   exports com.whitewoodcity.fxgl.dsl;
 
+  //samples
   exports fyi.sample.javafx;
+  exports fyi.sample.fxgl;
 }
