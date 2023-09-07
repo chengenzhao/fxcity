@@ -9,13 +9,13 @@ import javafx.stage.Stage;
 
 public class Reduce extends Application {
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(Stage stage) throws Exception {
     var label = new Label();
     label.setAlignment(Pos.CENTER);
-    label.textProperty().bind(XBindings.reduce(primaryStage.widthProperty(), primaryStage.heightProperty(),
+    label.textProperty().bind(XBindings.reduce(stage.widthProperty(), stage.heightProperty(),
       (w,h) -> "Area is " + (w.doubleValue() * h.doubleValue())));
 
-    primaryStage.setScene(new Scene(label, 800, 600));
-    primaryStage.show();
+    stage.setScene(new Scene(label, 800, 600));
+    stage.show();
   }
 }
