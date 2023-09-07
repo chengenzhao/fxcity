@@ -28,4 +28,8 @@ module com.whitewoodcity.fxcity {
   //samples
   exports fyi.sample.javafx;
   exports fyi.sample.fxgl;
+  opens assets.ui.fonts;
+  opens assets.music;
+  opens assets.audio;
+  opens assets.sounds;
 }

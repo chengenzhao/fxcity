@@ -107,7 +107,11 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
   }
 
 
-  public void registerGameScene(String sceneName, GameSceneBuilder builder){
+  public void registerReplaceableGameScene(String sceneName, ReplaceableGameSceneBuilder builder){
+    builderMap.put(sceneName, builder);
+  }
+
+  public void registerPushAndPopGameSubScene(String sceneName, PushAndPopGameSubSceneBuilder builder){
     builderMap.put(sceneName, builder);
   }
 
