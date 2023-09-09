@@ -1,11 +1,10 @@
-module com.whitewoodcity.fxcity {
+module com.whitewoodcity.xutility {
   requires com.almasb.fxgl.all;
   requires javafx.media;
   requires com.fasterxml.jackson.databind;
   requires atlantafx.base;
 
   exports com.whitewoodcity.javafx.binding;
-  exports com.whitewoodcity.javafx.theme;
   exports com.whitewoodcity.flame;
   exports com.whitewoodcity.flame.pushnpoppane;
   exports com.whitewoodcity.fxgl.app;
@@ -22,8 +21,10 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.texture;
   exports com.whitewoodcity.fxgl.animation;
 
-  opens com.whitewoodcity.javafx.theme;//for css&bss files
   exports com.whitewoodcity.fxgl.dsl;
+
+  exports com.whitewoodcity.atlantafx.base.theme;
+  opens com.whitewoodcity.atlantafx.base.theme;//for css&bss files
 
   //samples
   exports fyi.sample.javafx;

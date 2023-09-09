@@ -1,4 +1,4 @@
-package com.whitewoodcity.javafx.theme;
+package com.whitewoodcity.atlantafx.base.theme;
 
 import atlantafx.base.theme.Theme;
 
@@ -13,12 +13,12 @@ public final class CityDark implements Theme {
 
   @Override
   public String getUserAgentStylesheet() {
-    return "/com/whitewoodcity/javafx/theme/city-dark.css";
+    return "/com/whitewoodcity/atlantafx/base/theme/city-dark.css";
   }
 
   @Override
   public String getUserAgentStylesheetBSS() {
-    return "/com/whitewoodcity/javafx/theme/city-dark.bss";
+    return "/com/whitewoodcity/atlantafx/base/theme/city-dark.bss";
   }
 
   @Override

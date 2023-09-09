@@ -1,7 +1,7 @@
 package fyi.sample.fxgl;
 
+import com.whitewoodcity.atlantafx.base.theme.CityDark;
 import com.whitewoodcity.fxgl.service.FillService;
-import com.whitewoodcity.javafx.theme.CityDark;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
