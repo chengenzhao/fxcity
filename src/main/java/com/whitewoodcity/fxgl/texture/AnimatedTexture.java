@@ -67,7 +67,7 @@ public class AnimatedTexture extends Texture {
         onCycleFinished.run();
       })
       .duration(Duration.seconds(animationChannel.getFrameDuration() * animationChannel.getSequence().size()))
-//      .interpolator(interpolator)
+      .interpolator(interpolator)
       .animate(new PreciseAnimatedIntValue(0, animationChannel.getSequence().size() - 1))
       .onProgress(frameNum -> {
         currentFrame = Math.min(frameNum, animationChannel.getSequence().size() - 1);
