@@ -81,6 +81,10 @@ public class AnimatedTexture extends Texture {
     animation.jumpTo(currentFrame * animationChannel.getFrameDuration());
   }
 
+  public int getCurrentFrame() {
+    return currentFrame;
+  }
+
   public AnimatedTexture play() {
     animation.play();
     return this;
