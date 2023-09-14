@@ -236,13 +236,17 @@ public class AnimationBuilder {
 
       if (path != null) {
         var curve = path;
-        //todo use enhanced switch when upgrading to jdk 21
-        if (curve instanceof QuadCurve quadCurve)
-          return makeAnim(new AnimatedQuadBezierPoint3D(quadCurve));
-        else if (curve instanceof CubicCurve cubicCurve)
-          return makeAnim(new AnimatedCubicBezierPoint3D(cubicCurve));
-        else
-          return makeAnim(new AnimatedPath(curve));
+        makeAnim(switch (curve){
+          case QuadCurve quadCurve -> new AnimatedQuadBezierPoint3D(quadCurve);
+          case CubicCurve cubicCurve -> new AnimatedCubicBezierPoint3D(cubicCurve);
+          default -> new AnimatedPath(curve);
+        });
+//        if (curve instanceof QuadCurve quadCurve)
+//          return makeAnim(new AnimatedQuadBezierPoint3D(quadCurve));
+//        else if (curve instanceof CubicCurve cubicCurve)
+//          return makeAnim(new AnimatedCubicBezierPoint3D(cubicCurve));
+//        else
+//          return makeAnim(new AnimatedPath(curve));
       }
 
       if (!isFromSet && objects.size() == 1) {
@@ -328,14 +332,11 @@ public class AnimationBuilder {
   }
 
   private Animatable toAnimatable(Object object) {
-    //todo use enhanced switch when upgrading to 21
-    if(object instanceof Node node){
-      return toAnimatable(node);
-    }else if(object instanceof Animatable animatable){
-      return animatable;
-    }else{
-      throw new IllegalArgumentException("${obj.javaClass} must be Node or Animatable");
-    }
+    return switch (object){
+      case Node node -> toAnimatable(node);
+      case Animatable animatable -> animatable;
+      default -> throw new IllegalArgumentException("${obj.javaClass} must be Node or Animatable");
+    };
   }
 
   private Animatable toAnimatable(Node node) {

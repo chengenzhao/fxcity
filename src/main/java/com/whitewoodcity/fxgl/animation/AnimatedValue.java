@@ -31,8 +31,8 @@ public class AnimatedValue<T> {
   }
 
   @SuppressWarnings("unchecked")
-  public T animate(T val1, T val2, double progress, Interpolator interpolator) {
-    return (T) interpolator.interpolate(val1, val2, progress);
+  public T animate(T startValue, T endValue, double progress, Interpolator interpolator) {
+    return (T) interpolator.interpolate(startValue, endValue, progress);
   }
 }
 
@@ -42,8 +42,8 @@ class AnimatedPoint2D extends AnimatedValue<Point2D> {
     super(from, to);
   }
 
-  public Point2D animate(Point2D val1, Point2D val2, double progress, Interpolator interpolator) {
-    return interpolate(val1, val2, progress, interpolator);
+  public Point2D animate(Point2D startValue, Point2D endValue, double progress, Interpolator interpolator) {
+    return interpolate(startValue, endValue, progress, interpolator);
   }
 
   private Point2D interpolate(Point2D fromValue, Point2D toValue, double progress, Interpolator interpolator) {
@@ -60,8 +60,8 @@ class AnimatedPoint3D extends AnimatedValue<Point3D> {
     super(from, to);
   }
 
-  public Point3D animate(Point3D val1, Point3D val2, double progress, Interpolator interpolator) {
-    return interpolate(val1, val2, progress, interpolator);
+  public Point3D animate(Point3D startValue, Point3D endValue, double progress, Interpolator interpolator) {
+    return interpolate(startValue, endValue, progress, interpolator);
   }
 
   private Point3D interpolate(Point3D fromValue, Point3D toValue, double progress, Interpolator interpolator) {
@@ -81,7 +81,7 @@ class AnimatedQuadBezierPoint2D extends AnimatedValue<Point2D> {
     this.path = path;
   }
 
-  public Point2D animate(Point2D val1, Point2D val2, double progress, Interpolator interpolator) {
+  public Point2D animate(Point2D startValue, Point2D endValue, double progress, Interpolator interpolator) {
     return FXGLMath.bezier(
       new Point2D(path.getStartX(), path.getStartY()),
       new Point2D(path.getControlX(), path.getControlY()),
@@ -100,7 +100,7 @@ class AnimatedCubicBezierPoint2D extends AnimatedValue<Point2D> {
     this.path = path;
   }
 
-  public Point2D animate(Point2D val1, Point2D val2, double progress, Interpolator interpolator) {
+  public Point2D animate(Point2D startValue, Point2D endValue, double progress, Interpolator interpolator) {
     return FXGLMath.bezier(
       new Point2D(path.getStartX(), path.getStartY()),
       new Point2D(path.getControlX1(), path.getControlY1()),
@@ -119,9 +119,9 @@ class AnimatedQuadBezierPoint3D extends AnimatedValue<Point3D> {
     animated2D = new AnimatedQuadBezierPoint2D(path);
   }
 
-  public Point3D animate(Point3D val1, Point3D val2, double progress, Interpolator interpolator) {
-    final var p = animated2D.animate(new Point2D(val1.getX(), val1.getY()),
-      new Point2D(val2.getX(), val2.getY()), progress, interpolator);
+  public Point3D animate(Point3D startValue, Point3D endValue, double progress, Interpolator interpolator) {
+    final var p = animated2D.animate(new Point2D(startValue.getX(), startValue.getY()),
+      new Point2D(endValue.getX(), endValue.getY()), progress, interpolator);
 
     return new Point3D(p.getX(), p.getY(), 0.0);
   }
@@ -136,9 +136,9 @@ class AnimatedCubicBezierPoint3D extends AnimatedValue<Point3D> {
     animated2D = new AnimatedCubicBezierPoint2D(path);
   }
 
-  public Point3D animate(Point3D val1, Point3D val2, double progress, Interpolator interpolator) {
-    final var p = animated2D.animate(new Point2D(val1.getX(), val1.getY()),
-      new Point2D(val2.getX(), val2.getY()), progress, interpolator);
+  public Point3D animate(Point3D startValue, Point3D endValue, double progress, Interpolator interpolator) {
+    final var p = animated2D.animate(new Point2D(startValue.getX(), startValue.getY()),
+      new Point2D(endValue.getX(), endValue.getY()), progress, interpolator);
 
     return new Point3D(p.getX(), p.getY(), 0.0);
   }
@@ -177,7 +177,7 @@ class AnimatedPath extends AnimatedValue<Point3D> {
     points.put(100, new Point3D(dummy.getTranslateX(), dummy.getTranslateY(), 0.0));
   }
 
-  public Point3D animate(Point3D val1, Point3D val2, double progress, Interpolator interpolator) {
+  public Point3D animate(Point3D startValue, Point3D endValue, double progress, Interpolator interpolator) {
     final var t = interpolator.interpolate(0.0, 1.0, progress);
 
     final var key = (int) (t * 100);

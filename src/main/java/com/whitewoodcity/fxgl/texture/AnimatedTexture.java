@@ -190,7 +190,7 @@ class PreciseAnimatedIntValue extends AnimatedValue<Integer> {
   }
 
   @Override
-  public Integer animate(Integer val1, Integer val2, double progress, Interpolator interpolator) {
+  public Integer animate(Integer _1, Integer _2, double progress, Interpolator interpolator) {
     var p = interpolator.interpolate(0.0, 1.0, progress);
 
     var segments = super.to - super.from + 1;

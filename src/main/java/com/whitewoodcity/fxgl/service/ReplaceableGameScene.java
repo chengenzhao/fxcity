@@ -73,6 +73,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
 
     var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
     animation.setOnFinished((e) -> {
+      //todo fxgl 21 release change to .unbind();
       //clean the game scene
 //      gameScene.getViewport().unbind();
 //      gameScene.getViewport().setX(0);
@@ -150,7 +151,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     var input = initInput(keyPresses, keyReleases, keyActions);
     initGame(gameScenes.stream().map(GameScene::getGameWorld).toList(), input);
     initPhysics(gameScenes.stream().map(GameScene::getPhysicsWorld).toList(), input);
-    initUI(gameScene.getViewport(), gameScenes.get(gameScenes.size() - 1), input);
+    initUI(gameScene.getViewport(), gameScenes.getLast(), input);
   }
 
   default void setGameScene(List<GameScene> gameScenes) {
@@ -177,7 +178,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
   }
 
   default void initGame(List<GameWorld> gameWorlds, XInput input) {
-    initGame(gameWorlds.get(0), input);
+    initGame(gameWorlds.getFirst(), input);
   }
 
   default void initGame(GameWorld gameWorld, XInput input) {
