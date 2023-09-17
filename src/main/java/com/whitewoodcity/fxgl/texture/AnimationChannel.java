@@ -14,7 +14,7 @@ public class AnimationChannel {
   /**
    * Maps frame number in sprite sheet, so may not start with 0, to its data.
    */
-  private final List<FrameDataPair> frameData;
+  private final List<FrameData> frameData;
 
   private final List<Integer> sequence;
   private final double frameDuration;
@@ -27,7 +27,7 @@ public class AnimationChannel {
     return channelDuration;
   }
 
-  public List<FrameDataPair> getFrameData() {
+  public List<FrameData> getFrameData() {
     return frameData;
   }
 
@@ -39,17 +39,21 @@ public class AnimationChannel {
     return frameDuration;
   }
 
-  public AnimationChannel(Image image, Duration channelDuration, List<FrameDataPair> frameData) {
+  public AnimationChannel(Image image, Duration channelDuration, int numFrames) {
+    this(image, numFrames, (int)(image.getWidth()) / numFrames, (int)(image.getHeight()), channelDuration, 0, numFrames - 1);
+  }
+
+  public AnimationChannel(Image image, Duration channelDuration, List<FrameData> frameData) {
     this.image = image;
     this.frameData = frameData;
     this.channelDuration = channelDuration;
-    sequence = frameData.stream().map(FrameDataPair::frame).toList();
+    sequence = frameData.stream().map(FrameData::frame).toList();
     frameDuration = channelDuration.toSeconds() / sequence.size();
   }
 
   public AnimationChannel(Image image, int framesPerRow, int frameWidth, int frameHeight, Duration channelDuration, int startFrame, int endFrame) {
     this(image, channelDuration,
-      IntStream.range(startFrame, endFrame + 1).mapToObj(it -> new FrameDataPair(it, new FrameData((it % framesPerRow) * frameWidth, (it / framesPerRow) * frameHeight, frameWidth, frameHeight))).toList());
+      IntStream.range(startFrame, endFrame + 1).mapToObj(it ->  new FrameData(it, (it % framesPerRow) * frameWidth, (it / framesPerRow) * frameHeight, frameWidth, frameHeight)).toList());
   }
 
   public boolean isLastFrame(int frame) {
@@ -57,9 +61,9 @@ public class AnimationChannel {
   }
 
   public FrameData getFrameData(int frame) {
-    for (FrameDataPair frameDatum : frameData) {
+    for (FrameData frameDatum : frameData) {
       if (frameDatum.frame() == sequence.get(frame))
-        return frameDatum.data();
+        return frameDatum;
     }
     return null;
   }

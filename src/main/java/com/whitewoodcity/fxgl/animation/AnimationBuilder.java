@@ -1,22 +1,16 @@
 package com.whitewoodcity.fxgl.animation;
 
+import com.almasb.fxgl.animation.Animatable;
 import com.almasb.fxgl.core.UpdatableRunner;
-import com.almasb.fxgl.logging.Logger;
 import com.whitewoodcity.fxgl.core.util.EmptyRunnable;
 import javafx.animation.Interpolator;
 import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
-import javafx.scene.shape.CubicCurve;
-import javafx.scene.shape.QuadCurve;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
-import com.almasb.fxgl.animation.Animatable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -106,7 +100,7 @@ public class AnimationBuilder {
 
   public TranslationAnimationBuilder translate(Animatable... entities) {
     var builder = new TranslationAnimationBuilder(this);
-    builder.getObjects().addAll(Arrays.asList(entities));
+    builder.getObjects().addAll(List.of(entities));
     return builder;
   }
 
@@ -118,13 +112,13 @@ public class AnimationBuilder {
 
   public TranslationAnimationBuilder translate(Collection<?> entities) {
     var builder = new TranslationAnimationBuilder(this);
-    entities.forEach(this::toAnimatable);
+    builder.getObjects().addAll(entities.stream().map(this::toAnimatable).toList());
     return builder;
   }
 
   public ScaleAnimationBuilder scale(Animatable... entities) {
     var builder = new ScaleAnimationBuilder(this);
-    builder.getObjects().addAll(Arrays.asList(entities));
+    builder.getObjects().addAll(List.of(entities));
     return builder;
   }
 
@@ -136,199 +130,68 @@ public class AnimationBuilder {
 
   public ScaleAnimationBuilder scale(Collection<?> entities) {
     var builder = new ScaleAnimationBuilder(this);
-    entities.forEach(this::toAnimatable);
+    builder.getObjects().addAll(entities.stream().map(this::toAnimatable).toList());
     return builder;
   }
 
-
-  public abstract class AM extends AnimationBuilder {
-    protected List<Animatable> objects = new ArrayList<>();
-
-    public List<Animatable> getObjects() {
-      return objects;
-    }
-
-    private final AnimationBuilder animationBuilder;
-
-    public AM(AnimationBuilder animationBuilder) {
-      super(animationBuilder);
-      this.animationBuilder = animationBuilder;
-    }
-
-    public abstract Animation<?> build();
-
-    public void buildAndPlay() {
-      if (animationBuilder.scene != null) {
-        buildAndPlay(animationBuilder.scene);
-      } else {
-        Logger.get(this.getClass()).warning("No game scene was set to AnimationBuilder");
-      }
-    }
-
-    public void buildAndPlay(UpdatableRunner scene) {
-      var animation = build();
-      animation.setOnFinished(() -> {
-        scene.removeListener(animation);
-        onFinished.run();
-      });
-      animation.start();
-      scene.addListener(animation);
-    }
+  public FadeAnimationBuilder fade(Animatable... entities) {
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll( List.of(entities));
+    return builder;
   }
 
-  public class GenericAnimationBuilder<T> extends AM {
-
-    private Consumer<T> progressConsumer = t -> {
-    };
-    private final AnimatedValue<T> animValue;
-
-    public GenericAnimationBuilder(AnimationBuilder animationBuilder , final AnimatedValue<T> animValue) {
-      super(animationBuilder);
-      this.animValue = animValue;
-    }
-
-    public GenericAnimationBuilder<T> onProgress(Consumer<T> progressConsumer){
-      this.progressConsumer = progressConsumer;
-      return this;
-    }
-
-    public Animation<T> build()  {
-      return buildAnimation(animValue, progressConsumer);
-    }
+  public FadeAnimationBuilder fade(Node... entities) {
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(Arrays.stream(entities).map(this::toAnimatable).toList());
+    return builder;
   }
 
-  public class TranslationAnimationBuilder extends AM {
-    public TranslationAnimationBuilder(AnimationBuilder animationBuilder) {
-      super(animationBuilder);
-    }
-
-    private Shape path = null;
-    private Point3D fromPoint = Point3D.ZERO;
-    private Point3D toPoint = Point3D.ZERO;
-    private boolean isFromSet = false;
-
-    public TranslationAnimationBuilder alongPath(Shape path) {
-      this.path = path;
-      return this;
-    }
-
-    public TranslationAnimationBuilder from(Point2D start) {
-      return from(new Point3D(start.getX(), start.getY(), 0.0));
-    }
-
-    public TranslationAnimationBuilder to(Point2D end) {
-      return to(new Point3D(end.getX(), end.getY(), 0.0));
-    }
-
-    public TranslationAnimationBuilder from(Point3D start) {
-      fromPoint = start;
-      isFromSet = true;
-      return this;
-    }
-
-    public TranslationAnimationBuilder to(Point3D end) {
-      toPoint = end;
-      return this;
-    }
-
-    @Override
-    public Animation<?> build() {
-
-      if (path != null) {
-        var curve = path;
-        makeAnim(switch (curve){
-          case QuadCurve quadCurve -> new AnimatedQuadBezierPoint3D(quadCurve);
-          case CubicCurve cubicCurve -> new AnimatedCubicBezierPoint3D(cubicCurve);
-          default -> new AnimatedPath(curve);
-        });
-//        if (curve instanceof QuadCurve quadCurve)
-//          return makeAnim(new AnimatedQuadBezierPoint3D(quadCurve));
-//        else if (curve instanceof CubicCurve cubicCurve)
-//          return makeAnim(new AnimatedCubicBezierPoint3D(cubicCurve));
-//        else
-//          return makeAnim(new AnimatedPath(curve));
-      }
-
-      if (!isFromSet && objects.size() == 1) {
-        from(new Point3D(
-          objects.get(0).xProperty().getValue(),
-          objects.get(0).yProperty().getValue(),
-          objects.get(0).zProperty().getValue()
-        ));
-      }
-
-      return makeAnim(new AnimatedPoint3D(fromPoint, toPoint));
-    }
-
-    private Animation<Point3D> makeAnim(AnimatedValue<Point3D> animValue) {
-      return buildAnimation(animValue,
-        value -> objects.forEach(it -> {
-          it.xProperty().setValue(value.getX());
-          it.yProperty().setValue(value.getY());
-          it.zProperty().setValue(value.getZ());
-        })
-      );
-    }
+  public FadeAnimationBuilder fade(Collection<?> entities) {
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(entities.stream().map(this::toAnimatable).toList());
+    return builder;
+  }
+  
+  public FadeAnimationBuilder fadeIn(Animatable... entities){
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(List.of(entities));
+    return builder.from(0.0).to(1.0);
   }
 
-  public class ScaleAnimationBuilder extends AM {
+  public FadeAnimationBuilder fadeIn(Node... entities){
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(Arrays.stream(entities).map(this::toAnimatable).toList());
+    return builder.from(0.0).to(1.0);
+  }
 
-    public ScaleAnimationBuilder(AnimationBuilder animationBuilder) {
-      super(animationBuilder);
-    }
+  public FadeAnimationBuilder fadeOut(Animatable... entities){
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(List.of(entities));
+    return builder.from(1.0).to(0.0);
+  }
 
-    private Point3D startScale = new Point3D(1.0, 1.0, 1.0);
-    private Point3D endScale = new Point3D(1.0, 1.0, 1.0);
-    private Point3D scaleOrigin;
+  public FadeAnimationBuilder fadeOut(Node... entities){
+    var builder = new FadeAnimationBuilder(this);
+    builder.getObjects().addAll(Arrays.stream(entities).map(this::toAnimatable).toList());
+    return builder.from(1.0).to(0.0);
+  }
 
-    public ScaleAnimationBuilder from(Point2D start){
-      startScale =new Point3D(start.getX(), start.getY(), 1.0);
-      return this;
-    }
+  public RotationAnimationBuilder rotate(Animatable... entities) {
+    var builder = new RotationAnimationBuilder(this);
+    builder.getObjects().addAll(List.of(entities));
+    return builder;
+  }
 
-    public ScaleAnimationBuilder to(Point2D end) {
-      endScale = new Point3D(end.getX(), end.getY(), 1.0);
-      return this;
-    }
+  public RotationAnimationBuilder rotate(Node... entities){
+    var builder = new RotationAnimationBuilder(this);
+    builder.getObjects().addAll(Arrays.stream(entities).map(this::toAnimatable).toList());
+    return builder;
+  }
 
-    public ScaleAnimationBuilder from(Point3D start){
-      startScale = start;
-      return this;
-    }
-
-    public ScaleAnimationBuilder to(Point3D end) {
-      endScale = end;
-      return this;
-    }
-
-    public ScaleAnimationBuilder origin(Point2D scaleOrigin) {
-      this.scaleOrigin = new  Point3D(scaleOrigin.getX(), scaleOrigin.getY(), 0.0);
-      return this;
-    }
-
-    public ScaleAnimationBuilder origin(Point3D scaleOrigin) {
-      this.scaleOrigin = scaleOrigin;
-      return this;
-    }
-
-    public Animation<?> build() {
-      if(scaleOrigin != null){
-        objects.forEach(it -> it.setScaleOrigin(scaleOrigin));
-      }
-
-      return buildAnimation(
-        new AnimatedPoint3D(startScale, endScale),
-        new Consumer<Point3D>() {
-          @Override
-          public void accept(Point3D value) {
-            objects.forEach(it -> {
-              it.scaleXProperty().setValue(value.getX());
-              it.scaleYProperty().setValue(value.getY());
-              it.scaleZProperty().setValue(value.getZ());
-            });
-          }
-        });
-    }
+  public RotationAnimationBuilder rotate(Collection<?> entities) {
+    var builder = new RotationAnimationBuilder(this);
+    builder.getObjects().addAll(entities.stream().map(this::toAnimatable).toList());
+    return builder;
   }
 
   private Animatable toAnimatable(Object object) {
