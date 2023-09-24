@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Audio {
-  private Map<String, Object> loadedFiles = new HashMap<>();
+  private final Map<String, Object> loadedFiles = new HashMap<>();
 
   public void remove(String fileName) {
     loadedFiles.remove(fileName);
@@ -20,7 +20,7 @@ public class Audio {
   }
 
   public List<Object> loadAll(List<String> fileNames) {
-    var list = new ArrayList<Object>();
+    var list = new ArrayList<>();
     for(var fileName : fileNames){
       list.add(load(fileName));
     }

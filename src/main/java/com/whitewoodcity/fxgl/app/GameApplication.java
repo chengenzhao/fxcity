@@ -3,6 +3,7 @@ package com.whitewoodcity.fxgl.app;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whitewoodcity.fxgl.dsl.FXGL;
 import com.whitewoodcity.fxgl.service.*;
@@ -101,7 +102,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       } catch (NullPointerException e) {
         //do nothing
       } catch (Exception e) {
-        System.out.println(e.getMessage());
+        Logger.get(this.getClass()).warning(e.getMessage());
       }
     }
   }
@@ -203,7 +204,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       }catch (NullPointerException e) {
         //do nothing
       } catch (Exception e){
-        System.out.println(e.getMessage());
+        Logger.get(this.getClass()).warning(e.getMessage());
       }
     }
   }
@@ -216,7 +217,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       }catch (NullPointerException e) {
         //do nothing
       } catch (Exception e){
-        System.out.println(e.getMessage());
+        Logger.get(this.getClass()).warning(e.getMessage());
       }
   }
 
@@ -228,7 +229,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       }catch (NullPointerException e) {
         //do nothing
       } catch (Exception e){
-        System.out.println(e.getMessage());
+        Logger.get(this.getClass()).warning(e.getMessage());
       }
   }
 
@@ -240,7 +241,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       }catch (NullPointerException e) {
         //do nothing
       } catch (Exception e){
-        System.out.println(e.getMessage());
+        Logger.get(this.getClass()).warning(e.getMessage());
       }
   }
 }
