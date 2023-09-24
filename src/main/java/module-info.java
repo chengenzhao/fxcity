@@ -25,12 +25,4 @@ module com.whitewoodcity.xutility {
 
   exports com.whitewoodcity.atlantafx.base.theme;
   opens com.whitewoodcity.atlantafx.base.theme;//for css&bss files
-
-  //samples
-  exports fyi.sample.javafx;
-  exports fyi.sample.fxgl;
-  opens assets.ui.fonts;
-  opens assets.music;
-  opens assets.audio;
-  opens assets.sounds;
 }
