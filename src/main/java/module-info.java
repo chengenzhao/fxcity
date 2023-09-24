@@ -1,4 +1,4 @@
-module com.whitewoodcity.xutility {
+module com.whitewoodcity.fxcity {
   requires com.almasb.fxgl.all;
   requires javafx.media;
   requires com.fasterxml.jackson.databind;
