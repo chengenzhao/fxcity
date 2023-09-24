@@ -1,179 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.chengenzhao</groupId>
-  <artifactId>fxcity</artifactId>
-  <version>0.0.4</version>
-  <name>fxcity</name>
-  <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.</description>
-  <url>https://github.com/chengenzhao/fxcity</url>
-
-  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:https://github.com/chengenzhao/fxcity.git</connection>
+    <groupId>io.github.chengenzhao</groupId>
+    <artifactId>fxcity</artifactId>
+    <version>0.0.5</version>
+    <name>fxcity</name>
+    <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
+    </description>
     <url>https://github.com/chengenzhao/fxcity</url>
-    <tag>fxcity-0.0.4</tag>
-  </scm>
 
-  <developers>
-    <developer>
-      <name>chengen.zhao</name>
-      <email>chengen.zhao@mail.mcgill.ca</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-      <timezone>+8</timezone>
-    </developer>
-  </developers>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <source.version>21</source.version>
-    <fxgl.version>17.3</fxgl.version>
-    <atlantafx.version>2.0.1</atlantafx.version>
+    <scm>
+        <connection>scm:git:https://github.com/chengenzhao/fxcity.git</connection>
+        <url>https://github.com/chengenzhao/fxcity</url>
+    </scm>
 
-    <maven.compiler.version>3.11.0</maven.compiler.version>
+    <developers>
+        <developer>
+            <name>chengen.zhao</name>
+            <email>chengen.zhao@mail.mcgill.ca</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
 
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <source.version>21</source.version>
+        <fxgl.version>17.3</fxgl.version>
+        <atlantafx.version>2.0.1</atlantafx.version>
 
-    <junit.jupiter.version>5.9.2</junit.jupiter.version>
-    <junit.platform.version>1.9.2</junit.platform.version>
-    <hamcrest.version>1.3</hamcrest.version>
-  </properties>
+        <maven.compiler.version>3.11.0</maven.compiler.version>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.almasb</groupId>
-      <artifactId>fxgl</artifactId>
-      <version>${fxgl.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.mkpaz</groupId>
-      <artifactId>atlantafx-base</artifactId>
-      <version>${atlantafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
 
-  <!--    <repositories>-->
-  <!--        <repository>-->
-  <!--            <id>oss.sonatype.org-snapshot</id>-->
-  <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-  <!--        </repository>-->
-  <!--    </repositories>-->
+        <junit.jupiter.version>5.9.2</junit.jupiter.version>
+        <junit.platform.version>1.9.2</junit.platform.version>
+        <hamcrest.version>1.3</hamcrest.version>
+    </properties>
 
-  <build>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/main/resources</directory>
-      </resource>
-      <resource>
-        <directory>${basedir}/src/main/java</directory>
-      </resource>
-    </resources>
-      <plugins>
-        <!-- Create sources.jar -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>3.3.0</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- Javadoc -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.6.0</version>
-          <configuration>
-            <show>private</show>
-            <nohelp>true</nohelp>
-            <charset>UTF-8</charset>
-            <encoding>UTF-8</encoding>
-            <docencoding>UTF-8</docencoding>
-            <additionalparam>-Xdoclint:none</additionalparam>
-          </configuration>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- Compile java -->
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.version}</version>
-          <configuration>
-            <release>${source.version}</release>
-            <compilerArgs>
-              <arg>--module-version</arg>
-              <arg>${project.version}</arg>
-            </compilerArgs>
-          </configuration>
-        </plugin>
-        <!-- GPG -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.1.0</version>
-          <executions>
-            <execution>
-              <id>sign-artifact</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-  </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.almasb</groupId>
+            <artifactId>fxgl</artifactId>
+            <version>${fxgl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
+            <version>${atlantafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Nexus Release Repository</name>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>oss.sonatype.org-snapshot</id>-->
+    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+
+    <build>
+        <plugins>
+            <!-- Create sources.jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Compile java -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <release>${source.version}</release>
+                    <compilerArgs>
+                        <arg>--module-version</arg>
+                        <arg>${project.version}</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifact</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Nexus Release Repository</name>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
