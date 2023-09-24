@@ -6,7 +6,7 @@
 
   <groupId>io.github.chengenzhao</groupId>
   <artifactId>fxcity</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>fxcity</name>
   <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.</description>
 
