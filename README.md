@@ -7,6 +7,6 @@ add following dependency to your pom.xml
         <dependency>
             <groupId>io.github.chengenzhao</groupId>
             <artifactId>fxcity</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </dependency>
 ```
