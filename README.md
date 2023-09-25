@@ -13,6 +13,6 @@ add following dependency to your pom.xml
 Demo goes here:
 https://github.com/chengenzhao/fxcity-demo
 
-Note: javafx is native depdendencies so standard JRE(Java runtime) won't work. We need to expand the runtime.
-here is the expanded runtime and Github Action provides download for it.  
+Note: Javafx is a native dependency so standard JRE(Java runtime) won't work. We need to expand the runtime.
+Here is the expanded runtime and Github Action provides download for it.  
 https://github.com/chengenzhao/fxgl-runtime
