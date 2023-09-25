@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused","rawtypes","unchecked"})
 public abstract class GameApplication extends com.almasb.fxgl.app.GameApplication implements FillService {
 
+  protected String logoString = "Xtrike";
   Map<KeyCode, Runnable> keyPresses = new HashMap<>();
   Map<KeyCode, Runnable> keyReleases = new HashMap<>();
   Map<KeyCode, Runnable> keyActions = new HashMap<>();
@@ -132,7 +133,7 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
         }
       }
 
-      scene.replaceGameScene(FXGL.getGameScene(), keyPresses, keyReleases, keyActions, scene.generateGameSubScenes());
+      scene.replaceGameScene(logoString, FXGL.getGameScene(), keyPresses, keyReleases, keyActions, scene.generateGameSubScenes());
 
       gameScenes.clear();
       gameScenes.add(app);
