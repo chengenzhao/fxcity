@@ -1,18 +1,33 @@
-# fxcity
+# FX City
 
-JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
+JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.  
 
-add following dependency to your pom.xml
+# Requirement
+
+* JDK 21
+
+## Maven
+If you are using Maven, add the following dependency to the dependencies section of your project descriptor to access the FX City API:
 ```xml
-        <dependency>
-            <groupId>io.github.chengenzhao</groupId>
-            <artifactId>fxcity</artifactId>
-            <version>0.0.6</version>
-        </dependency>
+<dependency>
+    <groupId>io.github.chengenzhao</groupId>
+    <artifactId>fxcity</artifactId>
+    <version>0.0.6</version>
+</dependency>
 ```
-Demo goes here:
+
+## Gradle
+```groovy
+dependencies {
+ compile 'io.github.chengenzhao:fxcity:0.0.6'
+}
+
+```
+
+# Demo Project
 https://github.com/chengenzhao/fxcity-demo
 
-Note: Javafx is a native dependency so standard JRE(Java runtime) won't work. We need to expand the runtime.
+# Porgram Runtime
+Javafx is a native dependency so standard JRE(Java runtime) won't work. We need to expand the runtime.
 Here is the expanded runtime and Github Action provides download for it.  
 https://github.com/chengenzhao/fxgl-runtime
