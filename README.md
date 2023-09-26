@@ -26,7 +26,7 @@ dependencies {
 
 # Demo Project
 https://github.com/chengenzhao/fxcity-demo
-
+![Game Demo Screenshot](https://github.com/chengenzhao/fxcity-demo/assets/5525436/70be792b-d454-4613-8280-60ca8e9c6335)
 # Porgram Runtime
 Javafx is a native dependency so standard JRE(Java runtime) won't work. We need to expand the runtime.
 Here is the expanded runtime and Github Action provides download for it.  
