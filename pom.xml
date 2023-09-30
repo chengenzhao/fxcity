@@ -39,9 +39,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fxgl.version>17.3</fxgl.version>
         <atlantafx.version>2.0.1</atlantafx.version>
-
-        <maven.compiler.version>3.11.0</maven.compiler.version>
-
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <junit.platform.version>1.9.2</junit.platform.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -106,8 +103,7 @@
             </activation>
             <properties>
                 <source.version>21</source.version>
-                <maven.compiler.source>21</maven.compiler.source>
-                <maven.compiler.target>21</maven.compiler.target>
+                <maven.compiler.version>3.11.0</maven.compiler.version>
             </properties>
             <build>
                 <plugins>
