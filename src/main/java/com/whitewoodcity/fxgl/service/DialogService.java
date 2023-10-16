@@ -129,7 +129,7 @@ public interface DialogService extends ThemeService {
       var image = FXGL.image(getMugFileByName(script.left()));
       var leftView = new ImageView(image);
       leftView.setPreserveRatio(true);
-      leftView.setFitHeight(image.getHeight() * .5);
+      leftView.setFitHeight(image.getHeight() );
       leftView.setLayoutY(height * 2 / 3 - leftView.getFitHeight());
       if (script.talker() != 0) {
         var colorAdjust = new ColorAdjust();
@@ -155,8 +155,8 @@ public interface DialogService extends ThemeService {
         rightView = new ImageView(image);
         rightView.setPreserveRatio(true);
         rightView.setScaleX(-1);
-        rightView.setFitHeight(image.getHeight() * .5);
-        rightView.setFitWidth(image.getWidth() * .5);
+        rightView.setFitHeight(image.getHeight());
+        rightView.setFitWidth(image.getWidth());
         rightView.setLayoutY(height * 2 / 3 - rightView.getFitHeight());
         rightView.setLayoutX(width - rightView.getFitWidth());
         if (script.talker() == 0) {
