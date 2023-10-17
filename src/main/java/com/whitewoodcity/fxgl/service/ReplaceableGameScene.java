@@ -6,6 +6,7 @@ import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
+import com.almasb.fxgl.logging.Logger;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.whitewoodcity.fxgl.app.scene.ConcurrentGameSubScene;
 import com.whitewoodcity.fxgl.service.component.AsyncLabel;
@@ -76,7 +77,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
       cleanGameScene(gameScene);
 
       while (FXGL.getSceneService().getCurrentScene().isSubState()) {
-        if(FXGL.getSceneService().getCurrentScene() instanceof GameScene gs){
+        if (FXGL.getSceneService().getCurrentScene() instanceof GameScene gs) {
           cleanGameScene(gs);
         }
         FXGL.getSceneService().popSubScene();
@@ -97,7 +98,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
               try {
                 asyncLoadResources(label);
               } catch (Throwable throwable) {
-                throwable.printStackTrace();
+                Logger.get(this.getClass()).warning(throwable.getMessage());
               }
               return "ok";
             }
@@ -161,10 +162,10 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     });
   }
 
-  private void cleanGameScene(GameScene gameScene){
+  private void cleanGameScene(GameScene gameScene) {
     //todo fxgl 21 release change to .unbind();
-//      gameScene.getViewport().unbind();
-//      gameScene.getViewport().setX(0);
+//    gameScene.getViewport().unbind();
+//    gameScene.getViewport().setX(0);
     var viewport = gameScene.getViewport();
     viewport.bindToEntity(viewport.getCamera(), 0, 0);
     viewport.getCamera().setX(0);
