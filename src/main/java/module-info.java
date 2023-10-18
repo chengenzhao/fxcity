@@ -11,6 +11,7 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.app.scene;
   exports com.whitewoodcity.fxgl.service;
   exports com.whitewoodcity.fxgl.service.component;
+  exports com.whitewoodcity.fxgl.service.handler;
   exports com.whitewoodcity.fxgl.service.icons.rankbadge;
   exports com.whitewoodcity.fxgl.service.icons;
   exports com.whitewoodcity.fxgl.service.exception;

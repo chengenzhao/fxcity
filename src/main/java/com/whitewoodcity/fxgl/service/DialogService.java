@@ -1,7 +1,7 @@
 package com.whitewoodcity.fxgl.service;
 
 import com.almasb.fxgl.app.scene.GameScene;
-import com.almasb.fxgl.dsl.FXGL;
+import com.whitewoodcity.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.KeyTrigger;
 import com.almasb.fxgl.input.Trigger;
 import com.almasb.fxgl.input.TriggerListener;

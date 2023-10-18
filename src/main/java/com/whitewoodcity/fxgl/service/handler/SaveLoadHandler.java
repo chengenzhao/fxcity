@@ -1,4 +1,4 @@
-package com.whitewoodcity.fxgl.service;
+package com.whitewoodcity.fxgl.service.handler;
 
 import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;

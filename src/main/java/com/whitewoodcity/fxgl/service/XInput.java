@@ -28,10 +28,10 @@ public class XInput {
     this.keyActions = keyActions;
   }
 
-  public XInput onActionBegin(KeyCode keyCode, Runnable onActionBegin){
-    if(keyPresses!=null){
+  public XInput onActionBegin(KeyCode keyCode, Runnable onActionBegin) {
+    if (keyPresses != null) {
       keyPresses.put(keyCode, onActionBegin);
-    }else{
+    } else {
       var builder = (keyInputBuilderMap.containsKey(keyCode)) ? keyInputBuilderMap.get(keyCode) : FXGL.onKeyBuilder(input, keyCode);
       keyInputBuilderMap.put(keyCode, builder);
       builder.onActionBegin(onActionBegin);
@@ -39,10 +39,10 @@ public class XInput {
     return this;
   }
 
-  public XInput onActionEnd(KeyCode keyCode, Runnable onActionEnd){
-    if(keyPresses!=null) {
+  public XInput onActionEnd(KeyCode keyCode, Runnable onActionEnd) {
+    if (keyPresses != null) {
       keyReleases.put(keyCode, onActionEnd);
-    }else{
+    } else {
       var builder = (keyInputBuilderMap.containsKey(keyCode)) ? keyInputBuilderMap.get(keyCode) : FXGL.onKeyBuilder(input, keyCode);
       keyInputBuilderMap.put(keyCode, builder);
       builder.onActionEnd(onActionEnd);
@@ -50,10 +50,10 @@ public class XInput {
     return this;
   }
 
-  public XInput onAction(KeyCode keyCode, Runnable onAction){
-    if(keyActions!=null) {
+  public XInput onAction(KeyCode keyCode, Runnable onAction) {
+    if (keyActions != null) {
       keyActions.put(keyCode, onAction);
-    }else{
+    } else {
       var builder = (keyInputBuilderMap.containsKey(keyCode)) ? keyInputBuilderMap.get(keyCode) : FXGL.onKeyBuilder(input, keyCode);
       keyInputBuilderMap.put(keyCode, builder);
       builder.onAction(onAction);
@@ -61,21 +61,33 @@ public class XInput {
     return this;
   }
 
-  public XInput mockKeyPress(KeyCode keyCode){
-    if(keyPresses!=null) {
-      if(keyPresses.containsKey(keyCode)) keyPresses.get(keyCode).run();
-    } else{
+  public XInput mockKeyPress(KeyCode keyCode) {
+    if (keyPresses != null) {
+      if (keyPresses.containsKey(keyCode)) keyPresses.get(keyCode).run();
+    } else {
       input.mockKeyPress(keyCode);
     }
     return this;
   }
 
-  public XInput mockKeyRelease(KeyCode keyCode){
-    if(keyReleases!=null) {
-      if(keyReleases.containsKey(keyCode)) keyReleases.get(keyCode).run();
-    } else{
+  public XInput mockKeyRelease(KeyCode keyCode) {
+    if (keyReleases != null) {
+      if (keyReleases.containsKey(keyCode)) keyReleases.get(keyCode).run();
+    } else {
       input.mockKeyRelease(keyCode);
     }
     return this;
+  }
+
+  public Runnable getClickAction(KeyCode code) {
+    return keyActions == null ? null : keyActions.get(code);
+  }
+
+  public Runnable getPressAction(KeyCode code) {
+    return keyPresses == null ? null : keyPresses.get(code);
+  }
+
+  public Runnable getReleaseAction(KeyCode code) {
+    return keyReleases == null ? null : keyReleases.get(code);
   }
 }

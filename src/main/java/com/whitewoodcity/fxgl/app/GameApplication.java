@@ -7,6 +7,7 @@ import com.almasb.fxgl.logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whitewoodcity.fxgl.dsl.FXGL;
 import com.whitewoodcity.fxgl.service.*;
+import com.whitewoodcity.fxgl.service.handler.SaveLoadHandler;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
@@ -244,5 +245,9 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
       } catch (Exception e){
         Logger.get(this.getClass()).warning(e.getMessage());
       }
+  }
+
+  public XInput getInput() {
+    return input;
   }
 }

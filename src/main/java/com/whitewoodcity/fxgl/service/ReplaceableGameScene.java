@@ -74,12 +74,9 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
 
     var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
     animation.setOnFinished((e) -> {
-      cleanGameScene(gameScene);
+      clearGameScene(gameScene);
 
       while (FXGL.getSceneService().getCurrentScene().isSubState()) {
-        if (FXGL.getSceneService().getCurrentScene() instanceof GameScene gs) {
-          cleanGameScene(gs);
-        }
         FXGL.getSceneService().popSubScene();
       }
 
@@ -160,22 +157,6 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
 //      scene.getViewport().setX(mainScene.getViewport().getX());
 //      scene.getViewport().setY(mainScene.getViewport().getY());
     });
-  }
-
-  private void cleanGameScene(GameScene gameScene) {
-    //todo fxgl 21 release change to .unbind();
-//    gameScene.getViewport().unbind();
-//    gameScene.getViewport().setX(0);
-    var viewport = gameScene.getViewport();
-    viewport.bindToEntity(viewport.getCamera(), 0, 0);
-    viewport.getCamera().setX(0);
-    gameScene.getPhysicsWorld().clearCollisionHandlers();
-    List.copyOf(gameScene.getGameWorld().getEntities()).forEach(Entity::removeFromWorld);
-    gameScene.clearGameViews();
-    gameScene.clearUINodes();
-    gameScene.clearEffect();
-    gameScene.clearCSS();
-    gameScene.getTimer().clear();
   }
 
   default void setGameScene(GameScene gameScene) {

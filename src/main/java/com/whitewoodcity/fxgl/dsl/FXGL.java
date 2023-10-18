@@ -1,5 +1,6 @@
 package com.whitewoodcity.fxgl.dsl;
 
+import com.almasb.fxgl.audio.AudioPlayer;
 import com.whitewoodcity.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.ReadOnlyGameSettings;
 import com.almasb.fxgl.app.scene.GameScene;
@@ -15,10 +16,14 @@ import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.profile.SaveLoadService;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.Timer;
+import com.whitewoodcity.fxgl.service.XInput;
 import javafx.animation.Interpolator;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+
+import java.net.URL;
+import java.util.List;
 
 
 public class FXGL {
@@ -62,6 +67,10 @@ public class FXGL {
 
   public static Input getInput(){
     return com.almasb.fxgl.dsl.FXGL.getInput();
+  }
+
+  public static XInput getXInput(){
+    return FXGL.getAppCast().getInput();
   }
 
   public static PhysicsWorld getPhysicsWorld(){
@@ -173,5 +182,17 @@ public class FXGL {
 
   public static <T> void spawn(T type, SpawnData data, GameWorld gameWorld) {
     getAppCast().spawn(type, data, gameWorld);
+  }
+
+  public static void play(String assetName){
+    com.almasb.fxgl.dsl.FXGL.play(assetName);
+  }
+
+  public static List<String> text(String assetName){
+    return com.almasb.fxgl.dsl.FXGL.text(assetName);
+  }
+
+  public static AudioPlayer getAudioPlayer(){
+    return com.almasb.fxgl.dsl.FXGL.getAudioPlayer();
   }
 }
