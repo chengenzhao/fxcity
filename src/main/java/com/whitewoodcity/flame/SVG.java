@@ -5,6 +5,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 
@@ -111,7 +112,15 @@ public class SVG extends Region {
   }
 
   public void setFill(Paint paint){
-    this.setBackground(new Background(new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY)));
+    if(paint instanceof Color color){
+      String hex = String.format("#%02x%02x%02x", (int)(color.getRed() * 255), (int)(color.getGreen() * 255), (int)(color.getBlue() * 255));
+      this.setStyle("-fx-background-color: "+hex+";");
+    }else
+      this.setBackground(new Background(new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY)));
+  }
+
+  public void setFill(String backgroundColorCss){
+    this.setStyle("-fx-background-color: "+backgroundColorCss+";");
   }
 
   public Paint getFill(){
