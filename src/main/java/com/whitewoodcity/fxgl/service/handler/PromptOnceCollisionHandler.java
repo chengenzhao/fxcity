@@ -5,8 +5,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.LiftComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
-import com.almasb.fxgl.input.KeyTrigger;
-import com.almasb.fxgl.input.Trigger;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.whitewoodcity.fxgl.service.Theme;
@@ -91,7 +89,6 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
       .zIndex(Integer.MAX_VALUE)
       .build();
 
-//    prompt = gameWorld.create("prompt", new SpawnData(tessa.getRightX(), tessa.getY()));
     prompt.getViewComponent().addChild(promptView);
 
     spawnWithScale(gameWorld, prompt, Duration.seconds(1), Interpolators.ELASTIC.EASE_OUT());
@@ -107,13 +104,6 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
       physicsWorld.removeCollisionHandler(this);
       userAction.run(player, entity);
     });
-
-//    listener.setOnTrigger(() -> {
-//      Platform.runLater(() -> this.onCollisionEnd(player, tessa));
-//      physicsWorld.removeCollisionHandler(this);
-//      userAction.run(player, tessa);
-//    });
-//    FXGL.getInput().addTriggerListener(listener);
   }
 
   @Override
@@ -140,22 +130,6 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
   @FunctionalInterface
   public interface UserAction {
     void run(Entity player, Entity tessa);
-  }
-}
-
-class TriggerListener extends com.almasb.fxgl.input.TriggerListener {
-  Runnable runnable;
-
-  @Override
-  protected void onActionEnd(Trigger trigger) {
-    if (trigger instanceof KeyTrigger keyTrigger &&
-      keyTrigger.getKey() == KeyCode.ENTER) {
-      if (runnable != null) runnable.run();
-    }
-  }
-
-  public void setOnTrigger(Runnable runnable) {
-    this.runnable = runnable;
   }
 }
 
