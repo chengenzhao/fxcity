@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 public class TranslucentStackPane<C extends Node> extends Pane {
 
-  private StackPane stackPane;
+  private final StackPane stackPane;
   private C node;
 
   public TranslucentStackPane(C node){
