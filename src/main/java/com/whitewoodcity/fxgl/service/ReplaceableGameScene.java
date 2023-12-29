@@ -74,8 +74,11 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
     animation.setOnFinished(_1 -> {
       clearGameScene(gameScene);
+      resetGameScene(gameScene);
 
       while (FXGL.getSceneService().getCurrentScene().isSubState()) {
+        if(FXGL.getSceneService().getCurrentScene() instanceof GameSubScene gameSubScene)
+          clearGameScene(gameSubScene.getGameScene());
         FXGL.getSceneService().popSubScene();
       }
 
