@@ -4,7 +4,6 @@ import com.almasb.fxgl.app.scene.GameScene;
 import com.almasb.fxgl.app.scene.GameSubScene;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.logging.Logger;
 import com.almasb.fxgl.physics.PhysicsWorld;
@@ -73,7 +72,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     rect.setOpacity(0);
 
     var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
-    animation.setOnFinished((e) -> {
+    animation.setOnFinished(_1 -> {
       clearGameScene(gameScene);
 
       while (FXGL.getSceneService().getCurrentScene().isSubState()) {
@@ -110,7 +109,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
           decorate(gameScene, keyPresses, keyReleases, keyActions, gameSubScenes);
 
           var anime = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 0)));
-          anime.setOnFinished((ee) -> {
+          anime.setOnFinished(_2 -> {
             //finally enable input
             gameScene.getInput().setRegisterInput(true);
             gameScene.getContentRoot().setDisable(false);
