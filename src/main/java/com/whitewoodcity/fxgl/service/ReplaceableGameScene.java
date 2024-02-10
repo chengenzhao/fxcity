@@ -51,8 +51,72 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     gameScene.getInput().setRegisterInput(false);
     gameScene.getContentRoot().setDisable(true);
 
-    var subScene = new ConcurrentGameSubScene(FXGL.getAppWidth(), FXGL.getAppHeight());
+    var loadingScene = new ConcurrentGameSubScene(FXGL.getAppWidth(), FXGL.getAppHeight());
+    var loadingGameScene = loadingScene.getGameScene();
 
+    constructLoadingScene(loadingGameScene, logoString);
+    loadingGameScene.getUINodes().getFirst().setOpacity(0);
+
+    var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(loadingGameScene.getUINodes().getFirst().opacityProperty(), 1)));
+    animation.setOnFinished(_ -> {
+      clearGameScene(gameScene);
+      resetGameScene(gameScene);
+
+      while (FXGL.getSceneService().getCurrentScene().isSubState()) {
+        if (FXGL.getSceneService().getCurrentScene() instanceof GameSubScene gameSubScene)
+          clearGameScene(gameSubScene.getGameScene());
+        FXGL.getSceneService().popSubScene();
+      }
+
+      for (var gameSubScene : gameSubScenes)
+        FXGL.getSceneService().pushSubScene(gameSubScene);
+
+      constructLoadingScene(loadingGameScene, logoString);
+      FXGL.getSceneService().pushSubScene(loadingScene);
+
+      //async load resources
+      var service = new Service<String>() {
+        @Override
+        protected Task<String> createTask() {
+          return new Task<>() {
+            @Override
+            protected String call() {
+              try {
+                asyncLoadResources((AsyncLabel) loadingGameScene.getUINodes().getLast());
+              } catch (Throwable throwable) {
+                Logger.get(this.getClass()).warning(throwable.getMessage());
+              }
+              return "ok";
+            }
+          };
+        }
+      };
+
+      service.setOnSucceeded(_ ->
+        //then init game
+        Platform.runLater(() -> {
+
+          decorate(gameScene, keyPresses, keyReleases, keyActions, gameSubScenes);
+
+          var anime = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(loadingGameScene.getUINodes().getFirst().opacityProperty(), 0)));
+          anime.setOnFinished(_ -> {
+            //finally enable input
+            gameScene.getInput().setRegisterInput(true);
+            gameScene.getContentRoot().setDisable(false);
+            FXGL.getSceneService().popSubScene();
+
+            postInit();
+          });
+          anime.play();
+        }));
+
+      service.start();
+    });
+    animation.play();
+    FXGL.getSceneService().pushSubScene(loadingScene);
+  }
+
+  private void constructLoadingScene(GameScene gameScene, String logoString) {
     var paint = getLoadingBackgroundFill();
 
     var rect = new Rectangle(FXGL.getAppWidth(), FXGL.getAppHeight(), paint);
@@ -68,65 +132,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
 
     label.opacityProperty().bind(rect.opacityProperty());
 
-    subScene.getGameScene().addUINodes(rect, label);
-    rect.setOpacity(0);
-
-    var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
-    animation.setOnFinished(_ -> {
-      clearGameScene(gameScene);
-      resetGameScene(gameScene);
-
-      while (FXGL.getSceneService().getCurrentScene().isSubState()) {
-        if(FXGL.getSceneService().getCurrentScene() instanceof GameSubScene gameSubScene)
-          clearGameScene(gameSubScene.getGameScene());
-        FXGL.getSceneService().popSubScene();
-      }
-
-      for (var gameSubScene : gameSubScenes)
-        FXGL.getSceneService().pushSubScene(gameSubScene);
-
-      FXGL.getSceneService().pushSubScene(subScene);
-
-      //async load resources
-      var service = new Service<String>() {
-        @Override
-        protected Task<String> createTask() {
-          return new Task<>() {
-            @Override
-            protected String call() {
-              try {
-                asyncLoadResources(label);
-              } catch (Throwable throwable) {
-                Logger.get(this.getClass()).warning(throwable.getMessage());
-              }
-              return "ok";
-            }
-          };
-        }
-      };
-
-      service.setOnSucceeded((state) ->
-        //then init game
-        Platform.runLater(() -> {
-
-          decorate(gameScene, keyPresses, keyReleases, keyActions, gameSubScenes);
-
-          var anime = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 0)));
-          anime.setOnFinished(_ -> {
-            //finally enable input
-            gameScene.getInput().setRegisterInput(true);
-            gameScene.getContentRoot().setDisable(false);
-            FXGL.getSceneService().popSubScene();
-
-            postInit();
-          });
-          anime.play();
-        }));
-
-      service.start();
-    });
-    animation.play();
-    FXGL.getSceneService().pushSubScene(subScene);
+    gameScene.addUINodes(rect, label);
   }
 
   private void decorate(GameScene gameScene, Map<KeyCode, Runnable> keyPresses, Map<KeyCode, Runnable> keyReleases, Map<KeyCode, Runnable> keyActions, GameSubScene... gameSubScenes) {

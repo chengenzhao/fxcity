@@ -1,7 +1,6 @@
 package com.whitewoodcity.fxgl.service;
 
 import com.almasb.fxgl.app.scene.GameScene;
-import com.almasb.fxgl.app.scene.GameSubScene;
 import com.almasb.fxgl.entity.Entity;
 
 import java.util.List;
