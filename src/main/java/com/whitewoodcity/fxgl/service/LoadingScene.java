@@ -96,7 +96,7 @@ public class LoadingScene extends com.almasb.fxgl.app.scene.LoadingScene {
     ft.setFromValue(1.0);
     ft.setToValue(.0);
     ft.play();
-    ft.setOnFinished(_1 -> nextState.getContentRoot().getChildren().remove(pane));
+    ft.setOnFinished(_ -> nextState.getContentRoot().getChildren().remove(pane));
   }
 
   @Override

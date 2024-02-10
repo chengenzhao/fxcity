@@ -19,15 +19,15 @@ public class MapButton extends StackPane {
     background.arcHeightProperty().bind(background.heightProperty().map(h -> h.doubleValue() / 5));
     background.arcWidthProperty().bind(background.arcHeightProperty());
 
-    this.setOnMouseClicked(_1 -> action());
-    this.setOnMousePressed(_1 -> press());
-    this.setOnMouseReleased(_1 -> release());
+    this.setOnMouseClicked(_ -> action());
+    this.setOnMousePressed(_ -> press());
+    this.setOnMouseReleased(_ -> release());
 
     svg.prefHeightProperty().bind(background.heightProperty().multiply(0.6));
     svg.setMouseTransparent(true);
 
-    this.setOnMouseEntered(_1 -> background.setStroke(Color.web("62b768")));
-    this.setOnMouseExited(_1 -> {
+    this.setOnMouseEntered(_ -> background.setStroke(Color.web("62b768")));
+    this.setOnMouseExited(_ -> {
       background.setFill(Color.web("f2fcf3cc"));
       background.setStroke(null);
     });

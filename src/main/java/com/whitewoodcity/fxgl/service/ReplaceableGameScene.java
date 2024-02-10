@@ -72,7 +72,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     rect.setOpacity(0);
 
     var animation = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 1)));
-    animation.setOnFinished(_1 -> {
+    animation.setOnFinished(_ -> {
       clearGameScene(gameScene);
       resetGameScene(gameScene);
 
@@ -112,7 +112,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
           decorate(gameScene, keyPresses, keyReleases, keyActions, gameSubScenes);
 
           var anime = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(rect.opacityProperty(), 0)));
-          anime.setOnFinished(_2 -> {
+          anime.setOnFinished(_ -> {
             //finally enable input
             gameScene.getInput().setRegisterInput(true);
             gameScene.getContentRoot().setDisable(false);

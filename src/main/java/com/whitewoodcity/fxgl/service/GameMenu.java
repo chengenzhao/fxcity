@@ -96,7 +96,7 @@ public class GameMenu extends FXGLMenu {
 
     shape.setFill(fill);//Color.web("3978edcc")
 
-    pane.setOnMouseClicked(_1 -> setOnClick.run());
+    pane.setOnMouseClicked(_ -> setOnClick.run());
 
     return pane;
   }

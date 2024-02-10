@@ -93,7 +93,7 @@ public non-sealed interface PushAndPopGameSubScene extends XGameScene{
     p.setDisable(true);
 
     var timeline = new Timeline(new KeyFrame(Duration.seconds(.5), new KeyValue(p.opacityProperty(), 0)));
-    timeline.setOnFinished(_1 -> {
+    timeline.setOnFinished(_ -> {
       if(!allowConcurrency()){
         for(var service:bottomSceneServices)
           service.restoreConcurrency();
