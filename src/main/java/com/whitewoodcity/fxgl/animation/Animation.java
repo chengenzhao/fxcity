@@ -20,7 +20,7 @@ public abstract class Animation<T> implements Updatable {
   private final Duration delay;
   private boolean checkDelay;
 
-  private double time = 0.0;
+  private double time = 0.0;//in seconds
   private double endTime;
   private double pauseTime = -1;
   private int count = 0;
