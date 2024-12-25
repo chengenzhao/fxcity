@@ -56,6 +56,14 @@ public class AnimationChannel {
       IntStream.range(startFrame, endFrame + 1).mapToObj(it ->  new FrameData(it, (it % framesPerRow) * frameWidth, (it / framesPerRow) * frameHeight, frameWidth, frameHeight)).toList());
   }
 
+  public AnimationChannel(Image image, int framesPerRow, Duration channelDuration) {
+    this(image, framesPerRow, (int)image.getWidth()/framesPerRow, (int)image.getHeight(), channelDuration, 0, framesPerRow-1);
+  }
+
+  public AnimationChannel(Image image, int framesPerRow, Duration channelDuration, int startFrame, int endFrame) {
+    this(image, framesPerRow, (int)image.getWidth()/framesPerRow, (int)image.getHeight(), channelDuration, startFrame, endFrame);
+  }
+
   public boolean isLastFrame(int frame) {
     return frame == sequence.size() - 1;
   }
