@@ -180,6 +180,22 @@ public class AnimatedTexture extends Texture {
     updateImage();
   }
 
+  public boolean isAnimating(){
+    return animation.isAnimating();
+  }
+
+  public boolean isPaused(){
+    return animation.isPaused();
+  }
+
+  public void pause(){
+    animation.pause();
+  }
+
+  public void resume(){
+    animation.resume();
+  }
+
   public void setOnCycleFinished(Runnable onCycleFinished) {
     this.onCycleFinished = onCycleFinished;
   }
