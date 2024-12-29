@@ -30,6 +30,13 @@ public class AnimatedTexture extends Texture {
     updateAnimation();
   }
 
+  public void updateAnimatedTexture(AnimationChannel channel){
+    animationChannel = channel;
+    currentFrame = 0;
+    updateImage();
+    updateAnimation();
+  }
+
   public void setInterpolator(Interpolator interpolator) {
     this.interpolator = interpolator;
     animation.setInterpolator(interpolator);

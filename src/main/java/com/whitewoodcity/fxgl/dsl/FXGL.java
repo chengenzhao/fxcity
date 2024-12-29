@@ -22,7 +22,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.List;
 
 
