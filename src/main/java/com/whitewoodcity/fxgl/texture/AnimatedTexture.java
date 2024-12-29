@@ -5,6 +5,8 @@ import com.whitewoodcity.fxgl.animation.Animation;
 import com.whitewoodcity.fxgl.animation.AnimationBuilder;
 import com.whitewoodcity.fxgl.core.util.EmptyRunnable;
 import javafx.animation.Interpolator;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class AnimatedTexture extends Texture {
 
-  private int currentFrame = 0;
+  private final IntegerProperty currentFrame = new SimpleIntegerProperty(0);
 
   private Animation<Integer> animation;
   private List<Animation<Integer>> animationList = new ArrayList<>();
@@ -32,7 +34,7 @@ public class AnimatedTexture extends Texture {
 
   public void updateAnimatedTexture(AnimationChannel channel){
     animationChannel = channel;
-    currentFrame = 0;
+    currentFrame.set(0);
     updateImage();
     updateAnimation();
   }
@@ -52,7 +54,7 @@ public class AnimatedTexture extends Texture {
   }
 
   private void updateImage() {
-    var frameData = animationChannel.getFrameData(currentFrame);
+    var frameData = animationChannel.getFrameData(currentFrame.get());
 
     setImage(animationChannel.getImage());
     setFitWidth(frameData.width());
@@ -67,7 +69,7 @@ public class AnimatedTexture extends Texture {
     animation = new AnimationBuilder()
       .onCycleFinished(() -> {
         if (animation.getCycleCount() > 1) {
-          currentFrame = 0;
+          currentFrame.set(0);
           updateImage();
         }
 
@@ -77,19 +79,19 @@ public class AnimatedTexture extends Texture {
       .interpolator(interpolator)
       .animate(new PreciseAnimatedIntValue(0, animationChannel.getSequence().size() - 1))
       .onProgress(frameNum -> {
-        currentFrame = Math.min(frameNum, animationChannel.getSequence().size() - 1);
+        currentFrame.set(Math.min(frameNum, animationChannel.getSequence().size() - 1));
         updateImage();
       })
       .build();
   }
 
   public void jumpTo(int startFrame) {
-    currentFrame = startFrame;
-    animation.jumpTo(currentFrame * animationChannel.getFrameDuration());
+    currentFrame.set(startFrame);
+    animation.jumpTo(currentFrame.get() * animationChannel.getFrameDuration());
   }
 
   public int getCurrentFrame() {
-    return currentFrame;
+    return currentFrame.get();
   }
 
   public AnimatedTexture play() {
@@ -105,13 +107,13 @@ public class AnimatedTexture extends Texture {
   }
 
   public AnimatedTexture playTo(int pauseFrame){
-    animation.setReverse(currentFrame > pauseFrame);
+    animation.setReverse(currentFrame.get() > pauseFrame);
     animation.playTo(pauseFrame * animationChannel.getFrameDuration() );
     return this;
   }
 
   public AnimatedTexture playTo(int pauseFrame, Runnable runnable){
-    animation.setReverse(currentFrame > pauseFrame);
+    animation.setReverse(currentFrame.get() > pauseFrame);
     animation.playTo(pauseFrame * animationChannel.getFrameDuration(), runnable);
     return this;
   }
@@ -175,7 +177,7 @@ public class AnimatedTexture extends Texture {
   public void stop() {
     animation.stop();
 
-    currentFrame = 0;
+    currentFrame.set(0);
 
     updateImage();
   }
@@ -194,6 +196,10 @@ public class AnimatedTexture extends Texture {
 
   public void resume(){
     animation.resume();
+  }
+
+  public IntegerProperty currentFrameProperty() {
+    return currentFrame;
   }
 
   public void setOnCycleFinished(Runnable onCycleFinished) {
