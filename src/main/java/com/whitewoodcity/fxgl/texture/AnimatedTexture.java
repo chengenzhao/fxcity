@@ -5,8 +5,7 @@ import com.whitewoodcity.fxgl.animation.Animation;
 import com.whitewoodcity.fxgl.animation.AnimationBuilder;
 import com.whitewoodcity.fxgl.core.util.EmptyRunnable;
 import javafx.animation.Interpolator;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.List;
 public class AnimatedTexture extends Texture {
 
   private final IntegerProperty currentFrame = new SimpleIntegerProperty(0);
+  private final DoubleProperty time = new SimpleDoubleProperty(0);
 
   private Animation<Integer> animation;
   private List<Animation<Integer>> animationList = new ArrayList<>();
@@ -198,8 +198,16 @@ public class AnimatedTexture extends Texture {
     animation.resume();
   }
 
-  public IntegerProperty currentFrameProperty() {
+  public ReadOnlyIntegerProperty currentFrameProperty() {
     return currentFrame;
+  }
+
+  public double getTime() {
+    return time.get();
+  }
+
+  public ReadOnlyDoubleProperty timeProperty() {
+    return time;
   }
 
   public void setOnCycleFinished(Runnable onCycleFinished) {
@@ -209,6 +217,7 @@ public class AnimatedTexture extends Texture {
   @Override
   public void onUpdate(double tpf) {
     animation.onUpdate(tpf);
+    time.set(animation.getTime());
   }
 }
 
