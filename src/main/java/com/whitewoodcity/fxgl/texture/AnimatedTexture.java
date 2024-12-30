@@ -86,8 +86,13 @@ public class AnimatedTexture extends Texture {
   }
 
   public void jumpTo(int startFrame) {
-    currentFrame.set(startFrame);
+//    currentFrame.set(startFrame);
     animation.jumpTo(currentFrame.get() * animationChannel.getFrameDuration());
+  }
+
+  public void jumpTo(Duration duration){
+    animation.jumpTo(duration.toSeconds());
+//    currentFrame.set(((int)(duration.toSeconds() / animationChannel.getFrameDuration())));
   }
 
   public int getCurrentFrame() {
@@ -209,7 +214,7 @@ public class AnimatedTexture extends Texture {
   public ReadOnlyDoubleProperty timeProperty() {
     return time;
   }
-
+  
   public void setOnCycleFinished(Runnable onCycleFinished) {
     this.onCycleFinished = onCycleFinished;
   }
