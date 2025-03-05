@@ -172,7 +172,7 @@ public class AnimatedTexture extends Texture {
   }
 
   public AnimatedTexture loopNoOverride(final AnimationChannel channel) {
-    if (animationChannel == channel)
+    if (animationChannel == channel && animation.isAnimating())
       return this;
 
     loop(channel);
