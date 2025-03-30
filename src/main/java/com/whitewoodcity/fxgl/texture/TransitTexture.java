@@ -3,7 +3,6 @@ package com.whitewoodcity.fxgl.texture;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.whitewoodcity.fxgl.texture.Texture;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//todo move to fxcity
 public class TransitTexture extends Texture {
 
   private Transition currentTransition;
   private final Map<String, Transition> transitions = new HashMap<>();
+  private final Map<String, JsonNode> poses = new HashMap<>();
 
   public TransitTexture(Image image) {
     super(image);
@@ -46,6 +45,10 @@ public class TransitTexture extends Texture {
     this.transitions.put(name, tran);
   }
 
+  public void recordPose(String name, JsonNode json){
+    poses.put(name,json);
+  }
+
   public void show(JsonNode json){
     this.setX(json.get("x").asDouble());
     this.setY(json.get("y").asDouble());
@@ -58,6 +61,12 @@ public class TransitTexture extends Texture {
       rotate.setPivotY(r.get("pivotY").asDouble());
       rotate.setAngle(r.get("angle").asDouble());
     }
+  }
+
+  public void show(String name){
+    var pose = poses.get(name);
+    if(pose!=null)
+      show(pose);
   }
 
   public void startTransition(String name) {
