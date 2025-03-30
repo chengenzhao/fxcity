@@ -3,6 +3,7 @@ package com.whitewoodcity.fxgl.texture;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
@@ -70,25 +71,72 @@ public class TransitTexture extends Texture {
   }
 
   public void startTransition(String name) {
-    currentTransition = transitions.get(name);
-    if(currentTransition!=null){
-      currentTransition.setCycleCount(1);
-      currentTransition.play();
-    }
+    setTransition(name);
+    play();
   }
 
   public void loopTransition(String name) {
+    setTransition(name);
+    loop();
+  }
+
+  public void setTransition(String name){
+    setTransition(name, 1);
+  }
+
+  public void setTransition(String name, int cycleCount){
     currentTransition = transitions.get(name);
-    if(currentTransition!=null){
-      currentTransition.setCycleCount(Timeline.INDEFINITE);
-      currentTransition.play();
-    }
+    if(currentTransition!=null)
+      currentTransition.setCycleCount(cycleCount);
   }
 
   public void stopTransition() {
     if(currentTransition!=null) {
       currentTransition.stop();
     }
+  }
+
+  public Transition getCurrentTransition() {
+    return currentTransition;
+  }
+
+  public void stop(){
+    if(currentTransition!=null)
+      currentTransition.stop();
+  }
+
+  public void play(){
+    if(currentTransition!=null)
+      currentTransition.play();
+  }
+
+  public void loop(){
+    if(currentTransition!=null){
+      currentTransition.setCycleCount(Timeline.INDEFINITE);
+      currentTransition.play();
+    }
+  }
+
+  public void pause(){
+    if(currentTransition!=null)
+      currentTransition.pause();
+  }
+
+  public void resume(){
+    if(currentTransition!=null)
+      currentTransition.play();
+  }
+
+  public boolean isPaused(){
+    if(currentTransition!=null)
+      return currentTransition.getStatus() == Animation.Status.PAUSED;
+    else return false;
+  }
+
+  public boolean isRunning(){
+    if(currentTransition!=null)
+      return currentTransition.getStatus() == Animation.Status.RUNNING;
+    else return false;
   }
 }
 
