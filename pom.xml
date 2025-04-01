@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -115,10 +115,10 @@
         <profile>
             <id>minimum jdk requirement</id>
             <activation>
-                <jdk>[22,)</jdk>
+                <jdk>[24,)</jdk>
             </activation>
             <properties>
-                <source.version>22</source.version>
+                <source.version>24</source.version>
                 <maven.compiler.version>3.12.1</maven.compiler.version>
             </properties>
             <build>
