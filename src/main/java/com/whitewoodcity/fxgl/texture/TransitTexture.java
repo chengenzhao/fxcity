@@ -138,6 +138,18 @@ public class TransitTexture extends Texture {
       return currentTransition.getStatus() == Animation.Status.RUNNING;
     else return false;
   }
+
+  public boolean isPlaying(){//playing means running only once
+    if(currentTransition!=null)
+      return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() == 1;
+    else return false;
+  }
+
+  public boolean isLooping(){//looping means running infinite times
+    if(currentTransition!=null)
+      return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() == Timeline.INDEFINITE;
+    else return false;
+  }
 }
 
 record TransitionData(ObjectNode start, ObjectNode end) { }

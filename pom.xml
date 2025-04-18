@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -38,9 +38,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fxgl.version>21.1</fxgl.version>
-        <javafx.version>24</javafx.version>
+        <javafx.version>24.0.1</javafx.version>
+        <jackson.version>2.18.3</jackson.version>
         <atlantafx.version>2.0.1</atlantafx.version>
-        <junit.jupiter.version>5.11.4</junit.jupiter.version>
+        <junit.jupiter.version>5.12.1</junit.jupiter.version>
 <!--        <junit.platform.version>1.9.2</junit.platform.version>-->
         <hamcrest.version>3.0</hamcrest.version>
     </properties>
@@ -50,6 +51,11 @@
             <groupId>com.github.almasb</groupId>
             <artifactId>fxgl</artifactId>
             <version>${fxgl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.mkpaz</groupId>
@@ -98,18 +104,18 @@
     <!--        </repository>-->
     <!--    </repositories>-->
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Nexus Release Repository</name>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <snapshotRepository>-->
+<!--            <id>sonatype-nexus-snapshots</id>-->
+<!--            <name>Sonatype Nexus Snapshots</name>-->
+<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--        <repository>-->
+<!--            <id>sonatype-nexus-snapshots</id>-->
+<!--            <name>Nexus Release Repository</name>-->
+<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 
     <profiles>
         <profile>
@@ -180,6 +186,28 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <!-- make sure you have correctly config the setting.xml in the .m2 directory, a typical setting should like
+                    </servers>
+                    <server>
+                        <id>central</id>
+                        <username>$username</username>
+                        <password>$password</password>
+                    </server>
+                    </servers>
+                    $username and $password should be generated in the portal url: https://central.sonatype.com
+                    then copy and paste them to the setting.xml
+                    -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.7.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
