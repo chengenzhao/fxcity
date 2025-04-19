@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.3.4</version>
+    <version>0.3.5</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -41,7 +41,7 @@
         <javafx.version>24.0.1</javafx.version>
         <jackson.version>2.18.3</jackson.version>
         <atlantafx.version>2.0.1</atlantafx.version>
-        <junit.jupiter.version>5.12.1</junit.jupiter.version>
+        <junit.jupiter.version>5.12.2</junit.jupiter.version>
 <!--        <junit.platform.version>1.9.2</junit.platform.version>-->
         <hamcrest.version>3.0</hamcrest.version>
     </properties>
@@ -103,19 +103,6 @@
     <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
     <!--        </repository>-->
     <!--    </repositories>-->
-
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>sonatype-nexus-snapshots</id>-->
-<!--            <name>Sonatype Nexus Snapshots</name>-->
-<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>sonatype-nexus-snapshots</id>-->
-<!--            <name>Nexus Release Repository</name>-->
-<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
 
     <profiles>
         <profile>
