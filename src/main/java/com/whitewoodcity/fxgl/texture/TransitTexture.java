@@ -1,6 +1,8 @@
 package com.whitewoodcity.fxgl.texture;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.animation.Animation;
@@ -32,6 +34,16 @@ public class TransitTexture extends Texture {
       texture.getTransforms().add(transform.clone());
     }
     return texture;
+  }
+
+  public void buildTransition(String name, String jsonArray) {
+    var objectMapper = new ObjectMapper();
+    try {
+      var array = objectMapper.readTree(jsonArray);
+      buildTransition(name, (ArrayNode) array);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public void buildTransition(String name, ArrayNode jsonArray) {
