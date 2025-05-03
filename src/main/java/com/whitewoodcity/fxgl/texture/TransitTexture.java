@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TransitTexture extends Texture {
@@ -76,9 +77,14 @@ public class TransitTexture extends Texture {
     this.setY(json.get("y").asDouble());
 
     var rotates = json.withArray("rotates");
+    List<Rotate> transforms =
+      this.getTransforms().stream()
+        .filter(Rotate.class::isInstance)
+        .map(Rotate.class::cast)
+        .toList();
     for(int i=0;i<rotates.size();i++){
       var r = rotates.get(i);
-      var rotate = (Rotate)this.getTransforms().get(i);
+      var rotate = transforms.get(i);
       rotate.setPivotX(r.get("pivotX").asDouble());
       rotate.setPivotY(r.get("pivotY").asDouble());
       rotate.setAngle(r.get("angle").asDouble());
