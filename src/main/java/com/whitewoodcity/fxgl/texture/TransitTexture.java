@@ -62,6 +62,15 @@ public class TransitTexture extends Texture {
     poses.put(name,json);
   }
 
+  public void show(String json){
+    try {
+      var obj = new ObjectMapper().readTree(json);
+      show(obj);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public void show(JsonNode json){
     this.setX(json.get("x").asDouble());
     this.setY(json.get("y").asDouble());
@@ -76,7 +85,7 @@ public class TransitTexture extends Texture {
     }
   }
 
-  public void show(String name){
+  public void pose(String name){
     var pose = poses.get(name);
     if(pose!=null)
       show(pose);
