@@ -37,17 +37,17 @@ public class TransitTexture extends Texture {
     return texture;
   }
 
-  public void buildTransition(String name, String jsonArray) {
+  public Transition buildTransition(String name, String jsonArray) {
     var objectMapper = new ObjectMapper();
     try {
       var array = objectMapper.readTree(jsonArray);
-      buildTransition(name, (ArrayNode) array);
+      return buildTransition(name, (ArrayNode) array);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void buildTransition(String name, ArrayNode jsonArray) {
+  public Transition buildTransition(String name, ArrayNode jsonArray) {
     var list = new ArrayList<TransitionData>();
     for (int i = 0; i < jsonArray.size() - 1; i++) {
       list.add(new TransitionData((ObjectNode) jsonArray.get(i), (ObjectNode) jsonArray.get(i + 1)));
@@ -57,6 +57,7 @@ public class TransitTexture extends Texture {
       tran.getChildren().add(new CusteomTransition(this,data.start(), data.end()));
     }
     this.transitions.put(name, tran);
+    return tran;
   }
 
   public void recordPose(String name, JsonNode json){
@@ -97,24 +98,26 @@ public class TransitTexture extends Texture {
       show(pose);
   }
 
-  public void startTransition(String name) {
+  public Transition startTransition(String name) {
     setTransition(name);
-    play();
+    return play();
   }
 
-  public void loopTransition(String name) {
+  public Transition loopTransition(String name) {
     setTransition(name);
-    loop();
+    return loop();
   }
 
-  public void setTransition(String name){
-    setTransition(name, 1);
+  public Transition setTransition(String name){
+    return setTransition(name, 1);
   }
 
-  public void setTransition(String name, int cycleCount){
+  public Transition setTransition(String name, int cycleCount){
     currentTransition = transitions.get(name);
     if(currentTransition!=null)
       currentTransition.setCycleCount(cycleCount);
+
+    return currentTransition;
   }
 
   public void stopTransition() {
@@ -127,31 +130,36 @@ public class TransitTexture extends Texture {
     return currentTransition;
   }
 
-  public void stop(){
+  public Transition stop(){
     if(currentTransition!=null)
       currentTransition.stop();
+    return currentTransition;
   }
 
-  public void play(){
+  public Transition play(){
     if(currentTransition!=null)
       currentTransition.play();
+    return currentTransition;
   }
 
-  public void loop(){
+  public Transition loop(){
     if(currentTransition!=null){
       currentTransition.setCycleCount(Timeline.INDEFINITE);
       currentTransition.play();
     }
+    return currentTransition;
   }
 
-  public void pause(){
+  public Transition pause(){
     if(currentTransition!=null)
       currentTransition.pause();
+    return currentTransition;
   }
 
-  public void resume(){
+  public Transition resume(){
     if(currentTransition!=null)
       currentTransition.play();
+    return currentTransition;
   }
 
   public boolean isPaused(){
