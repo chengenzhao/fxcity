@@ -23,7 +23,7 @@ public class TransitTexture extends Texture {
 
   private Transition currentTransition;
   private final Map<String, Transition> transitions = new HashMap<>();
-  private final Map<String, JsonNode> poses = new HashMap<>();
+  private final Map<String, ObjectNode> poses = new HashMap<>();
 
   public TransitTexture(Image image) {
     super(image);
@@ -36,6 +36,23 @@ public class TransitTexture extends Texture {
       texture.getTransforms().add(transform.clone());
     }
     return texture;
+  }
+
+  public void record(String name, String jsonString){
+    try {
+      var jsonNode = new ObjectMapper().readTree(jsonString);
+      record(name, jsonNode);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void record(String name, JsonNode json){
+    switch (json){
+      case ArrayNode arrayNode -> buildTransition(name, arrayNode);
+      case ObjectNode objectNode-> recordPose(name, objectNode);
+      default -> throw new RuntimeException("Not supported JSON type");
+    }
   }
 
   public Transition buildTransition(String name, String jsonArray) {
@@ -61,7 +78,7 @@ public class TransitTexture extends Texture {
     return tran;
   }
 
-  public void recordPose(String name, JsonNode json) {
+  public void recordPose(String name, ObjectNode json) {
     poses.put(name, json);
   }
 
@@ -147,7 +164,7 @@ public class TransitTexture extends Texture {
 
   public Transition play() {
     if (currentTransition != null)
-      currentTransition.play();
+      currentTransition.playFromStart();
     return currentTransition;
   }
 
