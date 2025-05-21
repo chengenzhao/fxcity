@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -39,7 +39,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fxgl.version>21.1</fxgl.version>
         <javafx.version>24.0.1</javafx.version>
-        <jackson.version>2.18.3</jackson.version>
+        <jackson.version>2.19.0</jackson.version>
         <atlantafx.version>2.0.1</atlantafx.version>
         <junit.jupiter.version>5.12.2</junit.jupiter.version>
 <!--        <junit.platform.version>1.9.2</junit.platform.version>-->
@@ -96,13 +96,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>oss.sonatype.org-snapshot</id>-->
-    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
 
     <profiles>
         <profile>

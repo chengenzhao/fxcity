@@ -38,7 +38,7 @@ public class TransitTexture extends Texture {
     return texture;
   }
 
-  public void record(String name, String jsonString){
+  public void record(String name, String jsonString) {
     try {
       var jsonNode = new ObjectMapper().readTree(jsonString);
       record(name, jsonNode);
@@ -47,10 +47,10 @@ public class TransitTexture extends Texture {
     }
   }
 
-  public void record(String name, JsonNode json){
-    switch (json){
+  public void record(String name, JsonNode json) {
+    switch (json) {
       case ArrayNode arrayNode -> buildTransition(name, arrayNode);
-      case ObjectNode objectNode-> recordPose(name, objectNode);
+      case ObjectNode objectNode -> recordPose(name, objectNode);
       default -> throw new RuntimeException("Not supported JSON type");
     }
   }
@@ -84,14 +84,14 @@ public class TransitTexture extends Texture {
 
   public void show(String json) {
     try {
-      var obj = new ObjectMapper().readTree(json);
+      var obj = (ObjectNode) new ObjectMapper().readTree(json);
       show(obj);
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void show(JsonNode json) {
+  public void show(ObjectNode json) {
     this.setX(json.get("x").asDouble());
     this.setY(json.get("y").asDouble());
 
