@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class TransitTexture extends Texture {
 
-  public static enum JsonKeys{
+  public enum JsonKeys {
     X("x"),
     Y("y"),
     TRANSLATE_X("translateX"),
@@ -67,6 +67,45 @@ public class TransitTexture extends Texture {
       record(name, jsonNode);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  public void record(String name, JsonNode json, double ratio) {
+    record(name, json, ratio, false);
+  }
+
+  public void record(String name, JsonNode json, double ratio, boolean round) {
+    switch (json) {
+      case ArrayNode arrayNode -> {
+        arrayNode.forEach(e -> zoom((ObjectNode) e, ratio, round));
+        buildTransition(name, arrayNode);
+      }
+      case ObjectNode objectNode -> recordPose(name, zoom(objectNode, ratio, round));
+      default -> throw new RuntimeException("Not supported JSON type");
+    }
+  }
+
+  private ObjectNode zoom(ObjectNode obj, double ratio, boolean round) {
+    zoomField(obj, JsonKeys.X, ratio, round);
+    zoomField(obj, JsonKeys.Y, ratio, round);
+
+    zoomField(obj, JsonKeys.TRANSLATE_X, ratio, round);
+    zoomField(obj, JsonKeys.TRANSLATE_Y, ratio, round);
+
+    var rotates = obj.withArray(JsonKeys.ROTATES.key);
+    for (JsonNode r : rotates) {
+      var rotate = (ObjectNode) r;
+      zoomField(rotate, JsonKeys.PIVOT_X, ratio, round);
+      zoomField(rotate, JsonKeys.PIVOT_Y, ratio, round);
+    }
+    return obj;
+  }
+
+  private void zoomField(ObjectNode obj, JsonKeys key, double ratio, boolean round) {
+    if (obj.has(key.key)) {
+      var value = obj.get(key.key).asDouble() * ratio;
+      if (round) value = Math.round(value);
+      obj.put(key.key, value);
     }
   }
 
@@ -234,6 +273,18 @@ public class TransitTexture extends Texture {
       return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() == Timeline.INDEFINITE;
     else return false;
   }
+
+//  public static void main(String[] args) throws Exception {
+//    var t = new TransitTexture(new WritableImage(100, 100));
+//    var json = """
+//      [{"x":121.1111111111112,"y":270.00000000000006,"rotates":[{"pivotX":121.1111111111112,"pivotY":270.00000000000006,"angle":360.0},{"pivotX":142.22222222222229,"pivotY":236.66666666666657,"angle":360.0}],"time":0.0},{"x":121.1111111111112,"y":270.00000000000006,"rotates":[{"pivotX":121.1111111111112,"pivotY":270.00000000000006,"angle":360.0},{"pivotX":142.22222222222229,"pivotY":236.66666666666657,"angle":360.0}],"time":1000.0}]
+//      """;
+//    var mapper = new ObjectMapper();
+//    var j = (ArrayNode) mapper.readTree(json);
+//    System.out.println(j);
+//    j.forEach(obj -> t.zoom((ObjectNode) obj, 0.5, true));
+//    System.out.println(j);
+//  }
 }
 
 record TransitionData(ObjectNode start, ObjectNode end) {
@@ -258,10 +309,14 @@ class CusteomTransition extends Transition {
   private void initObjectNode(ObjectNode... nodes) {
     var factory = JsonNodeFactory.instance;
     for (var node : nodes) {
-      if (!node.has(TransitTexture.JsonKeys.X.key())) node.set(TransitTexture.JsonKeys.X.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.Y.key())) node.set(TransitTexture.JsonKeys.Y.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_X.key())) node.set(TransitTexture.JsonKeys.TRANSLATE_X.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_Y.key())) node.set(TransitTexture.JsonKeys.TRANSLATE_Y.key(), factory.numberNode(0.0));
+      if (!node.has(TransitTexture.JsonKeys.X.key()))
+        node.set(TransitTexture.JsonKeys.X.key(), factory.numberNode(0.0));
+      if (!node.has(TransitTexture.JsonKeys.Y.key()))
+        node.set(TransitTexture.JsonKeys.Y.key(), factory.numberNode(0.0));
+      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_X.key()))
+        node.set(TransitTexture.JsonKeys.TRANSLATE_X.key(), factory.numberNode(0.0));
+      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_Y.key()))
+        node.set(TransitTexture.JsonKeys.TRANSLATE_Y.key(), factory.numberNode(0.0));
     }
   }
 
