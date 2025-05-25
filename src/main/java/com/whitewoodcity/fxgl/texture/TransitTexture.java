@@ -52,6 +52,14 @@ public class TransitTexture extends Texture {
     super(image);
   }
 
+  public TransitTexture(Image image, int howManyRotatesInTransforms) {
+    super(image);
+
+    for (int i = 0; i < howManyRotatesInTransforms; i++) {
+      this.getTransforms().add(new Rotate());
+    }
+  }
+
   @Override
   public TransitTexture copy() {
     var texture = new TransitTexture(this.getImage());
@@ -138,7 +146,7 @@ public class TransitTexture extends Texture {
     }
     var tran = new SequentialTransition(this);
     for (var data : list) {
-      tran.getChildren().add(new CusteomTransition(this, data.start(), data.end()));
+      tran.getChildren().add(new CustomTransition(this, data.start(), data.end()));
     }
     this.transitions.put(name, tran);
     return tran;
@@ -294,13 +302,13 @@ public class TransitTexture extends Texture {
 record TransitionData(ObjectNode start, ObjectNode end) {
 }
 
-class CusteomTransition extends Transition {
+class CustomTransition extends Transition {
 
   private final TransitTexture cachedNode;
   private final ObjectNode start;
   private final ObjectNode end;
 
-  public CusteomTransition(TransitTexture cachedNode, ObjectNode start, ObjectNode end) {
+  public CustomTransition(TransitTexture cachedNode, ObjectNode start, ObjectNode end) {
     this.cachedNode = cachedNode;
 
     initObjectNode(start, end);
