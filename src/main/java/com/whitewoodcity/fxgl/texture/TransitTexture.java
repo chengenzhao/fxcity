@@ -48,7 +48,7 @@ public class TransitTexture extends Texture {
   private final Map<String, Transition> transitions = new HashMap<>();
   private final Map<String, ObjectNode> poses = new HashMap<>();
 
-  public TransitTexture(Image image) {
+  protected TransitTexture(Image image) {
     super(image);
   }
 
