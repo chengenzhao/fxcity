@@ -62,9 +62,13 @@ public class TransitTexture extends Texture {
   }
 
   public void record(String name, String jsonString) {
+    record(name, jsonString, 1.0, false);
+  }
+
+  public void record(String name, String jsonString, double ratio, boolean round) {
     try {
       var jsonNode = new ObjectMapper().readTree(jsonString);
-      record(name, jsonNode);
+      record(name, jsonNode, ratio, round);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
