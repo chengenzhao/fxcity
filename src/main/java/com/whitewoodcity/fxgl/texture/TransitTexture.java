@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
@@ -46,6 +45,7 @@ public class TransitTexture extends Texture {
 
   private Transition currentTransition;
   private final Map<String, Transition> transitions = new HashMap<>();
+  private final Map<String, Transition> secondTrans = new HashMap<>();
   private final Map<String, ObjectNode> poses = new HashMap<>();
 
   protected TransitTexture(Image image) {
@@ -166,8 +166,13 @@ public class TransitTexture extends Texture {
   }
 
   public void show(ObjectNode json) {
-    this.setX(json.get(JsonKeys.X.key).asDouble());
-    this.setY(json.get(JsonKeys.Y.key).asDouble());
+    if (json.has(JsonKeys.X.key)) {
+      this.setX(json.get(JsonKeys.X.key).asDouble());
+    }
+
+    if (json.has(JsonKeys.Y.key)) {
+      this.setY(json.get(JsonKeys.Y.key).asDouble());
+    }
 
     if (json.has(JsonKeys.TRANSLATE_X.key)) {
       this.setTranslateX(json.get(JsonKeys.TRANSLATE_X.key).asDouble());
@@ -177,18 +182,20 @@ public class TransitTexture extends Texture {
       this.setTranslateY(json.get(JsonKeys.TRANSLATE_Y.key).asDouble());
     }
 
-    var rotates = json.withArray(JsonKeys.ROTATES.key);
-    List<Rotate> transforms =
-      this.getTransforms().stream()
-        .filter(Rotate.class::isInstance)
-        .map(Rotate.class::cast)
-        .toList();
-    for (int i = 0; i < rotates.size(); i++) {
-      var r = rotates.get(i);
-      var rotate = transforms.get(i);
-      rotate.setPivotX(r.get(JsonKeys.PIVOT_X.key).asDouble());
-      rotate.setPivotY(r.get(JsonKeys.PIVOT_Y.key).asDouble());
-      rotate.setAngle(r.get(JsonKeys.ANGLE.key).asDouble());
+    if(json.has(JsonKeys.ROTATES.key())) {
+      var rotates = json.withArray(JsonKeys.ROTATES.key);
+      List<Rotate> transforms =
+        this.getTransforms().stream()
+          .filter(Rotate.class::isInstance)
+          .map(Rotate.class::cast)
+          .toList();
+      for (int i = 0; i < rotates.size(); i++) {
+        var r = rotates.get(i);
+        var rotate = transforms.get(i);
+        rotate.setPivotX(r.get(JsonKeys.PIVOT_X.key).asDouble());
+        rotate.setPivotY(r.get(JsonKeys.PIVOT_Y.key).asDouble());
+        rotate.setAngle(r.get(JsonKeys.ANGLE.key).asDouble());
+      }
     }
   }
 
@@ -311,45 +318,35 @@ class CustomTransition extends Transition {
   public CustomTransition(TransitTexture cachedNode, ObjectNode start, ObjectNode end) {
     this.cachedNode = cachedNode;
 
-    initObjectNode(start, end);
-
     this.start = start;
     this.end = end;
     setCycleDuration(Duration.millis(end.get(TransitTexture.JsonKeys.TIME.key()).asDouble() - start.get(TransitTexture.JsonKeys.TIME.key()).asDouble()));
   }
 
-  private void initObjectNode(ObjectNode... nodes) {
-    var factory = JsonNodeFactory.instance;
-    for (var node : nodes) {
-      if (!node.has(TransitTexture.JsonKeys.X.key()))
-        node.set(TransitTexture.JsonKeys.X.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.Y.key()))
-        node.set(TransitTexture.JsonKeys.Y.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_X.key()))
-        node.set(TransitTexture.JsonKeys.TRANSLATE_X.key(), factory.numberNode(0.0));
-      if (!node.has(TransitTexture.JsonKeys.TRANSLATE_Y.key()))
-        node.set(TransitTexture.JsonKeys.TRANSLATE_Y.key(), factory.numberNode(0.0));
-    }
-  }
-
   @Override
   protected void interpolate(double frac) {
 
-    cachedNode.setX((end.get(TransitTexture.JsonKeys.X.key()).asDouble() - start.get(TransitTexture.JsonKeys.X.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.X.key()).asDouble());
-    cachedNode.setY((end.get(TransitTexture.JsonKeys.Y.key()).asDouble() - start.get(TransitTexture.JsonKeys.Y.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.Y.key()).asDouble());
+    if(start.has(TransitTexture.JsonKeys.X.key()))
+      cachedNode.setX((end.get(TransitTexture.JsonKeys.X.key()).asDouble() - start.get(TransitTexture.JsonKeys.X.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.X.key()).asDouble());
+    if(start.has(TransitTexture.JsonKeys.Y.key()))
+      cachedNode.setY((end.get(TransitTexture.JsonKeys.Y.key()).asDouble() - start.get(TransitTexture.JsonKeys.Y.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.Y.key()).asDouble());
 
-    cachedNode.setTranslateX((end.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble() - start.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble());
-    cachedNode.setTranslateY((end.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble() - start.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble());
+    if(start.has(TransitTexture.JsonKeys.TRANSLATE_X.key()))
+      cachedNode.setTranslateX((end.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble() - start.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.TRANSLATE_X.key()).asDouble());
+    if(start.has(TransitTexture.JsonKeys.TRANSLATE_Y.key()))
+      cachedNode.setTranslateY((end.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble() - start.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble()) * frac + start.get(TransitTexture.JsonKeys.TRANSLATE_Y.key()).asDouble());
 
-    var rotatesStart = start.withArray(TransitTexture.JsonKeys.ROTATES.key());
-    var rotatesEnd = end.withArray(TransitTexture.JsonKeys.ROTATES.key());
-    for (int i = 0; i < rotatesStart.size(); i++) {
-      var rotateStart = rotatesStart.get(i);
-      var rotateEnd = rotatesEnd.get(i);
-      var rotate = (Rotate) cachedNode.getTransforms().get(i);
-      rotate.setPivotX((rotateEnd.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble());
-      rotate.setPivotY((rotateEnd.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble());
-      rotate.setAngle((rotateEnd.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble());
+    if(start.has(TransitTexture.JsonKeys.ROTATES.key())) {
+      var rotatesStart = start.withArray(TransitTexture.JsonKeys.ROTATES.key());
+      var rotatesEnd = end.withArray(TransitTexture.JsonKeys.ROTATES.key());
+      for (int i = 0; i < rotatesStart.size(); i++) {
+        var rotateStart = rotatesStart.get(i);
+        var rotateEnd = rotatesEnd.get(i);
+        var rotate = (Rotate) cachedNode.getTransforms().get(i);
+        rotate.setPivotX((rotateEnd.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.PIVOT_X.key()).asDouble());
+        rotate.setPivotY((rotateEnd.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.PIVOT_Y.key()).asDouble());
+        rotate.setAngle((rotateEnd.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble() - rotateStart.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble()) * frac + rotateStart.get(TransitTexture.JsonKeys.ANGLE.key()).asDouble());
+      }
     }
   }
 }
