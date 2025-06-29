@@ -215,6 +215,15 @@ public class TransitTexture extends Texture {
     return loop();
   }
 
+  public boolean loopNoOverride(String name){
+    if(currentTransition!=null && currentTransition==transitions.get(name))
+      return false;
+
+    stopTransition();
+    loopTransition(name);
+    return true;
+  }
+
   public Transition setTransition(String name) {
     return setTransition(name, 1);
   }
@@ -230,6 +239,7 @@ public class TransitTexture extends Texture {
   public void stopTransition() {
     if (currentTransition != null) {
       currentTransition.stop();
+      currentTransition = null;
     }
   }
 
@@ -238,8 +248,7 @@ public class TransitTexture extends Texture {
   }
 
   public Transition stop() {
-    if (currentTransition != null)
-      currentTransition.stop();
+    stopTransition();
     return currentTransition;
   }
 
