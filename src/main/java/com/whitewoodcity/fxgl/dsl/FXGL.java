@@ -1,11 +1,11 @@
 package com.whitewoodcity.fxgl.dsl;
 
-import com.almasb.fxgl.audio.AudioPlayer;
-import com.whitewoodcity.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.ReadOnlyGameSettings;
 import com.almasb.fxgl.app.scene.GameScene;
 import com.almasb.fxgl.app.services.FXGLAssetLoaderService;
+import com.almasb.fxgl.audio.AudioPlayer;
 import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.EntityBuilder;
 import com.almasb.fxgl.entity.Entity;
@@ -16,12 +16,17 @@ import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.profile.SaveLoadService;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.Timer;
+import com.whitewoodcity.fxgl.app.GameApplication;
 import com.whitewoodcity.fxgl.service.XInput;
 import javafx.animation.Interpolator;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -121,6 +126,40 @@ public class FXGL {
 
   public static Music loopBGM(String assetName){
     return com.almasb.fxgl.dsl.FXGL.loopBGM(assetName);
+  }
+
+  public static MediaPlayer loopBGMFromExternalMusicDir(String bgmFileName){
+    return loopBGMFromExternalMusicDir(bgmFileName,1);
+  }
+
+  /**
+   * This method reads bgm from music directory which locates in the root dir of the program
+   * The root directory could be found in File("").getAbsolutePath();
+   * @param bgmFileName
+   * @param initialVolume
+   * @return mediaPlayer object
+   */
+  public static MediaPlayer loopBGMFromExternalMusicDir(String bgmFileName, double initialVolume){
+    try {
+      var path = new File("").getAbsolutePath() + File.separator + "music" + File.separator + bgmFileName;
+      Media media = new Media(new File(path).toURI().toURL().toExternalForm());
+      var mediaPlayer = new MediaPlayer(media);
+      mediaPlayer.setCycleCount(Timeline.INDEFINITE);
+      mediaPlayer.setVolume(initialVolume);
+      mediaPlayer.play();
+      return mediaPlayer;
+    }catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public static PropertyMap getWorldProperties(){
+    return com.almasb.fxgl.dsl.FXGL.getWorldProperties();
+  }
+
+  public static Point2D getAppCenter(){
+    return com.almasb.fxgl.dsl.FXGL.getAppCenter();
   }
 
   public static ReadOnlyGameSettings getSettings(){
