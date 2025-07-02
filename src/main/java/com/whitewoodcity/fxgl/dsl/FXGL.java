@@ -241,7 +241,6 @@ public class FXGL {
   }
 
   private static String getExternalMusic(String musicFileName){
-    System.out.println(new File("").getAbsolutePath() + File.separator + "music" + File.separator + musicFileName);
     return new File("").getAbsolutePath() + File.separator + "music" + File.separator + musicFileName;
   }
 
