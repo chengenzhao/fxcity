@@ -128,30 +128,23 @@ public class FXGL {
     return com.almasb.fxgl.dsl.FXGL.loopBGM(assetName);
   }
 
-  public static MediaPlayer loopBGMFromExternalMusicDir(String bgmFileName){
-    return loopBGMFromExternalMusicDir(bgmFileName,1);
+  public static MediaPlayer loopMusicFromExternalMusicDir(String fileName){
+    return loopMusicFromExternalMusicDir(fileName,1);
   }
 
   /**
    * This method reads bgm from music directory which locates in the root dir of the program
    * The root directory could be found in File("").getAbsolutePath();
-   * @param bgmFileName
-   * @param initialVolume
+   * @param fileName music fileName
+   * @param initialVolume initial volume of the media player
    * @return mediaPlayer object
    */
-  public static MediaPlayer loopBGMFromExternalMusicDir(String bgmFileName, double initialVolume){
-    try {
-      var path = new File("").getAbsolutePath() + File.separator + "music" + File.separator + bgmFileName;
-      Media media = new Media(new File(path).toURI().toURL().toExternalForm());
-      var mediaPlayer = new MediaPlayer(media);
-      mediaPlayer.setCycleCount(Timeline.INDEFINITE);
-      mediaPlayer.setVolume(initialVolume);
-      mediaPlayer.play();
-      return mediaPlayer;
-    }catch (Exception e){
-      e.printStackTrace();
-      return null;
-    }
+  public static MediaPlayer loopMusicFromExternalMusicDir(String fileName, double initialVolume){
+    var player = loadMusicFromExternalMusicDir(fileName, initialVolume);
+    if(player == null) return null;
+    player.setCycleCount(Timeline.INDEFINITE);
+    player.play();
+    return player;
   }
 
   public static PropertyMap getWorldProperties(){
@@ -224,6 +217,32 @@ public class FXGL {
 
   public static void play(String assetName){
     com.almasb.fxgl.dsl.FXGL.play(assetName);
+  }
+
+  public static MediaPlayer playMusicFromExternalMusicDir(String fileName, double initialVolume){
+    var player = loadMusicFromExternalMusicDir(fileName, initialVolume);
+    if(player == null) return null;
+    player.setCycleCount(1);
+    player.play();
+    return player;
+  }
+
+  public static MediaPlayer loadMusicFromExternalMusicDir(String fileName, double volume){
+    try {
+      var path = getExternalMusic(fileName);
+      Media media = new Media(new File(path).toURI().toURL().toExternalForm());
+      var player = new MediaPlayer(media);
+      player.setVolume(volume);
+      return player;
+    }catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private static String getExternalMusic(String musicFileName){
+    System.out.println(new File("").getAbsolutePath() + File.separator + "music" + File.separator + musicFileName);
+    return new File("").getAbsolutePath() + File.separator + "music" + File.separator + musicFileName;
   }
 
   public static List<String> text(String assetName){

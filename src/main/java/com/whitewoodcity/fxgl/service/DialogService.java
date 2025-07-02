@@ -224,10 +224,7 @@ public interface DialogService extends ThemeService {
 
     if (!list.isEmpty()) {
       String line = list.remove(0);
-//      var blip = FXGL.getAssetLoader().loadMusic("text-blip.mp3");
-//      FXGL.getAudioPlayer().playMusic(blip);
-//      blip.getAudio().setVolume(FXGL.getSettings().getGlobalSoundVolume());
-      FXGL.play("text-blip.wav");
+//      FXGL.play("text-blip.wav");
       var font = FXGL.getAssetLoader().loadFont("Lato-Bold.ttf").newFont(50);
       text.setFont(font);
       final Animation animation = new Transition() {
@@ -243,7 +240,6 @@ public interface DialogService extends ThemeService {
       };
 
       animation.setOnFinished(e -> {
-//        FXGL.getAudioPlayer().stopMusic(blip);
         FXGL.getAudioPlayer().stopAllSounds();
         FXGL.getInput().addTriggerListener(new TriggerListener() {
           @Override
