@@ -4,7 +4,7 @@ JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our g
 
 # Requirement
 
-* JDK 24+
+* JDK 25+
 
 ## Maven
 If you are using Maven, add the following dependency to the dependencies section of your project descriptor to access the FX City API:
