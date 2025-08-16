@@ -16,6 +16,8 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.service.icons;
   exports com.whitewoodcity.fxgl.service.exception;
   exports com.whitewoodcity.fxgl.sub3dview;
+  exports com.whitewoodcity.fxgl.vectorview;
+  exports com.whitewoodcity.fxgl.vectorview.svgpathcommand;
   exports com.whitewoodcity.fxgl.material;
   exports com.whitewoodcity.fxgl.dsl.components;
   exports com.whitewoodcity.fxgl.entity;
