@@ -38,4 +38,15 @@ public class SVGLayer extends SVGPath {
     content.append(suffix);
     setContent(content.toString());
   }
+
+  public SVGPath daemon(){
+    var svgPath = new SVGPath();
+    svgPath.contentProperty().bind(this.contentProperty());
+    svgPath.strokeProperty().bind(this.strokeProperty());
+    svgPath.strokeWidthProperty().bind(this.strokeWidthProperty());
+    svgPath.strokeLineJoinProperty().bind(this.strokeLineJoinProperty());
+    svgPath.strokeLineCapProperty().bind(this.strokeLineCapProperty());
+    svgPath.effectProperty().bind(this.effectProperty());
+    return svgPath;
+  }
 }
