@@ -4,6 +4,7 @@ import com.whitewoodcity.fxgl.vectorview.svgpathcommand.CurveTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.QuadraticTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SVGPathElement;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SmoothTo;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.shape.SVGPath;
 
 import java.util.List;
@@ -108,6 +109,16 @@ public class SVGLayer extends SVGPath {
 
   public void move(double x, double y){
     map(p -> p.get() + x, p -> p.get() + y);
+  }
+
+  public void zoom(double factor){
+    map(x -> x.get() * factor, y -> y.get() * factor);
+    setStrokeWidth(getStrokeWidth() * factor);
+    switch (getEffect()){
+      case null -> {}
+      case GaussianBlur gaussianBlur -> gaussianBlur.setRadius(gaussianBlur.getRadius() * factor);
+      default -> {}
+    }
   }
 
   public void map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY){
