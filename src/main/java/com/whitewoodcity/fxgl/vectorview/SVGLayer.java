@@ -51,7 +51,8 @@ public class SVGLayer extends SVGPath {
   }
 
   public double getMinX(){
-    double minX = 0;
+    if(svgPathElements.size() < 1) return 0;
+    double minX = svgPathElements.getFirst().getX();
     for(SVGPathElement element : svgPathElements){
       switch (element){
         case CurveTo curveTo -> {
@@ -74,7 +75,8 @@ public class SVGLayer extends SVGPath {
   }
 
   public double getMinY(){
-    double minY = 0;
+    if(svgPathElements.size() < 1) return 0;
+    double minY = svgPathElements.getFirst().getY();
     for(SVGPathElement element : svgPathElements){
       switch (element){
         case CurveTo curveTo -> {
@@ -101,33 +103,16 @@ public class SVGLayer extends SVGPath {
   }
 
   public void trim(double x, double y){
+    move(-x, -y);
+  }
+
+  public void move(double x, double y){
+    map(p -> p.get() + x, p -> p.get() + y);
+  }
+
+  public void map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY){
     for(SVGPathElement element : svgPathElements){
-      switch (element){
-        case CurveTo curveTo -> {
-          curveTo.x().set(curveTo.getX() - x);
-          curveTo.y().set(curveTo.getY() - y);
-          curveTo.x1().set(curveTo.getX1() - x);
-          curveTo.y1().set(curveTo.getY1() - y);
-          curveTo.x2().set(curveTo.getX2() - x);
-          curveTo.y2().set(curveTo.getY2() - y);
-        }
-        case QuadraticTo quadraticTo -> {
-          quadraticTo.x().set(quadraticTo.getX() - x);
-          quadraticTo.y().set(quadraticTo.getY() - y);
-          quadraticTo.x1().set(quadraticTo.getX1() - x);
-          quadraticTo.y1().set(quadraticTo.getY1() - y);
-        }
-        case SmoothTo smoothTo -> {
-          smoothTo.x().set(smoothTo.getX() - x);
-          smoothTo.y().set(smoothTo.getY() - y);
-          smoothTo.x2().set(smoothTo.getX2() - x);
-          smoothTo.y2().set(smoothTo.getY2() - y);
-        }
-        default -> {
-          element.x().set(element.getX() - x);
-          element.y().set(element.getY() - y);
-        }
-      }
+      element.apply(element, applyX, applyY);
     }
   }
 }
