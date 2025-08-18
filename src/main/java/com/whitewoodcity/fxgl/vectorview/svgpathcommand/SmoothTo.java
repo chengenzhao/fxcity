@@ -34,4 +34,12 @@ public record SmoothTo(SimpleDoubleProperty x2, SimpleDoubleProperty y2, SimpleD
       y2.set(applyY.apply(smoothTo.y2()));
     }else throw new RuntimeException("type error");
   }
+
+  @Override
+  public void traverse(Traverse traverseX, Traverse traverseY) {
+    traverseX.traverse(x());
+    traverseY.traverse(y());
+    traverseX.traverse(x2());
+    traverseY.traverse(y2());
+  }
 }

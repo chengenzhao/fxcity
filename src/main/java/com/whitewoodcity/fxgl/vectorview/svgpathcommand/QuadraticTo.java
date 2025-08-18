@@ -34,4 +34,12 @@ public record QuadraticTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, Simp
       y1.set(applyY.apply(quadraticTo.y1()));
     }else throw new RuntimeException("type error");
   }
+
+  @Override
+  public void traverse(Traverse traverseX, Traverse traverseY) {
+    traverseX.traverse(x());
+    traverseY.traverse(y());
+    traverseX.traverse(x1());
+    traverseY.traverse(y1());
+  }
 }

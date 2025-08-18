@@ -44,4 +44,14 @@ public record CurveTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, SimpleDo
       y2.set(applyY.apply(curveTo.y2()));
     }else throw new RuntimeException("type error");
   }
+
+  @Override
+  public void traverse(Traverse traverseX, Traverse traverseY) {
+    traverseX.traverse(x());
+    traverseY.traverse(y());
+    traverseX.traverse(x1());
+    traverseY.traverse(y1());
+    traverseX.traverse(x2());
+    traverseY.traverse(y2());
+  }
 }

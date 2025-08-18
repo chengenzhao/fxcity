@@ -4,6 +4,8 @@ import com.whitewoodcity.fxgl.vectorview.svgpathcommand.CurveTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.QuadraticTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SVGPathElement;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SmoothTo;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.shape.SVGPath;
 
@@ -13,11 +15,11 @@ import java.util.ArrayList;
 public class SVGLayer extends SVGPath {
   private List<SVGPathElement> svgPathElements = new ArrayList<>();
 
-  public void addSVGPathElement(SVGPathElement element){
+  public void addSVGPathElement(SVGPathElement element) {
     svgPathElements.add(element);
   }
 
-  public void removeSVGPathElement(SVGPathElement element){
+  public void removeSVGPathElement(SVGPathElement element) {
     svgPathElements.remove(element);
   }
 
@@ -25,7 +27,7 @@ public class SVGLayer extends SVGPath {
     return svgPathElements;
   }
 
-  public void draw(String suffix){
+  public void draw(String suffix) {
     StringBuilder content = new StringBuilder();
     for (SVGPathElement element : svgPathElements) {
       content.append(element.command()).append(" ").append(switch (element) {
@@ -40,7 +42,7 @@ public class SVGLayer extends SVGPath {
     setContent(content.toString());
   }
 
-  public SVGPath daemon(){
+  public SVGPath daemon() {
     var svgPath = new SVGPath();
     svgPath.contentProperty().bind(contentProperty());
     svgPath.strokeProperty().bind(strokeProperty());
@@ -51,78 +53,58 @@ public class SVGLayer extends SVGPath {
     return svgPath;
   }
 
-  public double getMinX(){
-    if(svgPathElements.size() < 1) return 0;
-    double minX = svgPathElements.getFirst().getX();
-    for(SVGPathElement element : svgPathElements){
-      switch (element){
-        case CurveTo curveTo -> {
-          minX = Math.min(minX, curveTo.getX1());
-          minX = Math.min(minX, curveTo.getX2());
-          minX = Math.min(minX, curveTo.getX());
-        }
-        case QuadraticTo quadraticTo -> {
-          minX = Math.min(minX, quadraticTo.getX1());
-          minX = Math.min(minX, quadraticTo.getX());
-        }
-        case SmoothTo smoothTo -> {
-          minX = Math.min(minX, smoothTo.getX2());
-          minX = Math.min(minX, smoothTo.getX());
-        }
-        default -> minX = Math.min(minX, element.getX());
-      }
+  public double getMinX() {
+    return getMinXY().getX();
+  }
+
+  public double getMinY() {
+    return getMinXY().getY();
+  }
+
+  public Point2D getMinXY() {
+    if (svgPathElements.size() < 1) return new Point2D(0, 0);
+    var xp = new SimpleDoubleProperty(svgPathElements.getFirst().getX());
+    var yp = new SimpleDoubleProperty(svgPathElements.getFirst().getY());
+    for (SVGPathElement element : svgPathElements) {
+      element.traverse(x -> xp.set(Math.min(xp.get(), x.get())), y -> yp.set(Math.min(yp.get(), y.get())));
     }
-    return minX;
+    return new Point2D(xp.get(), yp.get());
   }
 
-  public double getMinY(){
-    if(svgPathElements.size() < 1) return 0;
-    double minY = svgPathElements.getFirst().getY();
-    for(SVGPathElement element : svgPathElements){
-      switch (element){
-        case CurveTo curveTo -> {
-          minY = Math.min(minY, curveTo.getY1());
-          minY = Math.min(minY, curveTo.getY2());
-          minY = Math.min(minY, curveTo.getY());
-        }
-        case QuadraticTo quadraticTo -> {
-          minY = Math.min(minY, quadraticTo.getY1());
-          minY = Math.min(minY, quadraticTo.getY());
-        }
-        case SmoothTo smoothTo -> {
-          minY = Math.min(minY, smoothTo.getY2());
-          minY = Math.min(minY, smoothTo.getY());
-        }
-        default -> minY = Math.min(minY, element.getY());
-      }
-    }
-    return minY;
+  public void trim() {
+    trim(getMinXY());
   }
 
-  public void trim(){
-    trim(getMinX(), getMinY());
+  public void trim(Point2D p){
+    trim(p.getX(), p.getY());
   }
 
-  public void trim(double x, double y){
+  public void trim(double x, double y) {
     move(-x, -y);
   }
 
-  public void move(double x, double y){
+  public void move(Point2D p){
+    move(p.getX(), p.getY());
+  }
+
+  public void move(double x, double y) {
     map(p -> p.get() + x, p -> p.get() + y);
   }
 
-  public void zoom(double factor){
+  public void zoom(double factor) {
     map(x -> x.get() * factor, y -> y.get() * factor);
     setStrokeWidth(getStrokeWidth() * factor);
-    switch (getEffect()){
-      case null -> {}
+    switch (getEffect()) {
+      case null -> {
+      }
       case GaussianBlur gaussianBlur -> gaussianBlur.setRadius(gaussianBlur.getRadius() * factor);
-      default -> {}
+      default -> {
+      }
     }
   }
 
-  public void map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY){
-    for(SVGPathElement element : svgPathElements){
+  public void map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
+    for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
     }
   }

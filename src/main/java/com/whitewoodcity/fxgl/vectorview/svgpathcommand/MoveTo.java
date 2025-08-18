@@ -17,11 +17,4 @@ public record MoveTo(SimpleDoubleProperty x, SimpleDoubleProperty y) implements 
     return new MoveTo(getX(), getY());
   }
 
-  @Override
-  public void apply(SVGPathElement reference, Apply applyX, Apply applyY) {
-    if(reference instanceof MoveTo moveTo){
-      x.set(applyX.apply(moveTo.x()));
-      y.set(applyY.apply(moveTo.y()));
-    }else throw new RuntimeException("type error");
-  }
 }

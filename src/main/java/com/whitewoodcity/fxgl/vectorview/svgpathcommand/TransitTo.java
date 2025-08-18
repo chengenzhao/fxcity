@@ -18,11 +18,4 @@ public record TransitTo(SimpleDoubleProperty x, SimpleDoubleProperty y) implemen
     return new TransitTo(getX(), getY());
   }
 
-  @Override
-  public void apply(SVGPathElement reference, Apply applyX, Apply applyY) {
-    if(reference instanceof TransitTo transitTo){
-      x.set(applyX.apply(transitTo.x()));
-      y.set(applyY.apply(transitTo.y()));
-    }else throw new RuntimeException("type error");
-  }
 }
