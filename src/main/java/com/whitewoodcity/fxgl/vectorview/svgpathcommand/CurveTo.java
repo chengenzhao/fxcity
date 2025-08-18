@@ -36,8 +36,7 @@ public record CurveTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, SimpleDo
   @Override
   public void apply(SVGPathElement reference, Apply applyX, Apply applyY) {
     if(reference instanceof CurveTo curveTo){
-      x.set(applyX.apply(curveTo.x()));
-      y.set(applyY.apply(curveTo.y()));
+      SVGPathElement.super.apply(reference, applyX, applyY);
       x1.set(applyX.apply(curveTo.x1()));
       y1.set(applyY.apply(curveTo.y1()));
       x2.set(applyX.apply(curveTo.x2()));
@@ -47,8 +46,7 @@ public record CurveTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, SimpleDo
 
   @Override
   public void traverse(Traverse traverseX, Traverse traverseY) {
-    traverseX.traverse(x());
-    traverseY.traverse(y());
+    SVGPathElement.super.traverse(traverseX, traverseY);
     traverseX.traverse(x1());
     traverseY.traverse(y1());
     traverseX.traverse(x2());

@@ -28,8 +28,7 @@ public record QuadraticTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, Simp
   @Override
   public void apply(SVGPathElement reference, Apply applyX, Apply applyY) {
     if(reference instanceof QuadraticTo quadraticTo){
-      x.set(applyX.apply(quadraticTo.x()));
-      y.set(applyY.apply(quadraticTo.y()));
+      SVGPathElement.super.apply(reference, applyX, applyY);
       x1.set(applyX.apply(quadraticTo.x1()));
       y1.set(applyY.apply(quadraticTo.y1()));
     }else throw new RuntimeException("type error");
@@ -37,8 +36,7 @@ public record QuadraticTo(SimpleDoubleProperty x1, SimpleDoubleProperty y1, Simp
 
   @Override
   public void traverse(Traverse traverseX, Traverse traverseY) {
-    traverseX.traverse(x());
-    traverseY.traverse(y());
+    SVGPathElement.super.traverse(traverseX, traverseY);
     traverseX.traverse(x1());
     traverseY.traverse(y1());
   }

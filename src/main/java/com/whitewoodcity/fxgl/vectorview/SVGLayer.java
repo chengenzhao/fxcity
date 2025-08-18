@@ -5,6 +5,7 @@ import com.whitewoodcity.fxgl.vectorview.svgpathcommand.QuadraticTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SVGPathElement;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SmoothTo;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.shape.SVGPath;
@@ -63,12 +64,35 @@ public class SVGLayer extends SVGPath {
 
   public Point2D getMinXY() {
     if (svgPathElements.size() < 1) return new Point2D(0, 0);
-    var xp = new SimpleDoubleProperty(svgPathElements.getFirst().getX());
-    var yp = new SimpleDoubleProperty(svgPathElements.getFirst().getY());
+    var e = svgPathElements.getFirst();
+    var xp = new SimpleDoubleProperty(e.getX());
+    var yp = new SimpleDoubleProperty(e.getY());
     for (SVGPathElement element : svgPathElements) {
       element.traverse(x -> xp.set(Math.min(xp.get(), x.get())), y -> yp.set(Math.min(yp.get(), y.get())));
     }
     return new Point2D(xp.get(), yp.get());
+  }
+
+  public Dimension2D getDimension(){
+    if (svgPathElements.size() < 1) return new Dimension2D(0, 0);
+    var e = svgPathElements.getFirst();
+
+    var minX = new SimpleDoubleProperty(e.getX());
+    var minY = new SimpleDoubleProperty(e.getY());
+    var maxX = new SimpleDoubleProperty(e.getX());
+    var maxY = new SimpleDoubleProperty(e.getY());
+
+    for (SVGPathElement element : svgPathElements) {
+      element.traverse(x -> {
+        minX.set(Math.min(minX.get(), x.get()));
+        maxX.set(Math.max(maxX.get(), x.get()));
+      }, y -> {
+        minY.set(Math.min(minY.get(), y.get()));
+        maxY.set(Math.max(maxY.get(), y.get()));
+      });
+    }
+
+    return new Dimension2D(maxX.get() - minX.get(), maxY.get() - minY.get());
   }
 
   public void trim() {

@@ -28,8 +28,7 @@ public record SmoothTo(SimpleDoubleProperty x2, SimpleDoubleProperty y2, SimpleD
   @Override
   public void apply(SVGPathElement reference, Apply applyX, Apply applyY) {
     if(reference instanceof SmoothTo smoothTo){
-      x.set(applyX.apply(smoothTo.x()));
-      y.set(applyY.apply(smoothTo.y()));
+      SVGPathElement.super.apply(reference, applyX, applyY);
       x2.set(applyX.apply(smoothTo.x2()));
       y2.set(applyY.apply(smoothTo.y2()));
     }else throw new RuntimeException("type error");
@@ -37,8 +36,7 @@ public record SmoothTo(SimpleDoubleProperty x2, SimpleDoubleProperty y2, SimpleD
 
   @Override
   public void traverse(Traverse traverseX, Traverse traverseY) {
-    traverseX.traverse(x());
-    traverseY.traverse(y());
+    SVGPathElement.super.traverse(traverseX, traverseY);
     traverseX.traverse(x2());
     traverseY.traverse(y2());
   }
