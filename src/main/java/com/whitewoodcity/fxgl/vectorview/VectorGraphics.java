@@ -1,9 +1,7 @@
 package com.whitewoodcity.fxgl.vectorview;
 
 import module java.base;
-import javafx.geometry.Dimension2D;
-import javafx.geometry.Point2D;
-import javafx.scene.Group;
+import module javafx.controls;
 
 public class VectorGraphics extends Group {
   private List<SVGLayer> layers = new ArrayList<>();
