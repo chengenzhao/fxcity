@@ -1,5 +1,8 @@
 package com.whitewoodcity.fxgl.vectorview;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.CurveTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.QuadraticTo;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SVGPathElement;
@@ -8,12 +11,32 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class SVGLayer extends SVGPath {
+
+  public enum JsonKeys {
+
+    STROKE_WIDTH("strokeWidth"),
+    FILL("fill"),
+    STROKE("stroke"),
+    CONTENT("content");
+
+    private final String key;
+
+    JsonKeys(final String key) {
+      this.key = key;
+    }
+
+    public String key() {
+      return key;
+    }
+  }
+
   private List<SVGPathElement> svgPathElements = new ArrayList<>();
 
   public void addSVGPathElement(SVGPathElement element) {
@@ -133,5 +156,29 @@ public class SVGLayer extends SVGPath {
     }
   }
 
+  public String toJson(){
+    var mapper = new ObjectMapper();
+    var objectNode = mapper.createObjectNode();
+
+    objectNode.put(JsonKeys.STROKE_WIDTH.key, getStrokeWidth());
+    objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color)getFill()));
+    objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color)getStroke()));
+    objectNode.put(JsonKeys.CONTENT.key, getContent());
+
+    return objectNode.toString();
+  }
+
+  public void fromJson(String jsonString){
+    var objectNode = new ObjectMapper().createObjectNode();
+
+  }
+
+  public static String toWebHexWithAlpha(Color color) {
+    return String.format("#%02X%02X%02X%02X",
+      (int) (color.getRed() * 255),
+      (int) (color.getGreen() * 255),
+      (int) (color.getBlue() * 255),
+      (int) (color.getOpacity() * 255));
+  }
 
 }
