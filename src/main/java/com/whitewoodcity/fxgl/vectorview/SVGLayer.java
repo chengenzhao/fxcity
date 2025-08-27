@@ -3,10 +3,7 @@ package com.whitewoodcity.fxgl.vectorview;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.whitewoodcity.fxgl.vectorview.svgpathcommand.CurveTo;
-import com.whitewoodcity.fxgl.vectorview.svgpathcommand.QuadraticTo;
-import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SVGPathElement;
-import com.whitewoodcity.fxgl.vectorview.svgpathcommand.SmoothTo;
+import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
@@ -169,8 +166,35 @@ public class SVGLayer extends SVGPath {
   }
 
   public void fromJson(String jsonString){
-    var objectNode = new ObjectMapper().createObjectNode();
+    var mapper = new ObjectMapper();
+    try {
+      var objectNode = (ObjectNode)mapper.readTree(jsonString);
+      setStrokeWidth(objectNode.get(JsonKeys.STROKE_WIDTH.key).asDouble());
+      setStroke(Color.web(objectNode.get(JsonKeys.STROKE.key).asText()));
+      setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
+      var content = objectNode.get(JsonKeys.CONTENT.key).asText();
 
+      var si = content.split(" ");
+      String element = null;
+      var cachePoints = new ArrayList<Point2D>();
+      for(var s:si){
+        switch (s){
+          case "M","L","C","Q","S","T" -> {
+            makeSVGPathElement(element, cachePoints);
+            cachePoints.clear();
+            element = s;
+          }
+          case "Z" -> {}
+          default -> {
+            var pp = s.split(",");
+            cachePoints.add(new Point2D(Double.parseDouble(pp[0]), Double.parseDouble(pp[1])));
+          }
+        }
+      }
+      makeSVGPathElement(element, cachePoints);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public static String toWebHexWithAlpha(Color color) {
@@ -181,4 +205,30 @@ public class SVGLayer extends SVGPath {
       (int) (color.getOpacity() * 255));
   }
 
+  private void makeSVGPathElement(String command, List<Point2D> cachedPoints){
+    if(command == null) return;
+    var element = switch (command){
+      case "M" -> new MoveTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
+      case "L" -> new LineTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
+      case "T" -> new TransitTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
+      case "C" -> {
+        var p0 = cachedPoints.getFirst();
+        var p1 = cachedPoints.get(1);
+        var p2 = cachedPoints.getLast();
+        yield new CurveTo(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p2.getX(), p2.getY());
+      }
+      case "Q" -> {
+        var p0 = cachedPoints.getFirst();
+        var p1 = cachedPoints.getLast();
+        yield new QuadraticTo(p0.getX(), p0.getY(), p1.getX(), p1.getY());
+      }
+      case "S" -> {
+        var p0 = cachedPoints.getFirst();
+        var p1 = cachedPoints.getLast();
+        yield new SmoothTo(p0.getX(), p0.getY(), p1.getX(), p1.getY());
+      }
+      default -> throw new RuntimeException("unrecognized command"+command);
+    };
+    getSvgPathElements().add(element);
+  }
 }
