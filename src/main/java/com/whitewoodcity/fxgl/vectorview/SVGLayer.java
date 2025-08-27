@@ -184,7 +184,7 @@ public class SVGLayer extends SVGPath {
             cachePoints.clear();
             element = s;
           }
-          case "Z" -> {}
+          case "","Z" -> {}
           default -> {
             var pp = s.split(",");
             cachePoints.add(new Point2D(Double.parseDouble(pp[0]), Double.parseDouble(pp[1])));
@@ -192,6 +192,7 @@ public class SVGLayer extends SVGPath {
         }
       }
       makeSVGPathElement(element, cachePoints);
+      draw(content.endsWith("Z")?"Z":"");
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
