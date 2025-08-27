@@ -48,6 +48,10 @@ public class SVGLayer extends SVGPath {
     return svgPathElements;
   }
 
+  public void draw() {
+    draw(getContent().endsWith("Z") ? "Z" : "");
+  }
+
   public void draw(String suffix) {
     StringBuilder content = new StringBuilder();
     for (SVGPathElement element : svgPathElements) {
@@ -93,7 +97,7 @@ public class SVGLayer extends SVGPath {
     return new Point2D(xp.get(), yp.get());
   }
 
-  public Dimension2D getDimension(){
+  public Dimension2D getDimension() {
     if (svgPathElements.size() < 1) return new Dimension2D(0, 0);
     var e = svgPathElements.getFirst();
 
@@ -119,7 +123,7 @@ public class SVGLayer extends SVGPath {
     trim(getMinXY());
   }
 
-  public void trim(Point2D p){
+  public void trim(Point2D p) {
     trim(p.getX(), p.getY());
   }
 
@@ -127,7 +131,7 @@ public class SVGLayer extends SVGPath {
     move(-x, -y);
   }
 
-  public void move(Point2D p){
+  public void move(Point2D p) {
     move(p.getX(), p.getY());
   }
 
@@ -153,22 +157,22 @@ public class SVGLayer extends SVGPath {
     }
   }
 
-  public String toJson(){
+  public String toJson() {
     var mapper = new ObjectMapper();
     var objectNode = mapper.createObjectNode();
 
     objectNode.put(JsonKeys.STROKE_WIDTH.key, getStrokeWidth());
-    objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color)getFill()));
-    objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color)getStroke()));
+    objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color) getFill()));
+    objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color) getStroke()));
     objectNode.put(JsonKeys.CONTENT.key, getContent());
 
     return objectNode.toString();
   }
 
-  public void fromJson(String jsonString){
+  public void fromJson(String jsonString) {
     var mapper = new ObjectMapper();
     try {
-      var objectNode = (ObjectNode)mapper.readTree(jsonString);
+      var objectNode = (ObjectNode) mapper.readTree(jsonString);
       setStrokeWidth(objectNode.get(JsonKeys.STROKE_WIDTH.key).asDouble());
       setStroke(Color.web(objectNode.get(JsonKeys.STROKE.key).asText()));
       setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
@@ -177,14 +181,15 @@ public class SVGLayer extends SVGPath {
       var si = content.split(" ");
       String element = null;
       var cachePoints = new ArrayList<Point2D>();
-      for(var s:si){
-        switch (s){
-          case "M","L","C","Q","S","T" -> {
+      for (var s : si) {
+        switch (s) {
+          case "M", "L", "C", "Q", "S", "T" -> {
             makeSVGPathElement(element, cachePoints);
             cachePoints.clear();
             element = s;
           }
-          case "","Z" -> {}
+          case "", "Z" -> {
+          }
           default -> {
             var pp = s.split(",");
             cachePoints.add(new Point2D(Double.parseDouble(pp[0]), Double.parseDouble(pp[1])));
@@ -192,7 +197,7 @@ public class SVGLayer extends SVGPath {
         }
       }
       makeSVGPathElement(element, cachePoints);
-      draw(content.endsWith("Z")?"Z":"");
+      draw(content.endsWith("Z") ? "Z" : "");
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -206,9 +211,9 @@ public class SVGLayer extends SVGPath {
       (int) (color.getOpacity() * 255));
   }
 
-  private void makeSVGPathElement(String command, List<Point2D> cachedPoints){
-    if(command == null) return;
-    var element = switch (command){
+  private void makeSVGPathElement(String command, List<Point2D> cachedPoints) {
+    if (command == null) return;
+    var element = switch (command) {
       case "M" -> new MoveTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
       case "L" -> new LineTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
       case "T" -> new TransitTo(cachedPoints.getFirst().getX(), cachedPoints.getFirst().getY());
@@ -228,7 +233,7 @@ public class SVGLayer extends SVGPath {
         var p1 = cachedPoints.getLast();
         yield new SmoothTo(p0.getX(), p0.getY(), p1.getX(), p1.getY());
       }
-      default -> throw new RuntimeException("unrecognized command"+command);
+      default -> throw new RuntimeException("unrecognized command" + command);
     };
     getSvgPathElements().add(element);
   }
