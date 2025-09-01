@@ -1,18 +1,9 @@
 package com.whitewoodcity.fxgl.vectorview;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import module com.fasterxml.jackson.databind;
+import module javafx.controls;
+import module java.base;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Dimension2D;
-import javafx.geometry.Point2D;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class SVGLayer extends SVGPath {
 
@@ -21,7 +12,9 @@ public class SVGLayer extends SVGPath {
     STROKE_WIDTH("strokeWidth"),
     FILL("fill"),
     STROKE("stroke"),
-    CONTENT("content");
+    CONTENT("content"),
+    CLIP("clip"),
+    ;
 
     private final String key;
 
@@ -34,7 +27,7 @@ public class SVGLayer extends SVGPath {
     }
   }
 
-  private List<SVGPathElement> svgPathElements = new ArrayList<>();
+  private final List<SVGPathElement> svgPathElements = new ArrayList<>();
 
   public void addSVGPathElement(SVGPathElement element) {
     svgPathElements.add(element);
@@ -87,7 +80,7 @@ public class SVGLayer extends SVGPath {
   }
 
   public Point2D getMinXY() {
-    if (svgPathElements.size() < 1) return new Point2D(0, 0);
+    if (svgPathElements.isEmpty()) return new Point2D(0, 0);
     var e = svgPathElements.getFirst();
     var xp = new SimpleDoubleProperty(e.getX());
     var yp = new SimpleDoubleProperty(e.getY());
@@ -98,7 +91,7 @@ public class SVGLayer extends SVGPath {
   }
 
   public Dimension2D getDimension() {
-    if (svgPathElements.size() < 1) return new Dimension2D(0, 0);
+    if (svgPathElements.isEmpty()) return new Dimension2D(0, 0);
     var e = svgPathElements.getFirst();
 
     var minX = new SimpleDoubleProperty(e.getX());
@@ -143,10 +136,8 @@ public class SVGLayer extends SVGPath {
     map(x -> x.get() * factor, y -> y.get() * factor);
     setStrokeWidth(getStrokeWidth() * factor);
     switch (getEffect()) {
-      case null -> {
-      }
       case GaussianBlur gaussianBlur -> gaussianBlur.setRadius(gaussianBlur.getRadius() * factor);
-      default -> {
+      case null, default -> {
       }
     }
   }
@@ -157,7 +148,7 @@ public class SVGLayer extends SVGPath {
     }
   }
 
-  public String toJson() {
+  public ObjectNode toJson() {
     var mapper = new ObjectMapper();
     var objectNode = mapper.createObjectNode();
 
@@ -165,8 +156,14 @@ public class SVGLayer extends SVGPath {
     objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color) getFill()));
     objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color) getStroke()));
     objectNode.put(JsonKeys.CONTENT.key, getContent());
+    if(getClip()!=null)
+      objectNode.put(JsonKeys.CLIP.key, true);
 
-    return objectNode.toString();
+    return objectNode;
+  }
+
+  public String toJsonString() {
+    return toJson().toString();
   }
 
   public void fromJson(String jsonString) {

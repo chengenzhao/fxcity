@@ -2,6 +2,7 @@ package com.whitewoodcity.fxgl.vectorview;
 
 import module java.base;
 import module javafx.controls;
+import module com.fasterxml.jackson.databind;
 
 public class VectorGraphics extends Group {
 
@@ -48,5 +49,17 @@ public class VectorGraphics extends Group {
       }
     }
     return new Dimension2D(w,h);
+  }
+
+  public String toJson(){
+    var mapper = new ObjectMapper();
+    var arrayNode = mapper.createArrayNode();
+    getChildren().stream()
+      .filter(SVGLayer.class::isInstance)
+      .map(SVGLayer.class::cast)
+      .forEach(layer -> {
+        arrayNode.add(layer.toJson());
+      });
+    return arrayNode.toString();
   }
 }
