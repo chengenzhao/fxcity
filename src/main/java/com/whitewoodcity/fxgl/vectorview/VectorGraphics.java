@@ -51,15 +51,21 @@ public class VectorGraphics extends Group {
     return new Dimension2D(w,h);
   }
 
-  public String toJson(){
+  public ArrayNode toJson(){
+    return toJson(this.getChildren());
+  }
+
+  public static ArrayNode toJson(ObservableList<Node> children){
     var mapper = new ObjectMapper();
     var arrayNode = mapper.createArrayNode();
-    getChildren().stream()
+    children.stream()
       .filter(SVGLayer.class::isInstance)
       .map(SVGLayer.class::cast)
-      .forEach(layer -> {
-        arrayNode.add(layer.toJson());
-      });
-    return arrayNode.toString();
+      .forEach(layer -> arrayNode.add(layer.toJson()));
+    return arrayNode;
+  }
+
+  public String toJsonString(){
+    return toJson().toString();
   }
 }
