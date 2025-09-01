@@ -156,7 +156,7 @@ public class SVGLayer extends SVGPath {
     objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color) getFill()));
     objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color) getStroke()));
     objectNode.put(JsonKeys.CONTENT.key, getContent());
-    if(getClip()!=null)
+    if (getClip() != null)
       objectNode.put(JsonKeys.CLIP.key, true);
 
     return objectNode;
@@ -169,35 +169,39 @@ public class SVGLayer extends SVGPath {
   public void fromJson(String jsonString) {
     var mapper = new ObjectMapper();
     try {
-      var objectNode = (ObjectNode) mapper.readTree(jsonString);
-      setStrokeWidth(objectNode.get(JsonKeys.STROKE_WIDTH.key).asDouble());
-      setStroke(Color.web(objectNode.get(JsonKeys.STROKE.key).asText()));
-      setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
-      var content = objectNode.get(JsonKeys.CONTENT.key).asText();
-
-      var si = content.split(" ");
-      String element = null;
-      var cachePoints = new ArrayList<Point2D>();
-      for (var s : si) {
-        switch (s) {
-          case "M", "L", "C", "Q", "S", "T" -> {
-            makeSVGPathElement(element, cachePoints);
-            cachePoints.clear();
-            element = s;
-          }
-          case "", "Z" -> {
-          }
-          default -> {
-            var pp = s.split(",");
-            cachePoints.add(new Point2D(Double.parseDouble(pp[0]), Double.parseDouble(pp[1])));
-          }
-        }
-      }
-      makeSVGPathElement(element, cachePoints);
-      draw(content.endsWith("Z") ? "Z" : "");
+      fromJson((ObjectNode) mapper.readTree(jsonString));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void fromJson(ObjectNode objectNode) {
+    setStrokeWidth(objectNode.get(JsonKeys.STROKE_WIDTH.key).asDouble());
+    setStroke(Color.web(objectNode.get(JsonKeys.STROKE.key).asText()));
+    setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
+    var content = objectNode.get(JsonKeys.CONTENT.key).asText();
+
+    var si = content.split(" ");
+    String element = null;
+    var cachePoints = new ArrayList<Point2D>();
+    for (var s : si) {
+      switch (s) {
+        case "M", "L", "C", "Q", "S", "T" -> {
+          makeSVGPathElement(element, cachePoints);
+          cachePoints.clear();
+          element = s;
+        }
+        case "", "Z" -> {
+        }
+        default -> {
+          var pp = s.split(",");
+          cachePoints.add(new Point2D(Double.parseDouble(pp[0]), Double.parseDouble(pp[1])));
+        }
+      }
+    }
+    makeSVGPathElement(element, cachePoints);
+    draw(content.endsWith("Z") ? "Z" : "");
+
   }
 
   public static String toWebHexWithAlpha(Color color) {

@@ -30,12 +30,12 @@ public sealed interface SVGPathElement permits CurveTo, LineTo, MoveTo, Quadrati
   }
 
   @FunctionalInterface
-  public interface Apply{
+  interface Apply{
     double apply(SimpleDoubleProperty property);
-  };
+  }
 
   @FunctionalInterface
-  public interface Traverse{
+  interface Traverse{
     void traverse(SimpleDoubleProperty property);
-  };
+  }
 }

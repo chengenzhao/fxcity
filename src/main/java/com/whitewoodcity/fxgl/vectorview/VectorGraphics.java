@@ -5,6 +5,13 @@ import module javafx.controls;
 import module com.fasterxml.jackson.databind;
 
 public class VectorGraphics extends Group {
+  public VectorGraphics(String jsonString) {
+    fromJson(_ -> {
+      var l = new SVGLayer();
+      this.getChildren().add(l);
+      return l;
+    },jsonString);
+  }
 
   public void trim(){
     var p = getXY();
@@ -67,5 +74,32 @@ public class VectorGraphics extends Group {
 
   public String toJsonString(){
     return toJson().toString();
+  }
+
+  public static void fromJson(JsonPreset preset, String jsonArray){
+    var mapper = new ObjectMapper();
+    try {
+      SVGLayer parent = null;
+      var array = mapper.readTree(jsonArray);
+      for(int i=0;i<array.size();i++){
+        var obj = (ObjectNode)array.get(i);
+        var layer = preset.createBy(obj);
+        if(obj.has(SVGLayer.JsonKeys.CLIP.key())){
+          assert parent != null;
+          assert obj.get(SVGLayer.JsonKeys.CLIP.key()).asBoolean();
+          layer.setClip(parent.daemon());
+        }else{
+          parent = layer;
+        }
+        layer.fromJson(obj);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @FunctionalInterface
+  public interface JsonPreset{
+    SVGLayer createBy(ObjectNode objectNode);
   }
 }
