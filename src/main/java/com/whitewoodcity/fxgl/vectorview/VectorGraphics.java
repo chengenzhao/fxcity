@@ -5,10 +5,19 @@ import module javafx.controls;
 import module com.fasterxml.jackson.databind;
 
 public class VectorGraphics extends Group {
+
   public VectorGraphics(String jsonString) {
-    fromJson(_ -> {
+
+    var reference = new SVGLayerReference();
+
+    fromJson(obj -> {
       var l = new SVGLayer();
       this.getChildren().add(l);
+      if(obj.has(SVGLayer.JsonKeys.CLIP.key())){
+        l.setClip(reference.get().daemon());
+      }else{
+        reference.set(l);
+      }
       return l;
     },jsonString);
   }
@@ -76,30 +85,24 @@ public class VectorGraphics extends Group {
     return toJson().toString();
   }
 
-  public static void fromJson(JsonPreset preset, String jsonArray){
+  public static void fromJson(JsonPreset preset, String jsonArray) {
     var mapper = new ObjectMapper();
-    try {
-      SVGLayer parent = null;
-      var array = mapper.readTree(jsonArray);
-      for(int i=0;i<array.size();i++){
-        var obj = (ObjectNode)array.get(i);
-        var layer = preset.createBy(obj);
-        if(obj.has(SVGLayer.JsonKeys.CLIP.key())){
-          assert parent != null;
-          assert obj.get(SVGLayer.JsonKeys.CLIP.key()).asBoolean();
-          layer.setClip(parent.daemon());
-        }else{
-          parent = layer;
-        }
-        layer.fromJson(obj);
-      }
-    } catch (Exception e) {
+    try{
+      fromJson(preset, (ArrayNode) mapper.readTree(jsonArray));
+    }catch (Exception e){
       throw new RuntimeException(e);
     }
+  }
+  public static void fromJson(JsonPreset preset, ArrayNode arrayNode){
+    arrayNode.forEach(n -> {
+      var obj = (ObjectNode)n;
+      var layer = preset.create(obj);
+      layer.fromJson(obj);
+    });
   }
 
   @FunctionalInterface
   public interface JsonPreset{
-    SVGLayer createBy(ObjectNode objectNode);
+    SVGLayer create(ObjectNode objectNode);
   }
 }
