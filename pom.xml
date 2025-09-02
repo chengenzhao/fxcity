@@ -31,7 +31,6 @@
                 <configuration>
                     <source>25</source>
                     <target>25</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
@@ -52,7 +51,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fxgl.version>21.1</fxgl.version>
         <javafx.version>26-ea+3</javafx.version>
-        <jackson.version>2.19.2</jackson.version>
+        <jackson.version>2.20.0</jackson.version>
         <atlantafx.version>2.1.0</atlantafx.version>
         <junit.jupiter.version>5.12.2</junit.jupiter.version>
 <!--        <junit.platform.version>1.9.2</junit.platform.version>-->
