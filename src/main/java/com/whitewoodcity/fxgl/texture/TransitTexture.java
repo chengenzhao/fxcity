@@ -301,18 +301,6 @@ public class TransitTexture extends Texture {
       return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() == Timeline.INDEFINITE;
     else return false;
   }
-
-//  public static void main(String[] args) throws Exception {
-//    var t = new TransitTexture(new WritableImage(100, 100));
-//    var json = """
-//      [{"x":121.1111111111112,"y":270.00000000000006,"rotates":[{"pivotX":121.1111111111112,"pivotY":270.00000000000006,"angle":360.0},{"pivotX":142.22222222222229,"pivotY":236.66666666666657,"angle":360.0}],"time":0.0},{"x":121.1111111111112,"y":270.00000000000006,"rotates":[{"pivotX":121.1111111111112,"pivotY":270.00000000000006,"angle":360.0},{"pivotX":142.22222222222229,"pivotY":236.66666666666657,"angle":360.0}],"time":1000.0}]
-//      """;
-//    var mapper = new ObjectMapper();
-//    var j = (ArrayNode) mapper.readTree(json);
-//    System.out.println(j);
-//    j.forEach(obj -> t.zoom((ObjectNode) obj, 0.5, true));
-//    System.out.println(j);
-//  }
 }
 
 record TransitionData(ObjectNode start, ObjectNode end) {

@@ -54,6 +54,13 @@ public class VectorGraphics extends Group {
     return new Point2D(x,y);
   }
 
+  public void set(double x, double y){
+    var p = getXY();
+    var dx = x - p.getX();
+    var dy = y - p.getY();
+    move(dx, dy);
+  }
+
   public Dimension2D getDimension(){
     double w = 0;
     double h = 0;

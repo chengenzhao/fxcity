@@ -12,14 +12,14 @@ If you are using Maven, add the following dependency to the dependencies section
 <dependency>
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.6.18</version>
+    <version>0.6.19</version>
 </dependency>
 ```
 
 ## Gradle
 ```groovy
 dependencies {
- compile 'io.github.chengenzhao:fxcity:0.6.18'
+ compile 'io.github.chengenzhao:fxcity:0.6.19'
 }
 ```
 
