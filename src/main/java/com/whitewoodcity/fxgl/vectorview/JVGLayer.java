@@ -5,7 +5,7 @@ import module javafx.controls;
 import module java.base;
 import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
 
-public class SVGLayer extends SVGPath {
+public class JVGLayer extends SVGPath {
 
   public enum JsonKeys {
 
@@ -116,24 +116,24 @@ public class SVGLayer extends SVGPath {
     trim(getMinXY());
   }
 
-  public SVGLayer trim(Point2D p) {
+  public JVGLayer trim(Point2D p) {
     return trim(p.getX(), p.getY());
   }
 
-  public SVGLayer trim(double x, double y) {
+  public JVGLayer trim(double x, double y) {
     return move(-x, -y);
   }
 
-  public SVGLayer move(Point2D p) {
+  public JVGLayer move(Point2D p) {
     return move(p.getX(), p.getY());
   }
 
-  public SVGLayer move(double x, double y) {
+  public JVGLayer move(double x, double y) {
     map(p -> p.get() + x, p -> p.get() + y);
     return this;
   }
 
-  public SVGLayer zoom(double factor) {
+  public JVGLayer zoom(double factor) {
     map(x -> x.get() * factor, y -> y.get() * factor);
     setStrokeWidth(getStrokeWidth() * factor);
     switch (getEffect()) {
@@ -144,7 +144,7 @@ public class SVGLayer extends SVGPath {
     return this;
   }
 
-  public SVGLayer map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
+  public JVGLayer map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
     for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
     }

@@ -4,16 +4,16 @@ import module java.base;
 import module javafx.controls;
 import module com.fasterxml.jackson.databind;
 
-public class VectorGraphics extends Group {
+public class JVG extends Group {
 
-  public VectorGraphics(String jsonString) {
+  public JVG(String jsonString) {
 
-    var reference = new SVGLayerReference();
+    var reference = new JVGLayerReference();
 
     fromJson(obj -> {
-      var l = new SVGLayer();
+      var l = new JVGLayer();
       this.getChildren().add(l);
-      if(obj.has(SVGLayer.JsonKeys.CLIP.key())){
+      if(obj.has(JVGLayer.JsonKeys.CLIP.key())){
         l.setClip(reference.get().daemon());
       }else{
         reference.set(l);
@@ -25,8 +25,8 @@ public class VectorGraphics extends Group {
   public void trim(){
     var p = getXY();
     getChildren().stream()
-      .filter(SVGLayer.class::isInstance)
-      .map(SVGLayer.class::cast)
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
       .forEach(e-> e.trim(p).update());
   }
 
@@ -36,8 +36,8 @@ public class VectorGraphics extends Group {
 
   public void move(double x, double y){
     getChildren().stream()
-      .filter(SVGLayer.class::isInstance)
-      .map(SVGLayer.class::cast)
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
       .forEach(e -> e.move(x, y).update());
   }
 
@@ -45,7 +45,7 @@ public class VectorGraphics extends Group {
     boolean firstLayer = true;
     double x = 0, y = 0;
     for(var node:getChildren()){
-      if(node instanceof SVGLayer layer){
+      if(node instanceof JVGLayer layer){
         var p = layer.getMinXY();
         if(firstLayer){
           x = p.getX();
@@ -71,7 +71,7 @@ public class VectorGraphics extends Group {
     double w = 0;
     double h = 0;
     for(var node:getChildren()){
-      if(node instanceof SVGLayer layer) {
+      if(node instanceof JVGLayer layer) {
         var d = layer.getDimension();
         w = Math.max(w, d.getWidth());
         h = Math.max(h, d.getHeight());
@@ -88,8 +88,8 @@ public class VectorGraphics extends Group {
     var mapper = new ObjectMapper();
     var arrayNode = mapper.createArrayNode();
     children.stream()
-      .filter(SVGLayer.class::isInstance)
-      .map(SVGLayer.class::cast)
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
       .forEach(layer -> arrayNode.add(layer.toJson()));
     return arrayNode;
   }
@@ -116,6 +116,6 @@ public class VectorGraphics extends Group {
 
   @FunctionalInterface
   public interface JsonPreset{
-    SVGLayer create(ObjectNode objectNode);
+    JVGLayer create(ObjectNode objectNode);
   }
 }
