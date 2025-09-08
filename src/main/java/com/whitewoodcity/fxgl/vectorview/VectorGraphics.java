@@ -27,7 +27,7 @@ public class VectorGraphics extends Group {
     getChildren().stream()
       .filter(SVGLayer.class::isInstance)
       .map(SVGLayer.class::cast)
-      .forEach(e-> e.trim(p));
+      .forEach(e-> e.trim(p).update());
   }
 
   public void move(Point2D p){
@@ -38,17 +38,23 @@ public class VectorGraphics extends Group {
     getChildren().stream()
       .filter(SVGLayer.class::isInstance)
       .map(SVGLayer.class::cast)
-      .forEach(e -> e.move(x, y));
+      .forEach(e -> e.move(x, y).update());
   }
 
   public Point2D getXY(){
-    double x = 0;
-    double y = 0;
+    boolean firstLayer = true;
+    double x = 0, y = 0;
     for(var node:getChildren()){
       if(node instanceof SVGLayer layer){
         var p = layer.getMinXY();
-        x = Math.min(x, p.getX());
-        y = Math.min(y, p.getY());
+        if(firstLayer){
+          x = p.getX();
+          y = p.getY();
+          firstLayer = false;
+        }else{
+          x = Math.min(x, p.getX());
+          y = Math.min(y, p.getY());
+        }
       }
     }
     return new Point2D(x,y);

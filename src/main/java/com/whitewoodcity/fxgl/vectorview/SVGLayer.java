@@ -41,11 +41,11 @@ public class SVGLayer extends SVGPath {
     return svgPathElements;
   }
 
-  public void draw() {
-    draw(getContent().endsWith("Z") ? "Z" : "");
+  public void update() {
+    update(getContent().endsWith("Z") ? "Z" : "");
   }
 
-  public void draw(String suffix) {
+  public void update(String suffix) {
     StringBuilder content = new StringBuilder();
     for (SVGPathElement element : svgPathElements) {
       content.append(element.command()).append(" ").append(switch (element) {
@@ -116,23 +116,24 @@ public class SVGLayer extends SVGPath {
     trim(getMinXY());
   }
 
-  public void trim(Point2D p) {
-    trim(p.getX(), p.getY());
+  public SVGLayer trim(Point2D p) {
+    return trim(p.getX(), p.getY());
   }
 
-  public void trim(double x, double y) {
-    move(-x, -y);
+  public SVGLayer trim(double x, double y) {
+    return move(-x, -y);
   }
 
-  public void move(Point2D p) {
-    move(p.getX(), p.getY());
+  public SVGLayer move(Point2D p) {
+    return move(p.getX(), p.getY());
   }
 
-  public void move(double x, double y) {
+  public SVGLayer move(double x, double y) {
     map(p -> p.get() + x, p -> p.get() + y);
+    return this;
   }
 
-  public void zoom(double factor) {
+  public SVGLayer zoom(double factor) {
     map(x -> x.get() * factor, y -> y.get() * factor);
     setStrokeWidth(getStrokeWidth() * factor);
     switch (getEffect()) {
@@ -140,12 +141,14 @@ public class SVGLayer extends SVGPath {
       case null, default -> {
       }
     }
+    return this;
   }
 
-  public void map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
+  public SVGLayer map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
     for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
     }
+    return this;
   }
 
   public ObjectNode toJson() {
@@ -200,7 +203,7 @@ public class SVGLayer extends SVGPath {
       }
     }
     makeSVGPathElement(element, cachePoints);
-    draw(content.endsWith("Z") ? "Z" : "");
+    update(content.endsWith("Z") ? "Z" : "");
 
   }
 
