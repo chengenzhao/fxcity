@@ -7,6 +7,8 @@ import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
 
 public class JVGLayer extends SVGPath {
 
+  static final String _GAUSSIAN_BLUR = "gaussianBlur";
+
   public enum JsonKeys {
 
     STROKE_WIDTH("strokeWidth"),
@@ -14,6 +16,10 @@ public class JVGLayer extends SVGPath {
     STROKE("stroke"),
     CONTENT("content"),
     CLIP("clip"),
+    EFFECT("effect"),
+    TYPE("type"),
+    GAUSSIAN_BLUR(_GAUSSIAN_BLUR),
+    RADIUS("radius")
     ;
 
     private final String key;
@@ -170,6 +176,17 @@ public class JVGLayer extends SVGPath {
     objectNode.put(JsonKeys.CONTENT.key, getContent());
     if (getClip() != null)
       objectNode.put(JsonKeys.CLIP.key, true);
+    switch (getEffect()){
+      case GaussianBlur blur -> {
+        var effect = mapper.createObjectNode();
+        effect.put(JsonKeys.TYPE.key, JsonKeys.GAUSSIAN_BLUR.key);
+        effect.put(JsonKeys.RADIUS.key, blur.getRadius());
+
+        objectNode.set(JsonKeys.EFFECT.key, effect);
+      }
+      case null, default -> {
+      }
+    }
 
     return objectNode;
   }
@@ -214,6 +231,18 @@ public class JVGLayer extends SVGPath {
     makeSVGPathElement(element, cachePoints);
     update(content.endsWith("Z") ? "Z" : "");
 
+    if(objectNode.has(JsonKeys.EFFECT.key)){
+      var obj = objectNode.get(JsonKeys.EFFECT.key);
+      if(obj instanceof ObjectNode effect){
+        switch (effect.get(JsonKeys.TYPE.key).asText()){
+          case _GAUSSIAN_BLUR -> {
+            var blur = new GaussianBlur(effect.get(JsonKeys.RADIUS.key).asDouble());
+            setEffect(blur);
+          }
+          default -> {}
+        }
+      }
+    }
   }
 
   public static String toWebHexWithAlpha(Color color) {

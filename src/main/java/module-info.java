@@ -3,6 +3,8 @@ module com.whitewoodcity.fxcity {
   requires javafx.media;
   requires com.fasterxml.jackson.databind;
   requires atlantafx.base;
+  requires javafx.graphics;
+  requires javafx.base;
 
   exports com.whitewoodcity.javafx.binding;
   exports com.whitewoodcity.flame;
