@@ -8,7 +8,7 @@ public class JVG extends Group {
 
   public JVG(String jsonString) {
 
-    var reference = new JVGLayerReference();
+    var reference = new SimpleObjectProperty<JVGLayer>();
 
     fromJson(obj -> {
       var l = new JVGLayer();
@@ -70,11 +70,14 @@ public class JVG extends Group {
   public Dimension2D getDimension(){
     double w = 0;
     double h = 0;
+    var point = getXY();
+    var x = point.getX();
+    var y = point.getY();
     for(var node:getChildren()){
       if(node instanceof JVGLayer layer) {
-        var d = layer.getDimension();
-        w = Math.max(w, d.getWidth());
-        h = Math.max(h, d.getHeight());
+        var p = layer.getMaxXY();
+        w = Math.max(w, p.getX() - x);
+        h = Math.max(h, p.getY() - y);
       }
     }
     return new Dimension2D(w,h);

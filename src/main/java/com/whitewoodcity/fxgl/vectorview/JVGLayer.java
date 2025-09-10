@@ -90,6 +90,15 @@ public class JVGLayer extends SVGPath {
     return new Point2D(xp.get(), yp.get());
   }
 
+  public Point2D getMaxXY() {
+    var xp = new SimpleDoubleProperty(0);
+    var yp = new SimpleDoubleProperty(0);
+    for (SVGPathElement element : svgPathElements) {
+      element.traverse(x -> xp.set(Math.max(xp.get(), x.get())), y -> yp.set(Math.max(yp.get(), y.get())));
+    }
+    return new Point2D(xp.get(), yp.get());
+  }
+
   public Dimension2D getDimension() {
     if (svgPathElements.isEmpty()) return new Dimension2D(0, 0);
     var e = svgPathElements.getFirst();
