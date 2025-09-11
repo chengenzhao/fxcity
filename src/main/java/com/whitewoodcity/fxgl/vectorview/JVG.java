@@ -121,4 +121,8 @@ public class JVG extends Group {
   public interface JsonPreset{
     JVGLayer create(ObjectNode objectNode);
   }
+
+  public JVG copy(){
+    return new JVG(this.toJsonString());
+  }
 }
