@@ -22,23 +22,25 @@ public class JVG extends Group {
     },jsonString);
   }
 
-  public void trim(){
+  public JVG trim(){
     var p = getXY();
     getChildren().stream()
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
       .forEach(e-> e.trim(p).update());
+    return this;
   }
 
-  public void move(Point2D p){
-    move(p.getX(), p.getY());
+  public JVG move(Point2D p){
+    return move(p.getX(), p.getY());
   }
 
-  public void move(double x, double y){
+  public JVG move(double x, double y){
     getChildren().stream()
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
       .forEach(e -> e.move(x, y).update());
+    return this;
   }
 
   public Point2D getXY(){
@@ -60,11 +62,11 @@ public class JVG extends Group {
     return new Point2D(x,y);
   }
 
-  public void set(double x, double y){
+  public JVG set(double x, double y){
     var p = getXY();
     var dx = x - p.getX();
     var dy = y - p.getY();
-    move(dx, dy);
+    return move(dx, dy);
   }
 
   public Dimension2D getDimension(){
