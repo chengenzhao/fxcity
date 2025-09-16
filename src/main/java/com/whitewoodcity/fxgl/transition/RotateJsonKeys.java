@@ -1,6 +1,6 @@
 package com.whitewoodcity.fxgl.transition;
 
-public enum JsonKeys {
+public enum RotateJsonKeys {
   X("x"),
   Y("y"),
   TRANSLATE_X("translateX"),
@@ -14,7 +14,7 @@ public enum JsonKeys {
 
   private final String key;
 
-  JsonKeys(final String key) {
+  RotateJsonKeys(final String key) {
     this.key = key;
   }
 

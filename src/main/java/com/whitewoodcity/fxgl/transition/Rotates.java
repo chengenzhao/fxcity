@@ -54,22 +54,22 @@ public class Rotates {
   }
 
   private ObjectNode zoom(ObjectNode obj, double ratio, boolean round) {
-    zoomField(obj, JsonKeys.X, ratio, round);
-    zoomField(obj, JsonKeys.Y, ratio, round);
+    zoomField(obj, RotateJsonKeys.X, ratio, round);
+    zoomField(obj, RotateJsonKeys.Y, ratio, round);
 
-    zoomField(obj, JsonKeys.TRANSLATE_X, ratio, round);
-    zoomField(obj, JsonKeys.TRANSLATE_Y, ratio, round);
+    zoomField(obj, RotateJsonKeys.TRANSLATE_X, ratio, round);
+    zoomField(obj, RotateJsonKeys.TRANSLATE_Y, ratio, round);
 
-    var rotates = obj.withArray(JsonKeys.ROTATES.key());
+    var rotates = obj.withArray(RotateJsonKeys.ROTATES.key());
     for (JsonNode r : rotates) {
       var rotate = (ObjectNode) r;
-      zoomField(rotate, JsonKeys.PIVOT_X, ratio, round);
-      zoomField(rotate, JsonKeys.PIVOT_Y, ratio, round);
+      zoomField(rotate, RotateJsonKeys.PIVOT_X, ratio, round);
+      zoomField(rotate, RotateJsonKeys.PIVOT_Y, ratio, round);
     }
     return obj;
   }
 
-  private void zoomField(ObjectNode obj, JsonKeys key, double ratio, boolean round) {
+  private void zoomField(ObjectNode obj, RotateJsonKeys key, double ratio, boolean round) {
     if (obj.has(key.key())) {
       var value = obj.get(key.key()).asDouble() * ratio;
       if (round) value = Math.round(value);
@@ -123,15 +123,15 @@ public class Rotates {
 
   public void show(ObjectNode json) {
 
-    if(json.has(JsonKeys.X.key())||json.has(JsonKeys.Y.key())) {
+    if(json.has(RotateJsonKeys.X.key())||json.has(RotateJsonKeys.Y.key())) {
       var x = 0.;
       var y = 0.;
-      if (json.has(JsonKeys.X.key())) {
-        x = json.get(JsonKeys.X.key()).asDouble();
+      if (json.has(RotateJsonKeys.X.key())) {
+        x = json.get(RotateJsonKeys.X.key()).asDouble();
       }
 
-      if (json.has(JsonKeys.Y.key())) {
-        y = json.get(JsonKeys.Y.key()).asDouble();
+      if (json.has(RotateJsonKeys.Y.key())) {
+        y = json.get(RotateJsonKeys.Y.key()).asDouble();
       }
 
       switch (getNode()){
@@ -149,16 +149,16 @@ public class Rotates {
       }
     }
 
-    if (json.has(JsonKeys.TRANSLATE_X.key())) {
-      getNode().setTranslateX(json.get(JsonKeys.TRANSLATE_X.key()).asDouble());
+    if (json.has(RotateJsonKeys.TRANSLATE_X.key())) {
+      getNode().setTranslateX(json.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble());
     }
 
-    if (json.has(JsonKeys.TRANSLATE_Y.key())) {
-      getNode().setTranslateY(json.get(JsonKeys.TRANSLATE_Y.key()).asDouble());
+    if (json.has(RotateJsonKeys.TRANSLATE_Y.key())) {
+      getNode().setTranslateY(json.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble());
     }
 
-    if(json.has(JsonKeys.ROTATES.key())) {
-      var rotates = json.withArray(JsonKeys.ROTATES.key());
+    if(json.has(RotateJsonKeys.ROTATES.key())) {
+      var rotates = json.withArray(RotateJsonKeys.ROTATES.key());
       List<Rotate> transforms =
         getNode().getTransforms().stream()
           .filter(Rotate.class::isInstance)
@@ -167,9 +167,9 @@ public class Rotates {
       for (int i = 0; i < rotates.size(); i++) {
         var r = rotates.get(i);
         var rotate = transforms.get(i);
-        rotate.setPivotX(r.get(JsonKeys.PIVOT_X.key()).asDouble());
-        rotate.setPivotY(r.get(JsonKeys.PIVOT_Y.key()).asDouble());
-        rotate.setAngle(r.get(JsonKeys.ANGLE.key()).asDouble());
+        rotate.setPivotX(r.get(RotateJsonKeys.PIVOT_X.key()).asDouble());
+        rotate.setPivotY(r.get(RotateJsonKeys.PIVOT_Y.key()).asDouble());
+        rotate.setAngle(r.get(RotateJsonKeys.ANGLE.key()).asDouble());
       }
     }
   }
@@ -292,19 +292,19 @@ class CustomTransition extends Transition {
 
     this.start = start;
     this.end = end;
-    setCycleDuration(Duration.millis(end.get(JsonKeys.TIME.key()).asDouble() - start.get(JsonKeys.TIME.key()).asDouble()));
+    setCycleDuration(Duration.millis(end.get(RotateJsonKeys.TIME.key()).asDouble() - start.get(RotateJsonKeys.TIME.key()).asDouble()));
   }
 
   @Override
   protected void interpolate(double frac) {
 
-    if(start.has(JsonKeys.X.key())||start.has(JsonKeys.Y.key())) {
+    if(start.has(RotateJsonKeys.X.key())||start.has(RotateJsonKeys.Y.key())) {
       var x = 0.0;
       var y = 0.0;
-      if (start.has(JsonKeys.X.key()))
-        x = (end.get(JsonKeys.X.key()).asDouble() - start.get(JsonKeys.X.key()).asDouble()) * frac + start.get(JsonKeys.X.key()).asDouble();
-      if (start.has(JsonKeys.Y.key()))
-        y = (end.get(JsonKeys.Y.key()).asDouble() - start.get(JsonKeys.Y.key()).asDouble()) * frac + start.get(JsonKeys.Y.key()).asDouble();
+      if (start.has(RotateJsonKeys.X.key()))
+        x = (end.get(RotateJsonKeys.X.key()).asDouble() - start.get(RotateJsonKeys.X.key()).asDouble()) * frac + start.get(RotateJsonKeys.X.key()).asDouble();
+      if (start.has(RotateJsonKeys.Y.key()))
+        y = (end.get(RotateJsonKeys.Y.key()).asDouble() - start.get(RotateJsonKeys.Y.key()).asDouble()) * frac + start.get(RotateJsonKeys.Y.key()).asDouble();
 
       switch (node) {
         case JVG jvg -> jvg.set(x, y);
@@ -322,21 +322,21 @@ class CustomTransition extends Transition {
       }
     }
 
-    if(start.has(JsonKeys.TRANSLATE_X.key()))
-      node.setTranslateX((end.get(JsonKeys.TRANSLATE_X.key()).asDouble() - start.get(JsonKeys.TRANSLATE_X.key()).asDouble()) * frac + start.get(JsonKeys.TRANSLATE_X.key()).asDouble());
-    if(start.has(JsonKeys.TRANSLATE_Y.key()))
-      node.setTranslateY((end.get(JsonKeys.TRANSLATE_Y.key()).asDouble() - start.get(JsonKeys.TRANSLATE_Y.key()).asDouble()) * frac + start.get(JsonKeys.TRANSLATE_Y.key()).asDouble());
+    if(start.has(RotateJsonKeys.TRANSLATE_X.key()))
+      node.setTranslateX((end.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble() - start.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble()) * frac + start.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble());
+    if(start.has(RotateJsonKeys.TRANSLATE_Y.key()))
+      node.setTranslateY((end.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble() - start.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble()) * frac + start.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble());
 
-    if(start.has(JsonKeys.ROTATES.key())) {
-      var rotatesStart = start.withArray(JsonKeys.ROTATES.key());
-      var rotatesEnd = end.withArray(JsonKeys.ROTATES.key());
+    if(start.has(RotateJsonKeys.ROTATES.key())) {
+      var rotatesStart = start.withArray(RotateJsonKeys.ROTATES.key());
+      var rotatesEnd = end.withArray(RotateJsonKeys.ROTATES.key());
       for (int i = 0; i < rotatesStart.size(); i++) {
         var rotateStart = rotatesStart.get(i);
         var rotateEnd = rotatesEnd.get(i);
         var rotate = (Rotate) node.getTransforms().get(i);
-        rotate.setPivotX((rotateEnd.get(JsonKeys.PIVOT_X.key()).asDouble() - rotateStart.get(JsonKeys.PIVOT_X.key()).asDouble()) * frac + rotateStart.get(JsonKeys.PIVOT_X.key()).asDouble());
-        rotate.setPivotY((rotateEnd.get(JsonKeys.PIVOT_Y.key()).asDouble() - rotateStart.get(JsonKeys.PIVOT_Y.key()).asDouble()) * frac + rotateStart.get(JsonKeys.PIVOT_Y.key()).asDouble());
-        rotate.setAngle((rotateEnd.get(JsonKeys.ANGLE.key()).asDouble() - rotateStart.get(JsonKeys.ANGLE.key()).asDouble()) * frac + rotateStart.get(JsonKeys.ANGLE.key()).asDouble());
+        rotate.setPivotX((rotateEnd.get(RotateJsonKeys.PIVOT_X.key()).asDouble() - rotateStart.get(RotateJsonKeys.PIVOT_X.key()).asDouble()) * frac + rotateStart.get(RotateJsonKeys.PIVOT_X.key()).asDouble());
+        rotate.setPivotY((rotateEnd.get(RotateJsonKeys.PIVOT_Y.key()).asDouble() - rotateStart.get(RotateJsonKeys.PIVOT_Y.key()).asDouble()) * frac + rotateStart.get(RotateJsonKeys.PIVOT_Y.key()).asDouble());
+        rotate.setAngle((rotateEnd.get(RotateJsonKeys.ANGLE.key()).asDouble() - rotateStart.get(RotateJsonKeys.ANGLE.key()).asDouble()) * frac + rotateStart.get(RotateJsonKeys.ANGLE.key()).asDouble());
       }
     }
   }

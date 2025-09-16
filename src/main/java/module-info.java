@@ -25,6 +25,7 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.entity;
   exports com.whitewoodcity.fxgl.texture;
   exports com.whitewoodcity.fxgl.animation;
+  exports com.whitewoodcity.fxgl.transition;
 
   exports com.whitewoodcity.fxgl.dsl;
 
