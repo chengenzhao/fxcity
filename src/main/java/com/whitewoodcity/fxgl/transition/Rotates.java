@@ -12,12 +12,19 @@ public class Rotates {
   private Transition currentTransition;
   private final Map<String, Transition> transitions = new HashMap<>();
   private final Map<String, ObjectNode> poses = new HashMap<>();
-  
-  public Rotates(Node node, int howManyRotatesInTransforms) {
-    this.node = node;
 
-    for (int i = 0; i < howManyRotatesInTransforms; i++) {
-      node.getTransforms().add(new Rotate());
+  public Rotates(Node node){
+    this.node = node;
+  }
+
+  public Rotates(Node node, int howManyRotatesInTransforms) {
+    this(node);
+
+    if(node.getTransforms().size() != howManyRotatesInTransforms){
+      node.getTransforms().clear();
+      for (int i = 0; i < howManyRotatesInTransforms; i++) {
+        node.getTransforms().add(new Rotate());
+      }
     }
   }
 
