@@ -31,6 +31,14 @@ public class JVG extends Group {
     return this;
   }
 
+  public JVG zoom(double factor){
+    getChildren().stream()
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
+      .forEach(e -> e.zoom(factor).update());
+    return this;
+  }
+
   public JVG move(Point2D p){
     return move(p.getX(), p.getY());
   }
