@@ -16,6 +16,7 @@ public class JVGLayer extends SVGPath {
     STROKE("stroke"),
     CONTENT("content"),
     CLIP("clip"),
+    BLEND_MODE("blendMode"),
     EFFECT("effect"),
     TYPE("type"),
     GAUSSIAN_BLUR(_GAUSSIAN_BLUR),
@@ -187,6 +188,7 @@ public class JVGLayer extends SVGPath {
       case null, default -> {
       }
     }
+    objectNode.put(JsonKeys.BLEND_MODE.key, getBlendMode().toString());
 
     return objectNode;
   }
@@ -240,6 +242,17 @@ public class JVGLayer extends SVGPath {
             setEffect(blur);
           }
           default -> {}
+        }
+      }
+    }
+
+    if(objectNode.has(JsonKeys.BLEND_MODE.key)){
+      var blendModeString = objectNode.get(JsonKeys.BLEND_MODE.key).asText();
+
+      for(var blendMode:BlendMode.values()){
+        if(blendMode.toString().equals(blendModeString)){
+          setBlendMode(blendMode);
+          break;
         }
       }
     }
