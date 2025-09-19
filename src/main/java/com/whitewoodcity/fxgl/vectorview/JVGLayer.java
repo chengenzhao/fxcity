@@ -188,7 +188,8 @@ public class JVGLayer extends SVGPath {
       case null, default -> {
       }
     }
-    objectNode.put(JsonKeys.BLEND_MODE.key, getBlendMode().toString());
+    if(getBlendMode()!=null)
+      objectNode.put(JsonKeys.BLEND_MODE.key, getBlendMode().toString());
 
     return objectNode;
   }
