@@ -11,10 +11,15 @@ public class JVG extends Group {
     var reference = new SimpleObjectProperty<JVGLayer>();
 
     fromJson(obj -> {
+      if(!obj.has(JVGLayer.JsonKeys.CONTENT.key()) ||
+        obj.get(JVGLayer.JsonKeys.CONTENT.key()).asText().isBlank())
+        return null;
       var l = new JVGLayer();
       this.getChildren().add(l);
-      if(obj.has(JVGLayer.JsonKeys.CLIP.key())){
+      if(obj.has(JVGLayer.JsonKeys.BLEND_MODE.key())){
         l.setCache(true);
+      }
+      if(obj.has(JVGLayer.JsonKeys.CLIP.key())){
         l.setClip(reference.get().daemon());
       }else{
         reference.set(l);
@@ -124,7 +129,8 @@ public class JVG extends Group {
     arrayNode.forEach(n -> {
       var obj = (ObjectNode)n;
       var layer = preset.create(obj);
-      layer.fromJson(obj);
+      if(layer!=null)
+        layer.fromJson(obj);
     });
   }
 
