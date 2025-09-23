@@ -14,6 +14,7 @@ public class JVG extends Group {
       var l = new JVGLayer();
       this.getChildren().add(l);
       if(obj.has(JVGLayer.JsonKeys.CLIP.key())){
+        l.setCache(true);
         l.setClip(reference.get().daemon());
       }else{
         reference.set(l);
