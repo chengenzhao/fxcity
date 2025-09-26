@@ -144,9 +144,14 @@ public class JVG extends Group {
   }
 
   public WritableImage toImage(){
-    WritableImage im = null;
     SnapshotParameters params = new SnapshotParameters();
     params.setFill(Color.TRANSPARENT);
-    return this.snapshot(params, im);
+    return this.snapshot(params, null);
+  }
+
+  public ImageView toImageView(){
+    var view = new ImageView(toImage());
+    this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
+    return view;
   }
 }
