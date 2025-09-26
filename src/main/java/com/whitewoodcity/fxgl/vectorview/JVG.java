@@ -142,4 +142,11 @@ public class JVG extends Group {
   public JVG copy(){
     return new JVG(this.toJsonString());
   }
+
+  public WritableImage toImage(){
+    WritableImage im = null;
+    SnapshotParameters params = new SnapshotParameters();
+    params.setFill(Color.TRANSPARENT);
+    return this.snapshot(params, im);
+  }
 }
