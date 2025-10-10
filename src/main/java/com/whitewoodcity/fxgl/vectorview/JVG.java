@@ -1,8 +1,10 @@
 package com.whitewoodcity.fxgl.vectorview;
 
+import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
-import module com.fasterxml.jackson.databind;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 public class JVG extends Group {
 
@@ -11,99 +13,24 @@ public class JVG extends Group {
     var reference = new SimpleObjectProperty<JVGLayer>();
 
     fromJson(obj -> {
-      if(!obj.has(JVGLayer.JsonKeys.CONTENT.key()) ||
+      if (!obj.has(JVGLayer.JsonKeys.CONTENT.key()) ||
         obj.get(JVGLayer.JsonKeys.CONTENT.key()).asText().isBlank())
         return null;
       var l = new JVGLayer();
       this.getChildren().add(l);
-      if(obj.has(JVGLayer.JsonKeys.BLEND_MODE.key())){
+      if (obj.has(JVGLayer.JsonKeys.BLEND_MODE.key())) {
         l.setCache(true);
       }
-      if(obj.has(JVGLayer.JsonKeys.CLIP.key())){
+      if (obj.has(JVGLayer.JsonKeys.CLIP.key())) {
         l.setClip(reference.get().daemon());
-      }else{
+      } else {
         reference.set(l);
       }
       return l;
-    },jsonString);
+    }, jsonString);
   }
 
-  public JVG trim(){
-    var p = getXY();
-    getChildren().stream()
-      .filter(JVGLayer.class::isInstance)
-      .map(JVGLayer.class::cast)
-      .forEach(e-> e.trim(p).update());
-    return this;
-  }
-
-  public JVG zoom(double factor){
-    getChildren().stream()
-      .filter(JVGLayer.class::isInstance)
-      .map(JVGLayer.class::cast)
-      .forEach(e -> e.zoom(factor).update());
-    return this;
-  }
-
-  public JVG move(Point2D p){
-    return move(p.getX(), p.getY());
-  }
-
-  public JVG move(double x, double y){
-    getChildren().stream()
-      .filter(JVGLayer.class::isInstance)
-      .map(JVGLayer.class::cast)
-      .forEach(e -> e.move(x, y).update());
-    return this;
-  }
-
-  public Point2D getXY(){
-    boolean firstLayer = true;
-    double x = 0, y = 0;
-    for(var node:getChildren()){
-      if(node instanceof JVGLayer layer){
-        var p = layer.getMinXY();
-        if(firstLayer){
-          x = p.getX();
-          y = p.getY();
-          firstLayer = false;
-        }else{
-          x = Math.min(x, p.getX());
-          y = Math.min(y, p.getY());
-        }
-      }
-    }
-    return new Point2D(x,y);
-  }
-
-  public JVG set(double x, double y){
-    var p = getXY();
-    var dx = x - p.getX();
-    var dy = y - p.getY();
-    return move(dx, dy);
-  }
-
-  public Dimension2D getDimension(){
-    double w = 0;
-    double h = 0;
-    var point = getXY();
-    var x = point.getX();
-    var y = point.getY();
-    for(var node:getChildren()){
-      if(node instanceof JVGLayer layer) {
-        var p = layer.getMaxXY();
-        w = Math.max(w, p.getX() - x);
-        h = Math.max(h, p.getY() - y);
-      }
-    }
-    return new Dimension2D(w,h);
-  }
-
-  public ArrayNode toJson(){
-    return toJson(this.getChildren());
-  }
-
-  public static ArrayNode toJson(ObservableList<Node> children){
+  public static ArrayNode toJson(ObservableList<Node> children) {
     var mapper = new ObjectMapper();
     var arrayNode = mapper.createArrayNode();
     children.stream()
@@ -113,45 +40,124 @@ public class JVG extends Group {
     return arrayNode;
   }
 
-  public String toJsonString(){
-    return toJson().toString();
-  }
-
   public static void fromJson(JsonPreset preset, String jsonArray) {
     var mapper = new ObjectMapper();
-    try{
+    try {
       fromJson(preset, (ArrayNode) mapper.readTree(jsonArray));
-    }catch (Exception e){
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
-  public static void fromJson(JsonPreset preset, ArrayNode arrayNode){
+
+  public static void fromJson(JsonPreset preset, ArrayNode arrayNode) {
     arrayNode.forEach(n -> {
-      var obj = (ObjectNode)n;
+      var obj = (ObjectNode) n;
       var layer = preset.create(obj);
-      if(layer!=null)
+      if (layer != null)
         layer.fromJson(obj);
     });
   }
 
-  @FunctionalInterface
-  public interface JsonPreset{
-    JVGLayer create(ObjectNode objectNode);
+  public JVG trim() {
+    var p = getXY();
+    getChildren().stream()
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
+      .forEach(e -> e.trim(p).update());
+    return this;
   }
 
-  public JVG copy(){
+  public JVG zoom(double factor) {
+    getChildren().stream()
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
+      .forEach(e -> e.zoom(factor).update());
+    return this;
+  }
+
+  public JVG move(Point2D p) {
+    return move(p.getX(), p.getY());
+  }
+
+  public JVG move(double x, double y) {
+    getChildren().stream()
+      .filter(JVGLayer.class::isInstance)
+      .map(JVGLayer.class::cast)
+      .forEach(e -> e.move(x, y).update());
+    return this;
+  }
+
+  public Point2D getXY() {
+    boolean firstLayer = true;
+    double x = 0, y = 0;
+    for (var node : getChildren()) {
+      if (node instanceof JVGLayer layer) {
+        var p = layer.getMinXY();
+        if (firstLayer) {
+          x = p.getX();
+          y = p.getY();
+          firstLayer = false;
+        } else {
+          x = Math.min(x, p.getX());
+          y = Math.min(y, p.getY());
+        }
+      }
+    }
+    return new Point2D(x, y);
+  }
+
+  public JVG set(double x, double y) {
+    var p = getXY();
+    var dx = x - p.getX();
+    var dy = y - p.getY();
+    return move(dx, dy);
+  }
+
+  public Dimension2D getDimension() {
+    double w = 0;
+    double h = 0;
+    var point = getXY();
+    var x = point.getX();
+    var y = point.getY();
+    for (var node : getChildren()) {
+      if (node instanceof JVGLayer layer) {
+        var p = layer.getMaxXY();
+        w = Math.max(w, p.getX() - x);
+        h = Math.max(h, p.getY() - y);
+      }
+    }
+    return new Dimension2D(w, h);
+  }
+
+  public ArrayNode toJson() {
+    return toJson(this.getChildren());
+  }
+
+  public String toJsonString() {
+    return toJson().toString();
+  }
+
+  public JVG copy() {
     return new JVG(this.toJsonString());
   }
 
-  public WritableImage toImage(){
+  public WritableImage toImage() {
     SnapshotParameters params = new SnapshotParameters();
     params.setFill(Color.TRANSPARENT);
+    var xy = getXY();
+    var d = getDimension();
+    params.setViewport(new Rectangle2D(xy.getX(), xy.getY(), d.getWidth(), d.getHeight()));
     return this.snapshot(params, null);
   }
 
-  public ImageView toImageView(){
+  public ImageView toImageView() {
     var view = new ImageView(toImage());
     this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
     return view;
+  }
+
+  @FunctionalInterface
+  public interface JsonPreset {
+    JVGLayer create(ObjectNode objectNode);
   }
 }
