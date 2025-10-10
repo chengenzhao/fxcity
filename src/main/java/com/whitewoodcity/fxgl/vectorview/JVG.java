@@ -147,7 +147,11 @@ public class JVG extends Group {
     var xy = getXY();
     var d = getDimension();
     params.setViewport(new Rectangle2D(xy.getX(), xy.getY(), d.getWidth(), d.getHeight()));
-    return this.snapshot(params, null);
+    var list = new ArrayList<>(this.getTransforms());
+    this.getTransforms().clear();
+    var image = this.snapshot(params, null);
+    this.getTransforms().addAll(list);
+    return image;
   }
 
   public ImageView toImageView() {
