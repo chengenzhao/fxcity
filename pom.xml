@@ -53,7 +53,7 @@
         <javafx.version>25</javafx.version>
         <jackson.version>2.20.0</jackson.version>
         <atlantafx.version>2.1.0</atlantafx.version>
-        <junit.jupiter.version>5.13.4</junit.jupiter.version>
+        <junit.jupiter.version>6.0.0</junit.jupiter.version>
 <!--        <junit.platform.version>1.9.2</junit.platform.version>-->
         <hamcrest.version>3.0</hamcrest.version>
     </properties>
