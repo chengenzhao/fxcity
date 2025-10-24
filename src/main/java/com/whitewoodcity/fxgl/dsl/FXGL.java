@@ -19,7 +19,6 @@ import com.almasb.fxgl.time.Timer;
 import com.whitewoodcity.fxgl.app.GameApplication;
 import com.whitewoodcity.fxgl.service.XInput;
 import javafx.animation.Interpolator;
-import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -28,7 +27,6 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.util.List;
-
 
 public class FXGL {
   public static GameScene getGameScene(){
