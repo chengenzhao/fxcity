@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>0.9.10</version>
+    <version>0.9.11</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -49,8 +49,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <fxgl.version>26</fxgl.version>
-        <javafx.version>25.0.1</javafx.version>
+        <fxgl.version>26.1</fxgl.version>
         <jackson.version>2.20.0</jackson.version>
         <atlantafx.version>2.1.0</atlantafx.version>
         <junit.jupiter.version>6.0.0</junit.jupiter.version>
@@ -72,21 +71,6 @@
             <groupId>io.github.mkpaz</groupId>
             <artifactId>atlantafx-base</artifactId>
             <version>${atlantafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-media</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -192,7 +176,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.9.0</version>
+                        <version>0.10.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
