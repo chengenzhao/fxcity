@@ -206,6 +206,10 @@ public class Rotates {
     return true;
   }
 
+  public boolean overrideLoop(String name){
+    return !loopNoOverride(name);
+  }
+
   public Transition setTransition(String name) {
     return setTransition(name, 1);
   }
