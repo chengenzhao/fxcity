@@ -187,6 +187,15 @@ public class Rotates {
       show(pose);
   }
 
+  public Transition play(String name){
+    return this.play(name,1);
+  }
+
+  public Transition play(String name, int cycleCount){
+    setTransition(name);
+    return play(cycleCount);
+  }
+
   public Transition startTransition(String name) {
     setTransition(name);
     return play();
@@ -234,9 +243,15 @@ public class Rotates {
     return currentTransition;
   }
 
-  public Transition play() {
-    if (currentTransition != null)
+  public Transition play(){
+    return this.play(1);
+  }
+
+  public Transition play(int cycleCount) {
+    if (currentTransition != null) {
+      currentTransition.setCycleCount(cycleCount);
       currentTransition.playFromStart();
+    }
     return currentTransition;
   }
 
