@@ -322,7 +322,6 @@ public class JVGLayer extends SVGPath {
       default -> throw new RuntimeException("unsupported fill type: " + objectNode.get(JsonKeys.FILL.key));
     }
 
-    setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
     var content = objectNode.get(JsonKeys.CONTENT.key).asText();
 
     var si = content.split(" ");
