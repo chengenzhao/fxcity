@@ -8,6 +8,11 @@ import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
 public class JVGLayer extends SVGPath {
 
   static final String _GAUSSIAN_BLUR = "gaussianBlur";
+  static final String _LINEAR_GRADIENT = "linearGradient";
+  static final String _RADIACAL_GRADIENT = "radialGradient";
+  static final String _NO_CYCLE = "noCycle";
+  static final String _REFLECT = "reflect";
+  static final String _REPEAT = "repeat";
 
   public enum JsonKeys {
 
@@ -20,7 +25,24 @@ public class JVGLayer extends SVGPath {
     EFFECT("effect"),
     TYPE("type"),
     GAUSSIAN_BLUR(_GAUSSIAN_BLUR),
-    RADIUS("radius")
+    RADIUS("radius"),
+    FOCUS_ANGLE("focusAngle"),
+    FOCUS_DISTANCE("focusDistance"),
+    CENTER_X("centerX"),
+    CENTER_Y("centerY"),
+    START_X("startX"),
+    START_Y("startY"),
+    END_X("endX"),
+    END_Y("endY"),
+    PROPORTIONAL("proportional"),
+    CYCLE_METHOD("cycleMethod"),
+    STOPS("stops"),
+    OFFSET("offset"),
+    COLOR("color"),
+    NO_CYCLE(_NO_CYCLE),
+    REFLECT(_REFLECT),
+    REPEAT(_REPEAT),
+    GRADIENT_TYPE("gradientType")
     ;
 
     private final String key;
@@ -172,7 +194,58 @@ public class JVGLayer extends SVGPath {
     var objectNode = mapper.createObjectNode();
 
     objectNode.put(JsonKeys.STROKE_WIDTH.key, getStrokeWidth());
-    objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha((Color) getFill()));
+    switch (getFill()){
+      case Color color -> objectNode.put(JsonKeys.FILL.key, toWebHexWithAlpha(color));
+      case LinearGradient gradient -> {
+        var g = mapper.createObjectNode();
+        g.put(JsonKeys.GRADIENT_TYPE.key, _LINEAR_GRADIENT);
+        g.put(JsonKeys.START_X.key, gradient.getStartX());
+        g.put(JsonKeys.START_Y.key, gradient.getStartY());
+        g.put(JsonKeys.END_X.key, gradient.getEndX());
+        g.put(JsonKeys.END_Y.key, gradient.getEndY());
+        g.put(JsonKeys.PROPORTIONAL.key, gradient.isProportional());
+        g.put(JsonKeys.CYCLE_METHOD.key, switch (gradient.getCycleMethod()){
+          case NO_CYCLE ->  _NO_CYCLE;
+          case REFLECT ->  _REFLECT;
+          case REPEAT -> _REPEAT;
+        });
+        var stops = mapper.createArrayNode();
+        for(var stop:gradient.getStops()){
+          var s = mapper.createObjectNode();
+          s.put(JsonKeys.OFFSET.key, stop.getOffset());
+          s.put(JsonKeys.COLOR.key, toWebHexWithAlpha(stop.getColor()));
+          stops.add(s);
+        }
+        g.set(JsonKeys.STOPS.key, stops);
+        objectNode.set(JsonKeys.FILL.key, g);
+      }
+      case RadialGradient gradient -> {
+        var g = mapper.createObjectNode();
+        g.put(JsonKeys.GRADIENT_TYPE.key, _RADIACAL_GRADIENT);
+        g.put(JsonKeys.FOCUS_ANGLE.key, gradient.getFocusAngle());
+        g.put(JsonKeys.FOCUS_DISTANCE.key, gradient.getFocusDistance());
+        g.put(JsonKeys.RADIUS.key, gradient.getRadius());
+        g.put(JsonKeys.CENTER_X.key, gradient.getCenterX());
+        g.put(JsonKeys.CENTER_Y.key, gradient.getCenterY());
+        g.put(JsonKeys.PROPORTIONAL.key, gradient.isProportional());
+        g.put(JsonKeys.CYCLE_METHOD.key, switch (gradient.getCycleMethod()){
+          case NO_CYCLE ->  _NO_CYCLE;
+          case REFLECT ->  _REFLECT;
+          case REPEAT -> _REPEAT;
+        });
+        var stops = mapper.createArrayNode();
+        for(var stop:gradient.getStops()){
+          var s = mapper.createObjectNode();
+          s.put(JsonKeys.OFFSET.key, stop.getOffset());
+          s.put(JsonKeys.COLOR.key, toWebHexWithAlpha(stop.getColor()));
+          stops.add(s);
+        }
+        g.set(JsonKeys.STOPS.key, stops);
+        objectNode.set(JsonKeys.FILL.key, g);
+      }
+      default -> throw new RuntimeException("unsupported fill type: " + getFill());
+    }
+
     objectNode.put(JsonKeys.STROKE.key, toWebHexWithAlpha((Color) getStroke()));
     objectNode.put(JsonKeys.CONTENT.key, getContent());
     if (getClip() != null)
@@ -210,6 +283,45 @@ public class JVGLayer extends SVGPath {
   public void fromJson(ObjectNode objectNode) {
     setStrokeWidth(objectNode.get(JsonKeys.STROKE_WIDTH.key).asDouble());
     setStroke(Color.web(objectNode.get(JsonKeys.STROKE.key).asText()));
+
+    switch (objectNode.get(JsonKeys.FILL.key)){
+      case TextNode text -> setFill(Color.web(text.asText()));
+      case ObjectNode obj -> {
+        var stops = new ArrayList<Stop>();
+        var ss = (ArrayNode)obj.get(JsonKeys.STOPS.key);
+        for(var s:ss){
+          var stop = new Stop(s.get(JsonKeys.OFFSET.key).asDouble(),Color.web(s.get(JsonKeys.COLOR.key).asText()));
+          stops.add(stop);
+        }
+        CycleMethod cycleMethod = switch (obj.get(JsonKeys.CYCLE_METHOD.key).asText()){
+          case _NO_CYCLE -> CycleMethod.NO_CYCLE;
+          case _REFLECT -> CycleMethod.REFLECT;
+          case _REPEAT -> CycleMethod.REPEAT;
+          default -> throw new RuntimeException("unsupported cycleMethod type: " + obj.get(JsonKeys.CYCLE_METHOD.key).asText());
+        };
+        boolean proportional = obj.get(JsonKeys.PROPORTIONAL.key).asBoolean();
+        switch (obj.get(JsonKeys.GRADIENT_TYPE.key).asText()){
+          case _LINEAR_GRADIENT -> {
+            double startX = obj.get(JsonKeys.START_X.key).asDouble();
+            double startY = obj.get(JsonKeys.START_Y.key).asDouble();
+            double endX = obj.get(JsonKeys.END_X.key).asDouble();
+            double endY = obj.get(JsonKeys.END_Y.key).asDouble();
+            setFill(new LinearGradient(startX, startY,endX,endY,proportional,cycleMethod,stops));
+          }
+          case _RADIACAL_GRADIENT -> {
+            double centerX = obj.get(JsonKeys.CENTER_X.key).asDouble();
+            double centerY = obj.get(JsonKeys.CENTER_Y.key).asDouble();
+            double radius = obj.get(JsonKeys.RADIUS.key).asDouble();
+            double focusAngle = obj.get(JsonKeys.FOCUS_ANGLE.key).asDouble();
+            double focusDistance = obj.get(JsonKeys.FOCUS_DISTANCE.key).asDouble();
+            setFill(new RadialGradient(focusAngle,focusDistance,centerX,centerY,radius,proportional,cycleMethod,stops));
+          }
+          default -> throw new RuntimeException("unsupported gradient type: " + obj.get(JsonKeys.GRADIENT_TYPE.key).asText());
+        }
+      }
+      default -> throw new RuntimeException("unsupported fill type: " + objectNode.get(JsonKeys.FILL.key));
+    }
+
     setFill(Color.web(objectNode.get(JsonKeys.FILL.key).asText()));
     var content = objectNode.get(JsonKeys.CONTENT.key).asText();
 
