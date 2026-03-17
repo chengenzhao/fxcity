@@ -115,7 +115,7 @@
                 <jdk>[25,)</jdk>
             </activation>
             <properties>
-                <source.version>25</source.version>
+                <source.version>26</source.version>
                 <maven.compiler.version>3.14.0</maven.compiler.version>
             </properties>
             <build>
