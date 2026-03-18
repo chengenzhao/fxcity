@@ -29,8 +29,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>25</source>
-                    <target>25</target>
+                    <source>26</source>
+                    <target>26</target>
                 </configuration>
             </plugin>
         </plugins>
