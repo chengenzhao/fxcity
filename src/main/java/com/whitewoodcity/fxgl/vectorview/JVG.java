@@ -13,15 +13,23 @@ public class JVG extends Group {
     var reference = new SimpleObjectProperty<JVGLayer>();
 
     fromJson(obj -> {
-      if (!obj.has(JVGLayer.JsonKeys.CONTENT.key()) ||
-        obj.get(JVGLayer.JsonKeys.CONTENT.key()).asText().isBlank())
-        return null;
-      var l = new JVGLayer();
+      if (!obj.has(JsonKeys.SHAPE.key()) ||
+        obj.get(JsonKeys.SHAPE.key()).asText().isBlank())
+        obj.put(JsonKeys.SHAPE.key(), SVGPath.class.getSimpleName());
+
+//      if (!obj.has(JsonKeys.CONTENT.key()) ||
+//        obj.get(JsonKeys.CONTENT.key()).asText().isBlank())
+//        return null;
+      var l = switch (obj.get(JsonKeys.SHAPE.key()).asText()){
+//        case JVGLayer._CIRCLE -> new JVGCircle();
+        default -> new JVGPath();
+      };
+
       this.getChildren().add(l);
-      if (obj.has(JVGLayer.JsonKeys.BLEND_MODE.key())) {
+      if (obj.has(JsonKeys.BLEND_MODE.key())) {
         l.setCache(true);
       }
-      if (obj.has(JVGLayer.JsonKeys.CLIP.key())) {
+      if (obj.has(JsonKeys.CLIP.key())) {
         l.setClip(reference.get().daemon());
       } else {
         reference.set(l);
