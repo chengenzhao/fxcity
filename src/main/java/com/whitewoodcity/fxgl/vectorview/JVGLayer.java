@@ -16,7 +16,7 @@ public class JVGLayer extends SVGPath {
 
   static final String _GAUSSIAN_BLUR = "gaussianBlur";
   static final String _LINEAR_GRADIENT = "linearGradient";
-  static final String _RADIACAL_GRADIENT = "radialGradient";
+  static final String _RADIAL_GRADIENT = "radialGradient";
   static final String _NO_CYCLE = "noCycle";
   static final String _REFLECT = "reflect";
   static final String _REPEAT = "repeat";
@@ -267,7 +267,7 @@ public class JVGLayer extends SVGPath {
       }
       case RadialGradient gradient -> {
         var g = mapper.createObjectNode();
-        g.put(JsonKeys.GRADIENT_TYPE.key, _RADIACAL_GRADIENT);
+        g.put(JsonKeys.GRADIENT_TYPE.key, _RADIAL_GRADIENT);
         g.put(JsonKeys.FOCUS_ANGLE.key, gradient.getFocusAngle());
         g.put(JsonKeys.FOCUS_DISTANCE.key, gradient.getFocusDistance());
         g.put(JsonKeys.RADIUS.key, gradient.getRadius());
@@ -355,7 +355,7 @@ public class JVGLayer extends SVGPath {
             double endY = obj.get(JsonKeys.END_Y.key).asDouble();
             setFill(new LinearGradient(startX, startY, endX, endY, proportional, cycleMethod, stops));
           }
-          case _RADIACAL_GRADIENT -> {
+          case _RADIAL_GRADIENT -> {
             double centerX = obj.get(JsonKeys.CENTER_X.key).asDouble();
             double centerY = obj.get(JsonKeys.CENTER_Y.key).asDouble();
             double radius = obj.get(JsonKeys.RADIUS.key).asDouble();
