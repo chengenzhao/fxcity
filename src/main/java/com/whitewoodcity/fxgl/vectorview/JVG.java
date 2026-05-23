@@ -20,9 +20,10 @@ public class JVG extends Group {
 //      if (!obj.has(JsonKeys.CONTENT.key()) ||
 //        obj.get(JsonKeys.CONTENT.key()).asText().isBlank())
 //        return null;
-      var l = switch (obj.get(JsonKeys.SHAPE.key()).asText()){
-//        case JVGLayer._CIRCLE -> new JVGCircle();
-        default -> new JVGPath();
+
+      var l = switch (JVGShape.valueOf(obj.get(JsonKeys.SHAPE.key()).asText().toUpperCase())){
+        case JVGShape.CIRCLE -> new JVGCircle();
+        case JVGShape.SVGPATH -> new JVGPath();
       };
 
       this.getChildren().add(l);
@@ -172,4 +173,9 @@ public class JVG extends Group {
   public interface JsonPreset {
     JVGLayer create(ObjectNode objectNode);
   }
+}
+
+enum JVGShape {
+  CIRCLE,
+  SVGPATH;
 }
