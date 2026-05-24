@@ -1,4 +1,4 @@
-package com.whitewoodcity.fxgl.vectorview;
+package com.whitewoodcity.javafx.jvg;
 
 import module com.fasterxml.jackson.databind;
 import module java.base;
@@ -23,6 +23,7 @@ public class JVG extends Group {
 
       var l = switch (JVGShape.valueOf(obj.get(JsonKeys.SHAPE.key()).asText().toUpperCase())){
         case JVGShape.CIRCLE -> new JVGCircle();
+        case JVGShape.RECTANGLE -> new JVGRectangle();
         case JVGShape.SVGPATH -> new JVGPath();
       };
 
@@ -177,5 +178,6 @@ public class JVG extends Group {
 
 enum JVGShape {
   CIRCLE,
+  RECTANGLE,
   SVGPATH;
 }

@@ -1,6 +1,6 @@
-package com.whitewoodcity.fxgl.vectorview;
+package com.whitewoodcity.javafx.jvg;
 
-import static com.whitewoodcity.fxgl.vectorview.JVGLayer.*;
+import static com.whitewoodcity.javafx.jvg.JVGLayer.*;
 
 public enum JsonKeys {
   STROKE_WIDTH("strokeWidth"),
@@ -21,6 +21,10 @@ public enum JsonKeys {
   START_Y("startY"),
   END_X("endX"),
   END_Y("endY"),
+  X("x"),
+  Y("y"),
+  WIDTH("width"),
+  HEIGHT("height"),
   PROPORTIONAL("proportional"),
   CYCLE_METHOD("cycleMethod"),
   STOPS("stops"),

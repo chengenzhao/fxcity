@@ -1,9 +1,9 @@
-package com.whitewoodcity.fxgl.vectorview;
+package com.whitewoodcity.javafx.jvg;
 
 import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
-import com.whitewoodcity.fxgl.vectorview.svgpathcommand.*;
+import com.whitewoodcity.javafx.jvg.svgpathcommand.*;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.LinearGradient;
@@ -105,10 +105,6 @@ public class JVGPath extends SVGPath implements JVGLayer{
     }
 
     return new Dimension2D(maxX.get() - minX.get(), maxY.get() - minY.get());
-  }
-
-  public void trim() {
-    trim(getMinXY());
   }
 
   public JVGLayer trim(double x, double y) {

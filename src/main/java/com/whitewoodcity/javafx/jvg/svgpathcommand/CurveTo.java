@@ -1,4 +1,4 @@
-package com.whitewoodcity.fxgl.vectorview.svgpathcommand;
+package com.whitewoodcity.javafx.jvg.svgpathcommand;
 
 import javafx.beans.property.SimpleDoubleProperty;
 

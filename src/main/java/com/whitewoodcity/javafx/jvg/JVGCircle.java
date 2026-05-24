@@ -1,11 +1,11 @@
-package com.whitewoodcity.fxgl.vectorview;
+package com.whitewoodcity.javafx.jvg;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class JVGCircle extends Circle implements JVGLayer{
+public class JVGCircle extends Circle implements JVGLayer {
   @Override
   public Shape daemon() {
     var circle = new Circle();
@@ -46,7 +46,11 @@ public class JVGCircle extends Circle implements JVGLayer{
 
   @Override
   public JVGLayer zoom(double factor) {
+    var x = getCenterX();
+    var y = getCenterY();
     setRadius(getRadius() * factor);
+    setCenterX(x * factor);
+    setCenterY(y * factor);
     JVGLayer.super.zoom(factor);
     return this;
   }

@@ -1,4 +1,4 @@
-package com.whitewoodcity.fxgl.vectorview;
+package com.whitewoodcity.javafx.jvg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -27,9 +27,13 @@ public interface JVGLayer {
 
   Point2D getMaxXY();
 
+  default void trim() {
+    trim(getMinXY());
+  }
+
   default JVGLayer trim(Point2D p){
     return trim(p.getX(), p.getY());
-  };
+  }
 
   JVGLayer trim(double x, double y);
 
@@ -71,7 +75,7 @@ public interface JVGLayer {
       }
     }
     return this;
-  };
+  }
 
   default ObjectNode toJson(){
     var mapper = new ObjectMapper();
@@ -149,7 +153,7 @@ public interface JVGLayer {
         objectNode.put(JsonKeys.BLEND_MODE.key(), shape.getBlendMode().toString());
     }
     return objectNode;
-  };
+  }
 
   default String toJsonString() {
     return toJson().toString();
@@ -233,7 +237,7 @@ public interface JVGLayer {
         }
       }
     }
-  };
+  }
 
   static String toWebHexWithAlpha(Color color) {
     return String.format("#%02X%02X%02X%02X",

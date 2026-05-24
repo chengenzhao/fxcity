@@ -3,7 +3,7 @@ package com.whitewoodcity.fxgl.transition;
 import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
-import com.whitewoodcity.fxgl.vectorview.JVG;
+import com.whitewoodcity.javafx.jvg.JVG;
 import javafx.util.Duration;
 
 public class Rotates {
