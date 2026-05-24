@@ -4,7 +4,7 @@ JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our g
 
 # Requirement
 
-* JDK 25+
+* JDK 26+
 
 ## Maven
 If you are using Maven, add the following dependency to the dependencies section of your project descriptor to access the FX City API:
@@ -12,14 +12,14 @@ If you are using Maven, add the following dependency to the dependencies section
 <dependency>
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>1.3.3</version>
+    <version>3.1</version>
 </dependency>
 ```
 
 ## Gradle
 ```groovy
 dependencies {
- compile 'io.github.chengenzhao:fxcity:1.3.3'
+ compile 'io.github.chengenzhao:fxcity:3.1'
 }
 ```
 
