@@ -13,6 +13,8 @@ public enum JsonKeys {
   TYPE("type"),
   GAUSSIAN_BLUR(_GAUSSIAN_BLUR),
   RADIUS("radius"),
+  RADIUS_X("radiusX"),
+  RADIUS_Y("radiusY"),
   FOCUS_ANGLE("focusAngle"),
   FOCUS_DISTANCE("focusDistance"),
   CENTER_X("centerX"),

@@ -3,31 +3,33 @@ package com.whitewoodcity.javafx.jvg;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
 
-public class JVGCircle extends Circle implements JVGLayer {
+public class JVGEllipse extends Ellipse implements JVGLayer {
   @Override
   public Shape daemon() {
-    var circle = new Circle();
-    circle.centerXProperty().bind(centerXProperty());
-    circle.centerYProperty().bind(centerYProperty());
-    circle.radiusProperty().bind(radiusProperty());
-    circle.strokeProperty().bind(strokeProperty());
-    circle.strokeWidthProperty().bind(strokeWidthProperty());
-    circle.strokeLineJoinProperty().bind(strokeLineJoinProperty());
-    circle.strokeLineCapProperty().bind(strokeLineCapProperty());
-    circle.effectProperty().bind(effectProperty());
-    return circle;
+    var ellipse = new Ellipse();
+    ellipse.centerXProperty().bind(centerXProperty());
+    ellipse.centerYProperty().bind(centerYProperty());
+    ellipse.radiusXProperty().bind(radiusXProperty());
+    ellipse.radiusYProperty().bind(radiusYProperty());
+    ellipse.strokeProperty().bind(strokeProperty());
+    ellipse.strokeWidthProperty().bind(strokeWidthProperty());
+    ellipse.strokeLineJoinProperty().bind(strokeLineJoinProperty());
+    ellipse.strokeLineCapProperty().bind(strokeLineCapProperty());
+    ellipse.effectProperty().bind(effectProperty());
+    return ellipse;
   }
 
   @Override
   public Point2D getMinXY() {
-    return new Point2D(getCenterX() - getRadius(), getCenterY() - getRadius());
+    return new Point2D(getCenterX() - getRadiusX(), getCenterY() - getRadiusY());
   }
 
   @Override
   public Point2D getMaxXY() {
-    return new Point2D(getCenterX() + getRadius(), getCenterY() + getRadius());
+    return new Point2D(getCenterX() + getRadiusX(), getCenterY() + getRadiusY());
   }
 
   @Override
@@ -44,9 +46,11 @@ public class JVGCircle extends Circle implements JVGLayer {
     return this;
   }
 
+
   @Override
   public JVGLayer zoom(double factor) {
-    setRadius(getRadius() * factor);
+    setRadiusX(getRadiusX() * factor);
+    setRadiusY(getRadiusY() * factor);
     setCenterX(getCenterX() * factor);
     setCenterY(getCenterY() * factor);
     JVGLayer.super.zoom(factor);
@@ -60,7 +64,8 @@ public class JVGCircle extends Circle implements JVGLayer {
     objNode.put(JsonKeys.SHAPE.key(), Circle.class.getSimpleName());
     objNode.put(JsonKeys.CENTER_X.key(), getCenterX());
     objNode.put(JsonKeys.CENTER_Y.key(), getCenterY());
-    objNode.put(JsonKeys.RADIUS.key(), getRadius());
+    objNode.put(JsonKeys.RADIUS_X.key(), getRadiusX());
+    objNode.put(JsonKeys.RADIUS_Y.key(), getRadiusY());
 
     return objNode;
   }
@@ -71,6 +76,7 @@ public class JVGCircle extends Circle implements JVGLayer {
 
     setCenterX(objectNode.get(JsonKeys.CENTER_X.key()).asDouble());
     setCenterY(objectNode.get(JsonKeys.CENTER_Y.key()).asDouble());
-    setRadius(objectNode.get(JsonKeys.RADIUS.key()).asDouble());
+    setRadiusX(objectNode.get(JsonKeys.RADIUS_X.key()).asDouble());
+    setRadiusY(objectNode.get(JsonKeys.RADIUS_Y.key()).asDouble());
   }
 }
