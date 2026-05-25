@@ -37,7 +37,7 @@ public abstract class AbstractGameScene implements ReplaceableGameSceneWithConcu
     return screenBound.getHeight() / screenBound.getWidth() >= 2 ? 2000 : 1000;
   }
 
-  public static double calculateGameWdith(){
+  public static double calculateGameWidth(){
     var screenBound = Screen.getPrimary().getBounds();
     return screenBound.getWidth() * calculateGameHeight() / screenBound.getHeight();
   }
@@ -49,7 +49,7 @@ public abstract class AbstractGameScene implements ReplaceableGameSceneWithConcu
     setGameScene(backgroundScene);
 
     gameHeight = calculateGameHeight();
-    gameWidth = calculateGameWdith();
+    gameWidth = calculateGameWidth();
 
     immateriumScene = gameScenes.get(1);
     materiumScene = gameScenes.get(2);
