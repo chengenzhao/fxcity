@@ -32,14 +32,14 @@ public abstract class AbstractGameScene implements ReplaceableGameSceneWithConcu
     return new ArrayList<>(concurrentGameSubScenes);
   }
 
-  public static double calculateGameHeight(){
+  public static double calculateScreenHeight(){
     var screenBound = Screen.getPrimary().getBounds();
     return screenBound.getHeight() / screenBound.getWidth() >= 2 ? 2000 : 1000;
   }
 
-  public static double calculateGameWidth(){
+  public static double calculateScreenWidth(){
     var screenBound = Screen.getPrimary().getBounds();
-    return screenBound.getWidth() * calculateGameHeight() / screenBound.getHeight();
+    return screenBound.getWidth() * calculateScreenHeight() / screenBound.getHeight();
   }
 
   @Override
@@ -48,8 +48,8 @@ public abstract class AbstractGameScene implements ReplaceableGameSceneWithConcu
     backgroundScene = gameScenes.getFirst();
     setGameScene(backgroundScene);
 
-    gameHeight = calculateGameHeight();
-    gameWidth = calculateGameWidth();
+    gameHeight = calculateScreenHeight();
+    gameWidth = calculateScreenWidth();
 
     immateriumScene = gameScenes.get(1);
     materiumScene = gameScenes.get(2);
@@ -97,6 +97,14 @@ public abstract class AbstractGameScene implements ReplaceableGameSceneWithConcu
     for (var gameScene : gameScenes) {
       gameScene.getInput().setRegisterInput(true);
     }
+  }
+
+  public void setGameWidth(double gameWidth) {
+    this.gameWidth = gameWidth;
+  }
+
+  public void setGameHeight(double gameHeight) {
+    this.gameHeight = gameHeight;
   }
 
   @Override
