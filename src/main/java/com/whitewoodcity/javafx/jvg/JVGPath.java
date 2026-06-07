@@ -163,6 +163,10 @@ public class JVGPath extends SVGPath implements JVGLayer{
 
     var content = objectNode.get(JsonKeys.CONTENT.key()).asText();
 
+    if(content.isBlank() || content.equals(" Z") || content.equals("Z")){
+      throw new RuntimeException("Content of JVGPath is empty, please remove it.\nWhole json object:\n" + objectNode);
+    }
+
     var si = content.split(" ");
     String element = null;
     var cachePoints = new ArrayList<Point2D>();
