@@ -8,6 +8,13 @@ import javafx.geometry.Point2D;
 
 public class JVG extends Group {
 
+  private boolean isPrototype = false;
+
+  public JVG(String jsonString, boolean isPrototype){
+    this(jsonString);
+    this.isPrototype = isPrototype;
+  }
+
   public JVG(String jsonString) {
 
     var reference = new SimpleObjectProperty<JVGLayer>();
@@ -69,6 +76,7 @@ public class JVG extends Group {
   }
 
   public JVG trim() {
+    if(isPrototype) throw new RuntimeException("This JVG is prototype, so it is unchangeable! Use copy() to create a changeable copy.");
     var p = getXY();
     getChildren().stream()
       .filter(JVGLayer.class::isInstance)
@@ -78,6 +86,7 @@ public class JVG extends Group {
   }
 
   public JVG zoom(double factor) {
+    if(isPrototype) throw new RuntimeException("This JVG is prototype, so it is unchangeable! Use copy() to create a changeable copy.");
     getChildren().stream()
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
@@ -90,6 +99,7 @@ public class JVG extends Group {
   }
 
   public JVG move(double x, double y) {
+    if(isPrototype) throw new RuntimeException("This JVG is prototype, so it is unchangeable! Use copy() to create a changeable copy.");
     getChildren().stream()
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
@@ -117,6 +127,7 @@ public class JVG extends Group {
   }
 
   public JVG set(double x, double y) {
+    if(isPrototype) throw new RuntimeException("This JVG is prototype, so it is unchangeable! Use copy() to create a changeable copy.");
     var p = getXY();
     var dx = x - p.getX();
     var dy = y - p.getY();
@@ -149,6 +160,10 @@ public class JVG extends Group {
 
   public JVG copy() {
     return new JVG(this.toJsonString());
+  }
+
+  public JVG prototype(){
+    return new JVG(this.toJsonString(), true);
   }
 
   public WritableImage toImage() {
