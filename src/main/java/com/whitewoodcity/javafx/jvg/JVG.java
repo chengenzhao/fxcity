@@ -8,14 +8,15 @@ import javafx.geometry.Point2D;
 
 public class JVG extends Group {
 
-  private boolean isPrototype = false;
+  private final boolean isPrototype;
 
-  public JVG(String jsonString, boolean isPrototype){
-    this(jsonString);
-    this.isPrototype = isPrototype;
+  public JVG(String jsonString){
+    this(jsonString, false);
   }
 
-  public JVG(String jsonString) {
+  public JVG(String jsonString, boolean isPrototype) {
+
+    this.isPrototype = isPrototype;
 
     var reference = new SimpleObjectProperty<JVGLayer>();
 
