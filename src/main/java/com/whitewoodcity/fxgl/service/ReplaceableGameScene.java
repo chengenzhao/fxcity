@@ -148,6 +148,7 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
     var input = initInput(keyPresses, keyReleases, keyActions);
     initGame(gameScenes.stream().map(GameScene::getGameWorld).toList(), input);
     initPhysics(gameScenes.stream().map(GameScene::getPhysicsWorld).toList(), input);
+    initUIs(gameScenes.stream().map(GameScene::getViewport).toList(), input);
     initUI(gameScene.getViewport(), gameScenes.getLast(), input);
   }
 
@@ -196,6 +197,10 @@ public non-sealed interface ReplaceableGameScene extends FillService, DimensionS
 
   default void initUI(Viewport viewport, GameScene gameScene, XInput input) {
     initUI(gameScene, input);
+  }
+
+  default void initUIs(List<Viewport> viewports, XInput input){
+
   }
 
   default void asyncLoadResources(AsyncLabel label) {
