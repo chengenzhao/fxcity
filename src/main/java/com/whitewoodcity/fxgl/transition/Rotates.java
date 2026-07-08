@@ -201,6 +201,10 @@ public class Rotates {
     return play();
   }
 
+  public Transition loop(String name){
+    return loopTransition(name);
+  }
+
   public Transition loopTransition(String name) {
     setTransition(name);
     return loop();
