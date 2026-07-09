@@ -2,6 +2,11 @@ package com.whitewoodcity.fxgl.dsl;
 
 import module javafx.controls;
 import module javafx.media;
+import com.almasb.fxgl.app.scene.GameScene;
+import com.almasb.fxgl.app.scene.GameSubScene;
+import com.almasb.fxgl.entity.GameWorld;
+
+import java.util.Optional;
 
 public class FXCity extends FXGL{
   public static MediaPlayer loopMusicFromExternalMusicDir(String fileName){
@@ -23,4 +28,12 @@ public class FXCity extends FXGL{
     return player;
   }
 
+  public static Optional<GameWorld> getCurrentGameWorld(){
+    var scene = FXGL.getSceneService().getCurrentScene();
+    if(scene instanceof GameScene gameScene){
+      return Optional.of(gameScene.getGameWorld());
+    }else if(scene instanceof GameSubScene gameScene){
+      return Optional.of(gameScene.getGameWorld());
+    }else return Optional.empty();
+  }
 }
