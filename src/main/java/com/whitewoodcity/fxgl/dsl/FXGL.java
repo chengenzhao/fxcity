@@ -14,6 +14,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.profile.SaveLoadService;
+import com.almasb.fxgl.scene.SceneService;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.Timer;
 import com.whitewoodcity.fxgl.app.GameApplication;
@@ -230,5 +231,9 @@ public class FXGL {
 
   public static AudioPlayer getAudioPlayer(){
     return com.almasb.fxgl.dsl.FXGL.getAudioPlayer();
+  }
+
+  public static SceneService getSceneService(){
+    return com.almasb.fxgl.dsl.FXGL.getSceneService();
   }
 }
