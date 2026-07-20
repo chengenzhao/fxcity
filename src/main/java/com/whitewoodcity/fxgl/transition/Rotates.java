@@ -196,6 +196,33 @@ public class Rotates {
     return play(cycleCount);
   }
 
+  /**
+   * Try to loop an action but do nothing if there is an action is running
+   * @return false if there is an action running and do nothing
+   * true if successfully run the play.
+   */
+  public boolean playIdle(String name){
+    if(isRunning()) return false;
+
+    stopTransition();
+    play(name);
+    return true;
+  }
+
+  /**
+   *
+   * @return whether this method has broken the loop,
+   * false means there is a loop running while true means successfully start a new loop
+   */
+  public boolean playNoOverride(String name){
+    if(isPlaying(name))
+      return false;
+
+    stopTransition();
+    play(name);
+    return true;
+  }
+
   public Transition startTransition(String name) {
     setTransition(name);
     return play();
@@ -210,12 +237,31 @@ public class Rotates {
     return loop();
   }
 
-  public boolean loopNoOverride(String name){
-    if(currentTransition!=null && currentTransition==transitions.get(name))
+  /**
+   * Try to loop an action but do nothing if there is an action is running
+   * @param loopName
+   * @return false if there is an action running and do nothing
+   * true if successfully run the loop.
+   */
+  public boolean loopIdle(String loopName){
+    if(isRunning()) return false;
+
+    stopTransition();
+    loopTransition(loopName);
+    return true;
+  }
+
+  /**
+   *
+   * @return whether this method has broken the loop,
+   * false means there is a loop running while true means successfully start a new loop
+   */
+  public boolean loopNoOverride(String loopName){
+    if(isLooping(loopName))
       return false;
 
     stopTransition();
-    loopTransition(name);
+    loopTransition(loopName);
     return true;
   }
 
@@ -291,10 +337,18 @@ public class Rotates {
     else return false;
   }
 
-  public boolean isPlaying() {//playing means running only once
+  public boolean isPlaying(String transitionName){
+    return isPlaying() && currentTransition == transitions.get(transitionName);
+  }
+
+  public boolean isPlaying() {//playing means running positive times
     if (currentTransition != null)
-      return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() == 1;
+      return currentTransition.getStatus() == Animation.Status.RUNNING && currentTransition.getCycleCount() > 0;
     else return false;
+  }
+
+  public boolean isLooping(String transitionName){
+    return isLooping() && currentTransition == transitions.get(transitionName);
   }
 
   public boolean isLooping() {//looping means running infinite times
