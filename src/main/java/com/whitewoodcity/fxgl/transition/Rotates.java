@@ -337,8 +337,12 @@ public class Rotates {
     else return false;
   }
 
-  public boolean isPlaying(String transitionName){
-    return isPlaying() && currentTransition == transitions.get(transitionName);
+  public boolean isRunning(String transition){
+    return isRunning() && currentTransition == transitions.get(transition);
+  }
+
+  public boolean isPlaying(String transition){
+    return isPlaying() && currentTransition == transitions.get(transition);
   }
 
   public boolean isPlaying() {//playing means running positive times
@@ -347,8 +351,8 @@ public class Rotates {
     else return false;
   }
 
-  public boolean isLooping(String transitionName){
-    return isLooping() && currentTransition == transitions.get(transitionName);
+  public boolean isLooping(String transition){
+    return isLooping() && currentTransition == transitions.get(transition);
   }
 
   public boolean isLooping() {//looping means running infinite times
