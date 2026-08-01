@@ -28,8 +28,8 @@ public interface JVGLayer {
 
   Point2D getMaxXY();
 
-  default void trim() {
-    trim(getMinXY());
+  default JVGLayer trim() {
+    return trim(getMinXY());
   }
 
   default JVGLayer trim(Point2D p){
