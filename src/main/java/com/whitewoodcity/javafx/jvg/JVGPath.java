@@ -117,7 +117,7 @@ public class JVGPath extends SVGPath implements JVGLayer {
   }
 
   public JVGLayer zoom(double factor) {
-    map(x -> x * factor, y -> y * factor);
+    mapElement(x -> x * factor, y -> y * factor);
     JVGLayer.super.zoom(factor);
 
     return this;
@@ -160,10 +160,10 @@ public class JVGPath extends SVGPath implements JVGLayer {
       }
     }
 
-    return mapElement(SVGPathElement.fromApplyValue(applyX), SVGPathElement.fromApplyValue(applyY));
+    return mapElement(applyX, applyY);
   }
 
-  public JVGPath mapElement(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
+  public JVGPath mapElement(SVGPathElement.ApplyValue applyX, SVGPathElement.ApplyValue applyY) {
     for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
     }
