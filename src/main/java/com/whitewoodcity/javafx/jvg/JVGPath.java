@@ -113,25 +113,6 @@ public class JVGPath extends SVGPath implements JVGLayer {
   public JVGLayer move(double x, double y) {
     map(p -> p + x, p -> p + y);
 
-    switch (this.getFill()) {
-      case LinearGradient gradient -> {
-        var sx = gradient.getStartX();
-        var sy = gradient.getStartY();
-        var ex = gradient.getEndX();
-        var ey = gradient.getEndY();
-
-        this.setFill(new LinearGradient(sx + x, sy + y, ex + x, ey + y, gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
-      }
-      case RadialGradient gradient -> {
-        var cx = gradient.getCenterX();
-        var cy = gradient.getCenterY();
-
-        this.setFill(new RadialGradient(gradient.getFocusAngle(), gradient.getFocusDistance(), cx + x, cy + y, gradient.getRadius(), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
-      }
-      default -> {
-      }
-    }
-
     return this;
   }
 
