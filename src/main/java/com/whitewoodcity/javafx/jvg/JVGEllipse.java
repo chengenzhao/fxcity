@@ -5,7 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
 
-public class JVGEllipse extends Ellipse implements JVGLayer {
+public final class JVGEllipse extends Ellipse implements JVGLayer {
   @Override
   public Shape daemon() {
     var ellipse = new Ellipse();

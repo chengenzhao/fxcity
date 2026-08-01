@@ -5,7 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class JVGRectangle extends Rectangle implements JVGLayer {
+public final class JVGRectangle extends Rectangle implements JVGLayer {
   @Override
   public Shape daemon() {
     var rect = new Rectangle();

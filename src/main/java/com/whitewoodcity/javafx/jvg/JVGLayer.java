@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
-public interface JVGLayer {
+sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRectangle{
 
   String _GAUSSIAN_BLUR = "gaussianBlur";
   String _LINEAR_GRADIENT = "linearGradient";

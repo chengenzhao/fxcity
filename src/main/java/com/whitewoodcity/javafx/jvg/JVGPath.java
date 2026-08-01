@@ -10,7 +10,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.shape.Shape;
 
-public class JVGPath extends SVGPath implements JVGLayer {
+public final class JVGPath extends SVGPath implements JVGLayer {
 
   private final List<SVGPathElement> svgPathElements = new ArrayList<>();
 
