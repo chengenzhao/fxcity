@@ -33,6 +33,7 @@ public class JVG extends Group {
         case JVGShape.CIRCLE -> new JVGCircle();
         case JVGShape.RECTANGLE -> new JVGRectangle();
         case JVGShape.SVGPATH -> new JVGPath();
+        case JVGShape.ELLIPSE -> new JVGEllipse();
       };
 
       this.getChildren().add(l);
@@ -195,5 +196,6 @@ public class JVG extends Group {
 enum JVGShape {
   CIRCLE,
   RECTANGLE,
+  ELLIPSE,
   SVGPATH;
 }

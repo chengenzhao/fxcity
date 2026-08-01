@@ -2,7 +2,6 @@ package com.whitewoodcity.javafx.jvg;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
 
@@ -61,7 +60,7 @@ public class JVGEllipse extends Ellipse implements JVGLayer {
   public ObjectNode toJson() {
     var objNode = JVGLayer.super.toJson();
 
-    objNode.put(JsonKeys.SHAPE.key(), Circle.class.getSimpleName());
+    objNode.put(JsonKeys.SHAPE.key(), Ellipse.class.getSimpleName());
     objNode.put(JsonKeys.CENTER_X.key(), getCenterX());
     objNode.put(JsonKeys.CENTER_Y.key(), getCenterY());
     objNode.put(JsonKeys.RADIUS_X.key(), getRadiusX());
