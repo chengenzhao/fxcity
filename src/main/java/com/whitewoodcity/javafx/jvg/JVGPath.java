@@ -11,7 +11,7 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.shape.Shape;
 
 
-public class JVGPath extends SVGPath implements JVGLayer{
+public class JVGPath extends SVGPath implements JVGLayer {
 
   private final List<SVGPathElement> svgPathElements = new ArrayList<>();
 
@@ -143,6 +143,60 @@ public class JVGPath extends SVGPath implements JVGLayer{
     return this;
   }
 
+  @Override
+  public JVGLayer flip(Orientation orientation) {
+
+    var dimension = getDimension();
+    switch (orientation) {
+      case HORIZONTAL -> {
+        map(x -> dimension.getWidth() - x.get(), DoubleExpression::get);
+
+        switch (this.getFill()) {
+          case LinearGradient gradient -> {
+            var sx = gradient.getStartX();
+            var sy = gradient.getStartY();
+            var ex = gradient.getEndX();
+            var ey = gradient.getEndY();
+
+            this.setFill(new LinearGradient(dimension.getWidth() - sx, sy, dimension.getWidth() - ex, ey, gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+          }
+          case RadialGradient gradient -> {
+            var cx = gradient.getCenterX();
+            var cy = gradient.getCenterY();
+
+            this.setFill(new RadialGradient(gradient.getFocusAngle(), gradient.getFocusDistance(), dimension.getWidth() - cx, cy, gradient.getRadius(), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+          }
+          default -> {
+          }
+        }
+      }
+      case VERTICAL -> {
+        map(DoubleExpression::get, y -> dimension.getHeight() - y.get());
+
+        switch (this.getFill()) {
+          case LinearGradient gradient -> {
+            var sx = gradient.getStartX();
+            var sy = gradient.getStartY();
+            var ex = gradient.getEndX();
+            var ey = gradient.getEndY();
+
+            this.setFill(new LinearGradient(sx, dimension.getHeight() - sy, ex, dimension.getHeight() - ey, gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+          }
+          case RadialGradient gradient -> {
+            var cx = gradient.getCenterX();
+            var cy = gradient.getCenterY();
+
+            this.setFill(new RadialGradient(gradient.getFocusAngle(), gradient.getFocusDistance(), cx, dimension.getHeight() - cy, gradient.getRadius(), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+          }
+          default -> {
+          }
+        }
+      }
+    }
+
+    return this;
+  }
+
   public JVGPath map(SVGPathElement.Apply applyX, SVGPathElement.Apply applyY) {
     for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
@@ -163,7 +217,7 @@ public class JVGPath extends SVGPath implements JVGLayer{
 
     var content = objectNode.get(JsonKeys.CONTENT.key()).asText();
 
-    if(content.isBlank() || content.equals(" Z") || content.equals("Z")){
+    if (content.isBlank() || content.equals(" Z") || content.equals("Z")) {
       throw new RuntimeException("Content of JVGPath is empty, please remove it.\nWhole json object:\n" + objectNode);
     }
 
