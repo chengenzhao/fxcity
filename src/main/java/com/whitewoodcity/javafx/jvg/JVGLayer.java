@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
@@ -45,6 +46,10 @@ public interface JVGLayer {
   JVGLayer move(double x, double y);
 
   default JVGLayer flip(Orientation orientation){
+    return this;
+  }
+
+  default JVGLayer flip(Dimension2D dimension2D, Orientation orientation){
     return this;
   }
 

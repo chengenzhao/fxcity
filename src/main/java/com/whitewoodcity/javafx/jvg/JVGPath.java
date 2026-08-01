@@ -145,8 +145,12 @@ public class JVGPath extends SVGPath implements JVGLayer {
 
   @Override
   public JVGLayer flip(Orientation orientation) {
+    return flip(getDimension(), orientation);
+  }
 
-    var dimension = getDimension();
+  @Override
+  public JVGLayer flip(Dimension2D dimension, Orientation orientation) {
+
     switch (orientation) {
       case HORIZONTAL -> {
         map(x -> dimension.getWidth() - x.get(), DoubleExpression::get);
