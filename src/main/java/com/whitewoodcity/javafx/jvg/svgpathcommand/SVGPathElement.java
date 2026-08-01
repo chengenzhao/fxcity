@@ -21,6 +21,12 @@ public sealed interface SVGPathElement permits CurveTo, LineTo, MoveTo, Quadrati
     x().set(applyX.apply(reference.x()));
     y().set(applyY.apply(reference.y()));
   }
+  default void apply(SVGPathElement reference, ApplyValue apply){
+    apply(reference, apply, apply);
+  }
+  default void apply(SVGPathElement reference, ApplyValue applyX, ApplyValue applyY){
+    apply(reference, fromApplyValue(applyX), fromApplyValue(applyY));
+  }
   default void traverse(Traverse traverse){
     traverse(traverse, traverse);
   }
@@ -29,9 +35,18 @@ public sealed interface SVGPathElement permits CurveTo, LineTo, MoveTo, Quadrati
     traverseY.traverse(y());
   }
 
+  static Apply fromApplyValue(ApplyValue applyValue){
+    return property -> applyValue.apply(property.get());
+  }
+
   @FunctionalInterface
   interface Apply{
     double apply(SimpleDoubleProperty property);
+  }
+
+  @FunctionalInterface
+  interface ApplyValue{
+    double apply(double value);
   }
 
   @FunctionalInterface
