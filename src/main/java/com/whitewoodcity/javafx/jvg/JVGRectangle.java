@@ -32,21 +32,20 @@ public final class JVGRectangle extends Rectangle implements JVGLayer {
   }
 
   @Override
-  public JVGLayer trim(double x, double y) {
-    setX(getX() - x);
-    setY(getY() - y);
-    return this;
+  public JVGRectangle trim(double x, double y) {
+    return move(-x,-y);
   }
 
   @Override
-  public JVGLayer move(double x, double y) {
+  public JVGRectangle move(double x, double y) {
     setX(getX() + x);
     setY(getY() + y);
+    JVGLayer.super.move(x,y);
     return this;
   }
 
   @Override
-  public JVGLayer zoom(double factor) {
+  public JVGRectangle zoom(double factor) {
     setX(getX() * factor);
     setY(getY() * factor);
     setWidth(getWidth() * factor);

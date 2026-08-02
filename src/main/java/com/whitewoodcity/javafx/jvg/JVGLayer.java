@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.whitewoodcity.javafx.jvg.svgpathcommand.SVGPathElement;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
@@ -37,20 +38,30 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
     return trim(p.getX(), p.getY());
   }
 
-  JVGLayer trim(double x, double y);
+  default JVGLayer trim(double x, double y){
+    return move(-x,-y);
+  };
 
   default JVGLayer move(Point2D p){
     return move(p.getX(), p.getY());
   }
 
-  JVGLayer move(double x, double y);
+  default JVGLayer move(double dx, double dy){
+    return map(x -> x + dx, y -> y + dy);
+  };
 
   default JVGLayer flip(Orientation orientation){
-    return this;
+    return switch (orientation) {
+      case HORIZONTAL -> map(x -> - x, y -> y);
+      case VERTICAL -> map(x -> x, y -> - y);
+    };
   }
 
-  default JVGLayer flip(Dimension2D dimension2D, Orientation orientation){
-    return this;
+  default JVGLayer flip(Dimension2D dimension, Orientation orientation){
+    return switch (orientation) {
+      case HORIZONTAL -> map(x -> dimension.getWidth() - x, y -> y);
+      case VERTICAL -> map(x -> x, y -> dimension.getHeight() - y);
+    };
   }
 
   default void update() {
@@ -255,5 +266,29 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
       (int) (color.getGreen() * 255),
       (int) (color.getBlue() * 255),
       (int) (color.getOpacity() * 255));
+  }
+
+  private JVGLayer map(SVGPathElement.ApplyValue applyX, SVGPathElement.ApplyValue applyY){
+    if(this instanceof Shape shape) {
+      switch (shape.getFill()) {
+        case LinearGradient gradient -> {
+          var sx = gradient.getStartX();
+          var sy = gradient.getStartY();
+          var ex = gradient.getEndX();
+          var ey = gradient.getEndY();
+
+          shape.setFill(new LinearGradient(applyX.apply(sx), applyY.apply(sy), applyX.apply(ex), applyY.apply(ey), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+        }
+        case RadialGradient gradient -> {
+          var cx = gradient.getCenterX();
+          var cy = gradient.getCenterY();
+
+          shape.setFill(new RadialGradient(gradient.getFocusAngle(), gradient.getFocusDistance(), applyX.apply(cx), applyY.apply(cy), gradient.getRadius(), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
+        }
+        default -> {
+        }
+      }
+    }
+    return this;
   }
 }

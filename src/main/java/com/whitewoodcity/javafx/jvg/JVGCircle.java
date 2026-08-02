@@ -31,21 +31,20 @@ public final class JVGCircle extends Circle implements JVGLayer {
   }
 
   @Override
-  public JVGLayer trim(double x, double y) {
-    setCenterX(getCenterX() - x);
-    setCenterY(getCenterY() - y);
-    return this;
+  public JVGCircle trim(double x, double y) {
+    return move(-x,-y);
   }
 
   @Override
-  public JVGLayer move(double x, double y) {
+  public JVGCircle move(double x, double y) {
     setCenterX(getCenterX() + x);
     setCenterY(getCenterY() + y);
+    JVGLayer.super.move(x,y);
     return this;
   }
 
   @Override
-  public JVGLayer zoom(double factor) {
+  public JVGCircle zoom(double factor) {
     setRadius(getRadius() * factor);
     setCenterX(getCenterX() * factor);
     setCenterY(getCenterY() * factor);

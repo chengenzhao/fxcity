@@ -32,22 +32,22 @@ public final class JVGEllipse extends Ellipse implements JVGLayer {
   }
 
   @Override
-  public JVGLayer trim(double x, double y) {
-    setCenterX(getCenterX() - x);
-    setCenterY(getCenterY() - y);
-    return this;
+  public JVGEllipse trim(double x, double y) {
+    return move(-x,-y);
   }
 
   @Override
-  public JVGLayer move(double x, double y) {
+  public JVGEllipse move(double x, double y) {
     setCenterX(getCenterX() + x);
     setCenterY(getCenterY() + y);
+    JVGLayer.super.move(x,y);
+
     return this;
   }
 
 
   @Override
-  public JVGLayer zoom(double factor) {
+  public JVGEllipse zoom(double factor) {
     setRadiusX(getRadiusX() * factor);
     setRadiusY(getRadiusY() * factor);
     setCenterX(getCenterX() * factor);

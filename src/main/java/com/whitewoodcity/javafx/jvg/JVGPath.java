@@ -6,8 +6,6 @@ import module javafx.controls;
 import com.whitewoodcity.javafx.jvg.svgpathcommand.*;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.RadialGradient;
 import javafx.scene.shape.Shape;
 
 public final class JVGPath extends SVGPath implements JVGLayer {
@@ -106,64 +104,43 @@ public final class JVGPath extends SVGPath implements JVGLayer {
     return new Dimension2D(maxX.get() - minX.get(), maxY.get() - minY.get());
   }
 
-  public JVGLayer trim(double x, double y) {
+  public JVGPath trim(double x, double y) {
     return move(-x, -y);
   }
 
-  public JVGLayer move(double x, double y) {
+  public JVGPath move(double x, double y) {
     map(p -> p + x, p -> p + y);
+    JVGLayer.super.move(x,y);
 
     return this;
   }
 
-  public JVGLayer zoom(double factor) {
-    mapElement(x -> x * factor, y -> y * factor);
+  public JVGPath zoom(double factor) {
+    map(x -> x * factor, y -> y * factor);
     JVGLayer.super.zoom(factor);
 
     return this;
   }
 
   @Override
-  public JVGLayer flip(Orientation orientation) {
-    return flip(getDimension(), orientation);
+  public JVGPath flip(Orientation orientation) {
+    flip(getDimension(), orientation);
+    return this;
   }
 
   @Override
-  public JVGLayer flip(Dimension2D dimension, Orientation orientation) {
+  public JVGPath flip(Dimension2D dimension, Orientation orientation) {
 
     switch (orientation) {
       case HORIZONTAL -> map(x -> dimension.getWidth() - x, y -> y);
       case VERTICAL -> map(x -> x, y -> dimension.getHeight() - y);
     }
 
+    JVGLayer.super.flip(dimension, orientation);
     return this;
   }
 
-  public JVGPath map(SVGPathElement.ApplyValue applyX, SVGPathElement.ApplyValue applyY){
-
-    switch (this.getFill()) {
-      case LinearGradient gradient -> {
-        var sx = gradient.getStartX();
-        var sy = gradient.getStartY();
-        var ex = gradient.getEndX();
-        var ey = gradient.getEndY();
-
-        this.setFill(new LinearGradient(applyX.apply(sx), applyY.apply(sy), applyX.apply(ex), applyY.apply(ey), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
-      }
-      case RadialGradient gradient -> {
-        var cx = gradient.getCenterX();
-        var cy = gradient.getCenterY();
-
-        this.setFill(new RadialGradient(gradient.getFocusAngle(), gradient.getFocusDistance(), applyX.apply(cx), applyY.apply(cy), gradient.getRadius(), gradient.isProportional(), gradient.getCycleMethod(), gradient.getStops()));
-      }
-      default -> {
-      }
-    }
-
-    return mapElement(applyX, applyY);
-  }
-
-  public JVGPath mapElement(SVGPathElement.ApplyValue applyX, SVGPathElement.ApplyValue applyY) {
+  public JVGPath map(SVGPathElement.ApplyValue applyX, SVGPathElement.ApplyValue applyY) {
     for (SVGPathElement element : svgPathElements) {
       element.apply(element, applyX, applyY);
     }
