@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>4.7</version>
+    <version>4.7.1</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -51,7 +51,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fxgl.version>26.6</fxgl.version>
         <javafx.version>26.0.2</javafx.version>
-        <jackson.version>2.21.3</jackson.version>
+        <jackson.version>2.22.1</jackson.version>
         <atlantafx.version>2.1.0</atlantafx.version>
         <junit.jupiter.version>6.1.0</junit.jupiter.version>
         <hamcrest.version>3.0</hamcrest.version>
