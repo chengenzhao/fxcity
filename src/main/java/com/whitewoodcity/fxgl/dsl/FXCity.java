@@ -26,7 +26,7 @@ public class FXCity extends FXGL{
     player.setCycleCount(Timeline.INDEFINITE);
     player.play();
     return player;
-  }
+}
 
   public static Optional<GameWorld> getCurrentGameWorld(){
     var scene = FXGL.getSceneService().getCurrentScene();
