@@ -213,4 +213,9 @@ public final class JVGPath extends SVGPath implements JVGLayer {
     };
     getSvgPathElements().add(element);
   }
+
+  @Override
+  public boolean isValid() {
+    return !getContent().isBlank();
+  }
 }

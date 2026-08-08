@@ -98,6 +98,10 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
     return this;
   }
 
+  default boolean isValid(){
+    return true;
+  }
+
   default ObjectNode toJson(){
     var mapper = new ObjectMapper();
     var objectNode = mapper.createObjectNode();

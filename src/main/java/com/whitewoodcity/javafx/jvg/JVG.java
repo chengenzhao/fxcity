@@ -55,6 +55,7 @@ public class JVG extends Group {
     children.stream()
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
+      .filter(JVGLayer::isValid)
       .forEach(layer -> arrayNode.add(layer.toJson()));
     return arrayNode;
   }
