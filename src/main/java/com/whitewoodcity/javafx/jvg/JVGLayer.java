@@ -295,4 +295,16 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
     }
     return this;
   }
+
+  default void solid(){
+    if(this instanceof Shape shape) {
+      var color = switch (shape.getFill()){
+        case LinearGradient g -> g.getStops().getFirst().getColor();
+        case RadialGradient g -> g.getStops().getFirst().getColor();
+        case Color c -> c;
+        default -> throw new RuntimeException("Only Gradients & Color are supported");
+      };
+      shape.setFill(color);
+    }
+  }
 }

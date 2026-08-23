@@ -192,6 +192,14 @@ public class JVG extends Group {
   public interface JsonPreset {
     JVGLayer create(ObjectNode objectNode);
   }
+
+  public void solid(){
+    for(var node:getChildren()){
+      if(node instanceof JVGLayer layer){
+        layer.solid();
+      }
+    }
+  }
 }
 
 enum JVGShape {
