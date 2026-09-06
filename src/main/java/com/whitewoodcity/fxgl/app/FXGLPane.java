@@ -24,11 +24,11 @@ public class FXGLPane extends Region {
     return getChildren();
   }
 
-  private DoubleProperty renderWidthProp = new SimpleDoubleProperty(w);
-  private DoubleProperty renderHeightProp = new SimpleDoubleProperty(h);
+  private final DoubleProperty renderWidthProp = new SimpleDoubleProperty(w);
+  private final DoubleProperty renderHeightProp = new SimpleDoubleProperty(h);
 
   // default is white to be consistent with FXGL's scene default in non-embedded mode
-  private ObjectProperty<Paint> renderFillProp = new SimpleObjectProperty<>(Color.WHITE);
+  private final ObjectProperty<Paint> renderFillProp = new SimpleObjectProperty<>(Color.WHITE);
 
   public double getRenderWidth() {
     return renderWidthProp.getValue();
@@ -53,7 +53,6 @@ public class FXGLPane extends Region {
   public void setRenderFill(Paint fill) {
     renderFillProp.set(fill);
   }
-
 
   DoubleProperty renderWidthProperty() {
     return renderWidthProp;
