@@ -40,7 +40,7 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
 
   default JVGLayer trim(double x, double y){
     return move(-x,-y);
-  };
+  }
 
   default JVGLayer move(Point2D p){
     return move(p.getX(), p.getY());
@@ -48,7 +48,7 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
 
   default JVGLayer move(double dx, double dy){
     return map(x -> x + dx, y -> y + dy);
-  };
+  }
 
   default JVGLayer flip(Orientation orientation){
     return switch (orientation) {
