@@ -169,6 +169,16 @@ public class JVG extends Group {
     return new JVG(this.toJsonString(), true);
   }
 
+  public WritableImage snapshot(){
+    SnapshotParameters params = new SnapshotParameters();
+    params.setFill(Color.TRANSPARENT);
+    var list = new ArrayList<>(this.getTransforms());
+    this.getTransforms().clear();
+    var image = this.snapshot(params, null);
+    this.getTransforms().addAll(list);
+    return image;
+  }
+
   public WritableImage toImage() {
     SnapshotParameters params = new SnapshotParameters();
     params.setFill(Color.TRANSPARENT);
@@ -182,8 +192,27 @@ public class JVG extends Group {
     return image;
   }
 
+  public WritableImage toImage(Rectangle2D viewport){
+    SnapshotParameters params = new SnapshotParameters();
+    params.setFill(Color.TRANSPARENT);
+    params.setViewport(viewport);
+    var list = new ArrayList<>(this.getTransforms());
+    this.getTransforms().clear();
+    var image = this.snapshot(params, null);
+    this.getTransforms().addAll(list);
+    return image;
+  }
+
   public ImageView toImageView() {
-    var view = new ImageView(toImage());
+    return toImageView(toImage());
+  }
+
+  public ImageView toImageView(Rectangle2D viewport) {
+    return toImageView(toImage(viewport));
+  }
+
+  public ImageView toImageView(Image image) {
+    var view = new ImageView(image);
     this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
     return view;
   }
