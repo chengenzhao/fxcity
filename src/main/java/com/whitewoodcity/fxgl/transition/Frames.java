@@ -3,6 +3,9 @@ package com.whitewoodcity.fxgl.transition;
 import com.whitewoodcity.javafx.jvg.JVG;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -58,7 +61,16 @@ public class Frames {
   }
 
   public void play(int cycleCount) {
+    play(cycleCount, null);
+  }
+
+  public void play(EventHandler<ActionEvent> handler){
+    play(1,handler);
+  }
+
+  public void play(int cycleCount, EventHandler<ActionEvent> handler){
     transition.setCycleCount(cycleCount);
+    transition.setOnFinished(handler);
     transition.playFromStart();
   }
 
