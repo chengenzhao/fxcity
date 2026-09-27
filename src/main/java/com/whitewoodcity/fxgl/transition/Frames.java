@@ -83,4 +83,7 @@ public class Frames {
     return imageView;
   }
 
+  public int getCurrentFrame() {
+    return currentFrame;
+  }
 }
