@@ -37,6 +37,10 @@ public class Frames {
     };
   }
 
+  public static Image[] toImages(List<JVG> jvgs){
+    return toImages(jvgs.toArray(new JVG[0]));
+  }
+
   public static Image[] toImages(JVG[] jvgs) {
     var images = new Image[jvgs.length];
     for (int i = 0; i < images.length; i++) {
