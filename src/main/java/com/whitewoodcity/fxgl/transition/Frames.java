@@ -33,7 +33,7 @@ public class Frames {
 
       @Override
       protected void interpolate(double frac) {
-        frac = frac % 1;
+        frac = (getCurrentRate() > 0 ? frac:(1-frac)) % 1;
         currentFrame = (int) (frac * images.length);
         if (imageView != null) imageView.setImage(getCurrentImage());
       }
@@ -75,6 +75,13 @@ public class Frames {
   }
 
   public void loop() {
+    transition.setAutoReverse(false);
+    transition.setCycleCount(Animation.INDEFINITE);
+    transition.playFromStart();
+  }
+
+  public void pingPongLoop(){
+    transition.setAutoReverse(true);
     transition.setCycleCount(Animation.INDEFINITE);
     transition.playFromStart();
   }
