@@ -33,7 +33,7 @@ public class Frames {
 
       @Override
       protected void interpolate(double frac) {
-        frac = (getCurrentRate() > 0 ? frac:(1-frac)) % 1;
+        frac = frac % 1;
         currentFrame = (int) (frac * images.length);
         if (imageView != null) imageView.setImage(getCurrentImage());
       }
