@@ -217,6 +217,20 @@ public class JVG extends Group {
     return view;
   }
 
+  public JImageView toJImageView() {
+    return toJImageView(toImage());
+  }
+
+  public JImageView toJImageView(Rectangle2D viewport) {
+    return toJImageView(toImage(viewport));
+  }
+
+  public JImageView toJImageView(Image image) {
+    var view = new JImageView(image);
+    this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
+    return view;
+  }
+
   @FunctionalInterface
   public interface JsonPreset {
     JVGLayer create(ObjectNode objectNode);
