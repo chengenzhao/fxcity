@@ -2,7 +2,8 @@ package com.whitewoodcity.javafx.jvg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.whitewoodcity.javafx.imageviews.ImageViews;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +35,10 @@ public class JVGs {
 
   public List<JVG> getJVGs() {
     return jvgs;
+  }
+
+  public ImageViews toImageViews(){
+    List<Image> imgs = jvgs.stream().map(JVG::toImage).map(Image.class::cast).toList();
+    return new ImageViews(imgs);
   }
 }
