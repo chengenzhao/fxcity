@@ -29,6 +29,7 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.transition;
   exports com.whitewoodcity.fxgl.dsl;
 
-  exports com.whitewoodcity.atlantafx.base.theme;
   opens com.whitewoodcity.atlantafx.base.theme;//for css&bss files
+  exports com.whitewoodcity.atlantafx.base.theme;
+  exports com.whitewoodcity.javafx.imageviews;
 }

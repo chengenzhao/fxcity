@@ -3,6 +3,7 @@ package com.whitewoodcity.javafx.jvg;
 import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
+import com.whitewoodcity.javafx.imageviews.JImageView;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
@@ -24,10 +25,6 @@ public class JVG extends Group {
       if (!obj.has(JsonKeys.SHAPE.key()) ||
         obj.get(JsonKeys.SHAPE.key()).asText().isBlank())
         obj.put(JsonKeys.SHAPE.key(), SVGPath.class.getSimpleName());
-
-//      if (!obj.has(JsonKeys.CONTENT.key()) ||
-//        obj.get(JsonKeys.CONTENT.key()).asText().isBlank())
-//        return null;
 
       var l = switch (JVGShape.valueOf(obj.get(JsonKeys.SHAPE.key()).asText().toUpperCase())){
         case JVGShape.CIRCLE -> new JVGCircle();
