@@ -15,15 +15,31 @@ public class JVG extends Group {
     this(jsonString, false);
   }
 
+  public JVG(ArrayNode arrayNode){
+    this(arrayNode, false);
+  }
+
   public JVG(String jsonString, boolean isPrototype) {
 
     this.isPrototype = isPrototype;
 
-    var reference = new SimpleObjectProperty<JVGLayer>();
+    JsonPreset preset = getJsonPreset();
+    fromJson(preset, jsonString);
+  }
 
-    fromJson(obj -> {
+  public JVG(ArrayNode arrayNode, boolean isPrototype) {
+
+    this.isPrototype = isPrototype;
+
+    JsonPreset preset = getJsonPreset();
+    fromJson(preset, arrayNode);
+  }
+
+  private JsonPreset getJsonPreset(){
+    var reference = new SimpleObjectProperty<JVGLayer>();
+    return obj -> {
       if (!obj.has(JsonKeys.SHAPE.key()) ||
-        obj.get(JsonKeys.SHAPE.key()).asText().isBlank())
+          obj.get(JsonKeys.SHAPE.key()).asText().isBlank())
         obj.put(JsonKeys.SHAPE.key(), SVGPath.class.getSimpleName());
 
       var l = switch (JVGShape.valueOf(obj.get(JsonKeys.SHAPE.key()).asText().toUpperCase())){
@@ -43,7 +59,7 @@ public class JVG extends Group {
         reference.set(l);
       }
       return l;
-    }, jsonString);
+    };
   }
 
   public static ArrayNode toJson(ObservableList<Node> children) {
@@ -246,5 +262,5 @@ enum JVGShape {
   CIRCLE,
   RECTANGLE,
   ELLIPSE,
-  SVGPATH;
+  SVGPATH
 }

@@ -16,4 +16,8 @@ public class ImageViews extends ImageView {
   public List<Image> getImages() {
     return images;
   }
+
+  public void setDefaultImage(){
+    this.setImage(images.getFirst());
+  }
 }
