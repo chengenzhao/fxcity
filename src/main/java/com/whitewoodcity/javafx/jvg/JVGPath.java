@@ -216,6 +216,6 @@ public final class JVGPath extends SVGPath implements JVGLayer {
 
   @Override
   public boolean isValid() {
-    return !getContent().isBlank();
+    return !getContent().isBlank() && !(getContent().strip().equals("Z")||getContent().strip().equals("z"));
   }
 }
