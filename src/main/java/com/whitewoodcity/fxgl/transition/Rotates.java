@@ -109,9 +109,7 @@ public class Rotates extends AbstractTransitions{
     for (var data : list) {
       tran.getChildren().add(new CustomTransition(getNode(), data.start(), data.end()));
     }
-//    this.transitions.put(name, tran);
-//    return tran;
-    return record(name, tran);
+    return super.record(name, tran);
   }
 
   public void recordPose(String name, ObjectNode json) {

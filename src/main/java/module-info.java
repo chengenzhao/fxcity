@@ -5,6 +5,7 @@ module com.whitewoodcity.fxcity {
   requires atlantafx.base;
   requires javafx.graphics;
   requires javafx.base;
+  requires java.desktop;
 
   exports com.whitewoodcity.javafx.binding;
   exports com.whitewoodcity.javafx.jvg;

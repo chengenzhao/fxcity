@@ -1,5 +1,7 @@
 package com.whitewoodcity.fxgl.transition;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.whitewoodcity.javafx.imageviews.ImageViews;
 import com.whitewoodcity.javafx.jvg.JVG;
 import javafx.animation.Animation;
@@ -49,9 +51,14 @@ public class Frames extends AbstractTransitions{
   }
 
   private Transition buildTransition(Duration duration, int startFrame, int endFrame){
+    return buildTransition(duration, startFrame, endFrame, false);
+  }
+
+  private Transition buildTransition(Duration duration, int startFrame, int endFrame, boolean autoReverse){
     return new Transition() {
       {
         setCycleDuration(duration);
+        setAutoReverse(autoReverse);
       }
 
       @Override
@@ -91,5 +98,24 @@ public class Frames extends AbstractTransitions{
 
   public int getCurrentFrame() {
     return currentFrame;
+  }
+
+  public Transition record(String name, String jsonObj) {
+    var objectMapper = new ObjectMapper();
+    try {
+      var obj = objectMapper.readTree(jsonObj);
+      return record(name, (ObjectNode) obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Transition record(String name, ObjectNode objectNode){
+    var duration = Duration.seconds(objectNode.get(FrameJsonKeys.DURATION.key()).asDouble());
+    var start = objectNode.has(FrameJsonKeys.START_FRAME.key()) ? objectNode.get(FrameJsonKeys.START_FRAME.key()).asInt():0;
+    var end = objectNode.has(FrameJsonKeys.END_FRAME.key()) ? objectNode.get(FrameJsonKeys.END_FRAME.key()).asInt():images.length;
+    var autoReverse = objectNode.has(FrameJsonKeys.AUTO_REVERSE.key()) && objectNode.get(FrameJsonKeys.AUTO_REVERSE.key()).asBoolean();
+    var trans = buildTransition(duration, start, end, autoReverse);
+    return record(name, trans);
   }
 }
