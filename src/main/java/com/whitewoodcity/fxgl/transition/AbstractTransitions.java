@@ -13,6 +13,10 @@ public abstract class AbstractTransitions {
   protected Transition currentTransition;
   protected final Map<String, Transition> transitions = new HashMap<>();
 
+  public Transition record(String name, Transition transition){
+    return transitions.put(name, transition);
+  }
+
   public Transition play(String name){
     return this.play(name,1);
   }
@@ -21,7 +25,6 @@ public abstract class AbstractTransitions {
     setTransition(name);
     return play(cycleCount);
   }
-
 
   public Transition startTransition(String name) {
     setTransition(name);

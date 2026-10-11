@@ -4,15 +4,11 @@ import com.whitewoodcity.javafx.imageviews.ImageViews;
 import com.whitewoodcity.javafx.jvg.JVG;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Frames extends AbstractTransitions{
   private final String defaultTransitionName = "";
@@ -49,7 +45,7 @@ public class Frames extends AbstractTransitions{
     this.images = images;
 
     currentTransition = buildTransition(duration, start, end);
-    transitions.put(defaultTransitionName, currentTransition);
+    record(defaultTransitionName, currentTransition);
   }
 
   private Transition buildTransition(Duration duration, int startFrame, int endFrame){
