@@ -10,10 +10,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Frames {
-  private final Transition transition;
+public class Frames extends AbstractTransitions{
+  private final String defaultTransitionName = "";
   private int currentFrame = 0;
   private final Image[] images;
   private final ImageView imageView;
@@ -46,7 +48,12 @@ public class Frames {
     this.imageView = imageView;
     this.images = images;
 
-    transition = new Transition() {
+    currentTransition = buildTransition(duration, start, end);
+    transitions.put(defaultTransitionName, currentTransition);
+  }
+
+  private Transition buildTransition(Duration duration, int startFrame, int endFrame){
+    return new Transition() {
       {
         setCycleDuration(duration);
       }
@@ -54,7 +61,7 @@ public class Frames {
       @Override
       protected void interpolate(double frac) {
         frac = frac % 1;
-        currentFrame = (int) (frac * (end - start)) + start;
+        currentFrame = (int) (frac * (endFrame - startFrame)) + startFrame;
         if (imageView != null) imageView.setImage(getCurrentImage());
       }
     };
@@ -76,46 +83,10 @@ public class Frames {
     return images[currentFrame];
   }
 
-  public void play() {
-    play(1);
-  }
-
-  public void play(int cycleCount) {
-    play(cycleCount, null);
-  }
-
-  public void play(EventHandler<ActionEvent> handler) {
-    play(1, handler);
-  }
-
-  public void play(int cycleCount, EventHandler<ActionEvent> handler) {
-    transition.setCycleCount(cycleCount);
-    transition.setOnFinished(handler);
-    transition.playFromStart();
-  }
-
-  public void loop() {
-    transition.setAutoReverse(false);
-    transition.setCycleCount(Animation.INDEFINITE);
-    transition.playFromStart();
-  }
-
   public void pingPongLoop() {
-    transition.setAutoReverse(true);
-    transition.setCycleCount(Animation.INDEFINITE);
-    transition.playFromStart();
-  }
-
-  public void stop() {
-    transition.stop();
-  }
-
-  public void pause() {
-    transition.pause();
-  }
-
-  public void resume() {
-    transition.play();
+    currentTransition.setAutoReverse(true);
+    currentTransition.setCycleCount(Animation.INDEFINITE);
+    currentTransition.playFromStart();
   }
 
   public ImageView getImageView() {
