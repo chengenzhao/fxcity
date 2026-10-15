@@ -14,22 +14,26 @@ public class JVGs {
   private final List<JVG> jvgs = new ArrayList<>();
 
   public JVGs(String jsonString){
-    fromJson(jvgs, jsonString);
+    fromJson(jvgs, jsonString, false);
   }
 
-  public static void fromJson(List<JVG> jvgs, String jsonArray) {
+  public JVGs(String jsonString, boolean isPrototype){
+    fromJson(jvgs, jsonString, isPrototype);
+  }
+
+  public static void fromJson(List<JVG> jvgs, String jsonArray, boolean isPrototype) {
     var mapper = new ObjectMapper();
     try {
-      fromJson(jvgs, (ArrayNode) mapper.readTree(jsonArray));
+      fromJson(jvgs, (ArrayNode) mapper.readTree(jsonArray), isPrototype);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void fromJson(List<JVG> jvgs, ArrayNode arrayNode) {
+  public static void fromJson(List<JVG> jvgs, ArrayNode arrayNode, boolean isPrototype) {
     arrayNode.forEach(n -> {
       var node = (ArrayNode) n;
-      var jvg = new JVG(node);
+      var jvg = new JVG(node, isPrototype);
       jvgs.add(jvg);
     });
   }
