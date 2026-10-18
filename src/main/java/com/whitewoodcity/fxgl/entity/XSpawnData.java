@@ -1,9 +1,10 @@
 package com.whitewoodcity.fxgl.entity;
 
+import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
-public class XSpawnData extends com.almasb.fxgl.entity.SpawnData {
+public class XSpawnData extends SpawnData {
   public XSpawnData(double x, double y) {
     super(x, y);
   }
