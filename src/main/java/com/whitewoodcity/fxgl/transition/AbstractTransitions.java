@@ -14,7 +14,8 @@ public abstract class AbstractTransitions {
   protected final Map<String, Transition> transitions = new HashMap<>();
 
   public Transition record(String name, Transition transition){
-    return transitions.put(name, transition);
+    transitions.put(name, transition);
+    return transition;
   }
 
   public Transition play(String name){
