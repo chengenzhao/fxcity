@@ -182,6 +182,7 @@ public class Rotates extends AbstractTransitions{
     var pose = poses.get(name);
     if (pose != null)
       show(pose);
+    else throw new RuntimeException("The pose with name:" + name + " doesn't exist~!");
   }
 
 }

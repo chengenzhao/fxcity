@@ -106,6 +106,7 @@ public abstract class AbstractTransitions {
     currentTransition = transitions.get(name);
     if (currentTransition != null)
       currentTransition.setCycleCount(cycleCount);
+    else throw new RuntimeException("The transition with name:"+name + " doesn't exist~!");
 
     return currentTransition;
   }
