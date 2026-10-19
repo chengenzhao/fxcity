@@ -132,11 +132,35 @@ public final class JVGPath extends SVGPath implements JVGLayer {
   public JVGPath flip(Dimension2D dimension, Orientation orientation) {
 
     switch (orientation) {
-      case HORIZONTAL -> map(x -> dimension.getWidth() - x, y -> y);
-      case VERTICAL -> map(x -> x, y -> dimension.getHeight() - y);
+      case HORIZONTAL -> flipByX(dimension.getWidth());//map(x -> dimension.getWidth() - x, y -> y);
+      case VERTICAL -> flipByY(dimension.getHeight());//map(x -> x, y -> dimension.getHeight() - y);
     }
 
-    JVGLayer.super.flip(dimension, orientation);
+//    JVGLayer.super.flip(dimension, orientation);
+    return this;
+  }
+
+  @Override
+  public JVGPath flip(Rectangle2D rect, Orientation orientation) {
+
+    switch (orientation) {
+      case HORIZONTAL -> flipByX(rect.getMaxX() + rect.getMinX());//map(x -> rect.getMaxX() - x + rect.getMinX(), y -> y);
+      case VERTICAL -> flipByY(rect.getMaxY() + rect.getMinY());//map(x -> x, y -> rect.getMaxY() - y + rect.getMinY());
+    }
+
+//    JVGLayer.super.flip(rect, orientation);
+    return this;
+  }
+
+  public JVGPath flipByX(double x){
+    map(x0 -> x - x0, y -> y);
+    JVGLayer.super.flipByX(x);
+    return this;
+  }
+
+  public JVGPath flipByY(double y){
+    map(x -> x, y0 -> y - y0);
+    JVGLayer.super.flipByY(y);
     return this;
   }
 

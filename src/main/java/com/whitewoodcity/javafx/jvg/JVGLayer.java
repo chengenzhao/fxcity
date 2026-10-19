@@ -8,9 +8,11 @@ import com.whitewoodcity.javafx.jvg.svgpathcommand.SVGPathElement;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
@@ -59,9 +61,24 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
 
   default JVGLayer flip(Dimension2D dimension, Orientation orientation){
     return switch (orientation) {
-      case HORIZONTAL -> map(x -> dimension.getWidth() - x, y -> y);
-      case VERTICAL -> map(x -> x, y -> dimension.getHeight() - y);
+      case HORIZONTAL -> flipByX(dimension.getWidth());//map(x -> dimension.getWidth() - x, y -> y);
+      case VERTICAL -> flipByY(dimension.getHeight());//map(x -> x, y -> dimension.getHeight() - y);
     };
+  }
+
+  default JVGLayer flip(Rectangle2D rect, Orientation orientation){
+    return switch (orientation) {
+      case HORIZONTAL -> flipByX(rect.getMaxX() + rect.getMinX());//map(x -> rect.getMaxX() - x + rect.getMinX(), y -> y);
+      case VERTICAL -> flipByY(rect.getMaxY() + rect.getMinY());//map(x -> x, y -> rect.getMaxY() - y + rect.getMinY());
+    };
+  }
+
+  default JVGLayer flipByX(double x){
+    return map(x0 -> x - x0, y -> y);
+  }
+
+  default JVGLayer flipByY(double y){
+    return map(x -> x, y0 -> y - y0);
   }
 
   default void update() {
@@ -305,6 +322,28 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
         default -> throw new RuntimeException("Only Gradients & Color are supported");
       };
       shape.setFill(color);
+    }
+  }
+
+  default void improveFill(){
+    if(this instanceof Shape shape){
+      var fill = switch (shape.getFill()){
+        case LinearGradient g -> {
+          if(g.isProportional() && g.getCycleMethod()==CycleMethod.NO_CYCLE){
+            var region = LinearGradientUtil.checkShapeGradientRegion(shape, g);
+            yield switch (region) {
+              case ALL_LESS_0 -> g.getStops().getFirst().getColor();
+              case ALL_GREATER_1 -> g.getStops().getLast().getColor();
+              case HAS_GRADIENT -> g;
+            };
+          }else
+            yield g;
+        }
+        case RadialGradient g -> g;
+        case Color c -> c;
+        default -> throw new RuntimeException("Only Gradients & Color are supported");
+      };
+      shape.setFill(fill);
     }
   }
 }

@@ -166,6 +166,15 @@ public class JVG extends Group {
     return new Dimension2D(w, h);
   }
 
+  public JVG flip(Rectangle2D rectangle2D, Orientation orientation){
+    getChildren().forEach(e -> {
+      if (e instanceof JVGLayer layer) {
+        layer.flip(rectangle2D, orientation);
+      }
+    });
+    return this;
+  }
+
   public ArrayNode toJson() {
     return toJson(this.getChildren());
   }
@@ -253,6 +262,14 @@ public class JVG extends Group {
     for(var node:getChildren()){
       if(node instanceof JVGLayer layer){
         layer.solid();
+      }
+    }
+  }
+
+  public void improveFill(){
+    for(var node:getChildren()){
+      if(node instanceof JVGLayer layer){
+        layer.improveFill();
       }
     }
   }
