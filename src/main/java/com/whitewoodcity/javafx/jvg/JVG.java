@@ -69,7 +69,7 @@ public class JVG extends Group {
       .filter(JVGLayer.class::isInstance)
       .map(JVGLayer.class::cast)
       .filter(JVGLayer::isValid)
-      .forEach(layer -> arrayNode.add(layer.toJson()));
+      .forEach(layer -> arrayNode.add(layer.improveFill().toJson()));
     return arrayNode;
   }
 

@@ -313,7 +313,7 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
     return this;
   }
 
-  default void solid(){
+  default JVGLayer solid(){
     if(this instanceof Shape shape) {
       var color = switch (shape.getFill()){
         case LinearGradient g -> g.getStops().getFirst().getColor();
@@ -323,9 +323,10 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
       };
       shape.setFill(color);
     }
+    return this;
   }
 
-  default void improveFill(){
+  default JVGLayer improveFill(){
     if(this instanceof Shape shape){
       var fill = switch (shape.getFill()){
         case LinearGradient g -> {
@@ -345,5 +346,6 @@ sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRect
       };
       shape.setFill(fill);
     }
+    return this;
   }
 }
