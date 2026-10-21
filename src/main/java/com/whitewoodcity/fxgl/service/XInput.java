@@ -103,4 +103,19 @@ public class XInput {
   public Runnable getReleaseAction(KeyCode code) {
     return keyReleases == null ? null : keyReleases.get(code);
   }
+
+  public Runnable removeActionBegin(KeyCode code){
+    return keyPresses.remove(code);
+  }
+  public Runnable removeActionEnd(KeyCode code){
+    return keyReleases.remove(code);
+  }
+  public Runnable removeAction(KeyCode code){
+    return keyActions.remove(code);
+  }
+  public void removeAllActions(KeyCode code){
+    removeActionBegin(code);
+    removeActionEnd(code);
+    removeAction(code);
+  }
 }
