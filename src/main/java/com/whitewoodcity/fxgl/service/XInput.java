@@ -22,7 +22,7 @@ public class XInput {
   }
 
   public XInput(Map<KeyCode, Runnable> keyPresses, Map<KeyCode, Runnable> keyReleases, Map<KeyCode, Runnable> keyActions) {
-    this.input = null;
+    this.input = FXGL.getInput();
     this.keyPresses = keyPresses;
     this.keyReleases = keyReleases;
     this.keyActions = keyActions;
@@ -62,19 +62,32 @@ public class XInput {
   }
 
   public XInput mockKeyPress(KeyCode keyCode) {
-    if (keyPresses != null) {
-      if (keyPresses.containsKey(keyCode)) keyPresses.get(keyCode).run();
-    } else {
+    if (keyPresses != null && keyPresses.containsKey(keyCode)) {
+      keyPresses.get(keyCode).run();
+    } else if(input != null) {
       input.mockKeyPress(keyCode);
+    } else {
+      throw new RuntimeException("Input is null~!");
     }
     return this;
   }
 
   public XInput mockKeyRelease(KeyCode keyCode) {
-    if (keyReleases != null) {
-      if (keyReleases.containsKey(keyCode)) keyReleases.get(keyCode).run();
-    } else {
+    if (keyReleases != null && keyReleases.containsKey(keyCode)) {
+      keyReleases.get(keyCode).run();
+    } else if(input != null){
       input.mockKeyRelease(keyCode);
+    }else{
+      throw new RuntimeException("Input is null~!");
+    }
+    return this;
+  }
+
+  public XInput mockKeyAction(KeyCode keyCode) {
+    if (keyActions != null && keyActions.containsKey(keyCode)) {
+      keyActions.get(keyCode).run();
+    } else {
+      throw new RuntimeException("KeyAction doesn't exist~!");
     }
     return this;
   }
