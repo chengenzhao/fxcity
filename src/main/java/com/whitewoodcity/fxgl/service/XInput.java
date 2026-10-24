@@ -5,13 +5,16 @@ import com.almasb.fxgl.dsl.KeyInputBuilder;
 import com.almasb.fxgl.input.Input;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XInput {
   private final Input input;
   private Map<KeyCode, KeyInputBuilder> keyInputBuilderMap;
   private final Map<KeyCode, Runnable> keyPresses, keyReleases, keyActions;
+  private final List<Runnable> actionList = new ArrayList<>();
 
   public XInput(Input input) {
     this.input = input;
@@ -117,5 +120,16 @@ public class XInput {
     removeActionBegin(code);
     removeActionEnd(code);
     removeAction(code);
+  }
+
+  public void cacheAction(Runnable runnable){
+    actionList.add(runnable);
+  }
+  public Runnable getFirstCachedAction(){
+    return actionList.isEmpty() ? ()->{}:actionList.getFirst();
+  }
+  public void removeCachedAction(Runnable runnable){
+    if(runnable != null)
+      actionList.remove(runnable);
   }
 }

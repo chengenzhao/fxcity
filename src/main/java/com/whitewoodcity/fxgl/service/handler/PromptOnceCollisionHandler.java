@@ -9,15 +9,8 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.whitewoodcity.fxgl.service.Theme;
 import com.whitewoodcity.fxgl.service.XInput;
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.CacheHint;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import static com.whitewoodcity.fxgl.dsl.FXGL.*;
@@ -28,7 +21,6 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
   UserAction userAction;
   //  TriggerListener listener = new TriggerListener();
   XInput xInput;
-  Runnable originalAction, originalPressAction, originalReleaseAction;
   PromptView promptView;
   GameWorld gameWorld;
   PhysicsWorld physicsWorld;
@@ -75,6 +67,7 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
   }
 
   Entity prompt;
+  Runnable collisionAction = null;
 
   @Override
   protected void onCollisionBegin(Entity player, Entity entity) {
@@ -94,16 +87,15 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
     spawnWithScale(gameWorld, prompt, Duration.seconds(1), Interpolators.ELASTIC.EASE_OUT());
     xInput = getXInput();
 
-    originalAction = xInput.getClickAction(KeyCode.ENTER);
-    originalPressAction = xInput.getPressAction(KeyCode.ENTER);
-    originalReleaseAction = xInput.getReleaseAction(KeyCode.ENTER);
-
-    xInput.onActionEnd(KeyCode.ENTER, () -> {
-      if (originalReleaseAction != null) originalReleaseAction.run();
+    collisionAction = () -> {
       this.onCollisionEnd(player, entity);
       physicsWorld.removeCollisionHandler(this);
       userAction.run(player, entity);
-    });
+    };
+
+    xInput.cacheAction(collisionAction);
+
+    xInput.onActionEnd(KeyCode.ENTER, ()-> xInput.getFirstCachedAction().run());
   }
 
   @Override
@@ -112,9 +104,9 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
       despawnWithScale(gameWorld, prompt, Duration.seconds(1), Interpolators.ELASTIC.EASE_IN());
 //    FXGL.getInput().removeTriggerListener(listener);
     if (xInput != null) {
-      if (originalAction != null) xInput.onAction(KeyCode.ENTER, originalAction);
-      if (originalPressAction != null) xInput.onActionBegin(KeyCode.ENTER, originalPressAction);
-      if (originalReleaseAction != null) xInput.onActionEnd(KeyCode.ENTER, originalReleaseAction);
+      xInput.removeCachedAction(collisionAction);
+      var input = xInput;
+      xInput.onActionEnd(KeyCode.ENTER, () -> input.getFirstCachedAction().run());
       xInput = null;
     }
   }
@@ -130,65 +122,5 @@ public class PromptOnceCollisionHandler<T> extends CollisionHandler {
   @FunctionalInterface
   public interface UserAction {
     void run(Entity player, Entity tessa);
-  }
-}
-
-class PromptView extends StackPane {
-
-  Rectangle background;
-  Rectangle border;
-  private Text text;
-
-  public PromptView() {
-    this(24.0);
-  }
-
-  public PromptView(double size) {
-    this("Test", Font.font(size - 2), Color.ORANGE, Color.BLACK);
-  }
-
-  public PromptView(String string) {
-    this(string, Font.font(22.0), Color.ORANGE, Color.BLACK);
-  }
-
-  public PromptView(String string, double size) {
-    this(string, Font.font(size), Color.ORANGE, Color.BLACK);
-  }
-
-  public PromptView(String text, Font font, Color textColor, Color backgroundColor) {
-    var size = font.getSize() + 2;
-    this.text = new Text(text);
-    this.text.setFill(textColor);
-    this.text.setFont(font);
-
-    background = new Rectangle(size * 0.95, size * 1.2, backgroundColor);
-    border = new Rectangle(size * 1.01, size * 1.25, null);
-
-    border.setArcWidth(size / 4);
-    border.setArcHeight(size / 4);
-    border.setStroke(textColor);
-    border.setStrokeWidth(size / 11);
-    border.strokeProperty().bind(this.text.fillProperty());
-
-    background.setWidth(this.text.getLayoutBounds().getWidth() * 1.25);
-    border.setWidth(this.text.getLayoutBounds().getWidth() * 1.26);
-
-    this.getChildren().addAll(background, border, this.text);
-  }
-
-  public ObjectProperty<Paint> backgroundColorProperty() {
-    return background.fillProperty();
-  }
-
-  public ObjectProperty<Paint> textColorProperty() {
-    return text.fillProperty();
-  }
-
-  public Text getText() {
-    return text;
-  }
-
-  public void setBackgroundFill(Paint fill) {
-    background.setFill(fill);
   }
 }
