@@ -119,14 +119,17 @@ public class FXGL {
     return com.almasb.fxgl.dsl.FXGL.getAssetLoader();
   }
 
-  public static <T> T geto(String varName){
-    return com.almasb.fxgl.dsl.FXGL.geto(varName);
+  public static <T> T geto(String key){
+    return com.almasb.fxgl.dsl.FXGL.geto(key);
+  }
+
+  public static String gets(String key){
+    return com.almasb.fxgl.dsl.FXGL.gets(key);
   }
 
   public static Music loopBGM(String assetName){
     return com.almasb.fxgl.dsl.FXGL.loopBGM(assetName);
   }
-
 
   public static PropertyMap getWorldProperties(){
     return com.almasb.fxgl.dsl.FXGL.getWorldProperties();

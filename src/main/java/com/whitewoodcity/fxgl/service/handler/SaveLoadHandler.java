@@ -3,6 +3,9 @@ package com.whitewoodcity.fxgl.service.handler;
 import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.profile.DataFile;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.layout.Pane;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -31,8 +34,9 @@ public class SaveLoadHandler implements com.almasb.fxgl.profile.SaveLoadHandler 
     // store some data
     var state = FXGL.getWorldProperties();
     state.forEach((k, v) -> {
-      if (v instanceof Serializable s)
+      if (v instanceof Serializable s) {
         bundle.put(k, s);
+      }
       return null;
     });
 
