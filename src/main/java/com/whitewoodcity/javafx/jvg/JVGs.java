@@ -87,4 +87,8 @@ public class JVGs {
   public String toJsonString(){
     return toJson().toString();
   }
+
+  public JVGs copy(){
+    return new JVGs(this.toJsonString());
+  }
 }
