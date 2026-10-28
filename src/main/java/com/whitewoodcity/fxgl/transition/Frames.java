@@ -55,11 +55,11 @@ public class Frames extends AbstractTransitions{
     record(defaultTransitionName, currentTransition);
   }
 
-  private Transition buildTransition(Duration duration, int startFrame, int endFrame){
+  public Transition buildTransition(Duration duration, int startFrame, int endFrame){
     return buildTransition(duration, startFrame, endFrame, false);
   }
 
-  private Transition buildTransition(Duration duration, int startFrame, int endFrame, boolean autoReverse){
+  public Transition buildTransition(Duration duration, int startFrame, int endFrame, boolean autoReverse){
     return new Transition() {
       {
         setCycleDuration(duration);

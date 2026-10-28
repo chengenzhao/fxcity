@@ -144,6 +144,7 @@ public abstract class AbstractTransitions {
       currentTransition.setCycleCount(Timeline.INDEFINITE);
       currentTransition.play();
     }
+    else throw new RuntimeException("The transition is null~!");
     return currentTransition;
   }
 

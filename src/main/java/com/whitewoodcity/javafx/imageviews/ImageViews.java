@@ -10,7 +10,7 @@ public class ImageViews extends ImageView {
 
   public ImageViews(List<Image> images){
     this.images = List.copyOf(images);
-    this.setImage(this.images.getFirst());
+    super(images.getFirst());
   }
 
   public List<Image> getImages() {
