@@ -42,9 +42,12 @@ public class JVGs {
     return jvgs;
   }
 
+  public List<Image> toImageList(){
+    return jvgs.stream().map(JVG::toImage).map(Image.class::cast).toList();
+  }
+
   public ImageViews toImageViews(){
-    List<Image> imgs = jvgs.stream().map(JVG::toImage).map(Image.class::cast).toList();
-    return new ImageViews(imgs);
+    return new ImageViews(toImageList());
   }
 
   public JVG getDefaultJVG(){
