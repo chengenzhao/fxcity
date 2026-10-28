@@ -13,7 +13,7 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class Frames extends AbstractTransitions{
-  private final String defaultTransitionName = "";
+  private final String defaultTransitionName = "_";
   private int currentFrame = 0;
   private final Image[] images;
   private final ImageView imageView;
@@ -28,6 +28,11 @@ public class Frames extends AbstractTransitions{
 
   public Frames(ImageView imageView, Image[] images, Duration duration) {
     this(imageView, images, 0, images.length, duration);
+  }
+
+  public Frames(ImageViews imageViews, Duration duration) {
+    var images = imageViews.getImages();
+    this(imageViews, images.toArray(new Image[0]), 0, images.size(), duration);
   }
 
   public Frames(ImageViews imageViews, int start, int end, Duration duration) {
