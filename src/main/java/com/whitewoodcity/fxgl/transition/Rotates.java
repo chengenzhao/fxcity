@@ -4,24 +4,28 @@ import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
 import com.whitewoodcity.javafx.jvg.JVG;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Rotates extends AbstractTransitions{
+public class Rotates extends AbstractTransitions {
   private final Node node;
 
   private final Map<String, ObjectNode> poses = new HashMap<>();
 
-  public Rotates(Node node){
+  public Rotates(Node node) {
     this.node = node;
   }
 
   public Rotates(Node node, int howManyRotatesInTransforms) {
     this(node);
 
-    if(node.getTransforms().size() != howManyRotatesInTransforms){
-      node.getTransforms().clear();
-      for (int i = 0; i < howManyRotatesInTransforms; i++) {
-        node.getTransforms().add(new Rotate());
+    if (node.getTransforms().filtered(e -> e instanceof Rotate).size() != howManyRotatesInTransforms) {
+      if (node.getTransforms().isEmpty())
+        for (int i = 0; i < howManyRotatesInTransforms; i++) {
+          node.getTransforms().add(new Rotate());
+        }
+      else {
+        throw new RuntimeException("The number of `Rotate` transforms in the transform list does not match the expected value, please check!");
       }
     }
   }
@@ -127,7 +131,7 @@ public class Rotates extends AbstractTransitions{
 
   public void show(ObjectNode json) {
 
-    if(json.has(RotateJsonKeys.X.key())||json.has(RotateJsonKeys.Y.key())) {
+    if (json.has(RotateJsonKeys.X.key()) || json.has(RotateJsonKeys.Y.key())) {
       var x = 0.;
       var y = 0.;
       if (json.has(RotateJsonKeys.X.key())) {
@@ -138,8 +142,8 @@ public class Rotates extends AbstractTransitions{
         y = json.get(RotateJsonKeys.Y.key()).asDouble();
       }
 
-      switch (getNode()){
-        case JVG jvg -> jvg.set(x,y);
+      switch (getNode()) {
+        case JVG jvg -> jvg.set(x, y);
         case ImageView imageView -> {
           imageView.setX(x);
           imageView.setY(y);
@@ -149,7 +153,8 @@ public class Rotates extends AbstractTransitions{
           rectangle.setY(y);
         }
         case null -> throw new RuntimeException("Node is null");
-        default -> throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
+        default ->
+          throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
       }
     }
 
@@ -161,7 +166,7 @@ public class Rotates extends AbstractTransitions{
       getNode().setTranslateY(json.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble());
     }
 
-    if(json.has(RotateJsonKeys.ROTATES.key())) {
+    if (json.has(RotateJsonKeys.ROTATES.key())) {
       var rotates = json.withArray(RotateJsonKeys.ROTATES.key());
       List<Rotate> transforms =
         getNode().getTransforms().stream()
@@ -207,7 +212,7 @@ class CustomTransition extends Transition {
   @Override
   protected void interpolate(double frac) {
 
-    if(start.has(RotateJsonKeys.X.key())||start.has(RotateJsonKeys.Y.key())) {
+    if (start.has(RotateJsonKeys.X.key()) || start.has(RotateJsonKeys.Y.key())) {
       var x = 0.0;
       var y = 0.0;
       if (start.has(RotateJsonKeys.X.key()))
@@ -231,12 +236,12 @@ class CustomTransition extends Transition {
       }
     }
 
-    if(start.has(RotateJsonKeys.TRANSLATE_X.key()))
+    if (start.has(RotateJsonKeys.TRANSLATE_X.key()))
       node.setTranslateX((end.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble() - start.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble()) * frac + start.get(RotateJsonKeys.TRANSLATE_X.key()).asDouble());
-    if(start.has(RotateJsonKeys.TRANSLATE_Y.key()))
+    if (start.has(RotateJsonKeys.TRANSLATE_Y.key()))
       node.setTranslateY((end.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble() - start.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble()) * frac + start.get(RotateJsonKeys.TRANSLATE_Y.key()).asDouble());
 
-    if(start.has(RotateJsonKeys.ROTATES.key())) {
+    if (start.has(RotateJsonKeys.ROTATES.key())) {
       var rotatesStart = start.withArray(RotateJsonKeys.ROTATES.key());
       var rotatesEnd = end.withArray(RotateJsonKeys.ROTATES.key());
       for (int i = 0; i < rotatesStart.size(); i++) {
