@@ -187,8 +187,12 @@ public class FXGL {
     getGameTimer().runOnceAfter(action, delay);
   }
 
-  public static <T> void spawn(T type, double x, double y) {
-    getAppCast().spawn(type, x, y);
+  public static <T> Entity spawn(T type, Point2D point2D){
+    return spawn(type, point2D.getX(), point2D.getY());
+  }
+
+  public static <T> Entity spawn(T type, double x, double y) {
+    return getAppCast().spawn(type, x, y);
   }
 
   public static <T> void spawn(T type, SpawnData data) {

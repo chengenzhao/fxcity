@@ -1,5 +1,6 @@
 package com.whitewoodcity.fxgl.app;
 
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
@@ -211,16 +212,17 @@ public abstract class GameApplication extends com.almasb.fxgl.app.GameApplicatio
     }
   }
 
-  public <T> void spawn(T type, double x, double y) {
+  public <T> Entity spawn(T type, double x, double y) {
     var app = gameScenes.getLast();
     if (app instanceof SpawnService spawnService)
       try {
-        spawnService.spawn(type, x, y);
-      }catch (NullPointerException e) {
+        return spawnService.spawn(type, x, y);
+      } catch (NullPointerException e) {
         //do nothing
       } catch (Exception e){
         Logger.get(this.getClass()).warning(e.getMessage());
       }
+    return null;
   }
 
   public <T> void spawn(T type, SpawnData data) {
