@@ -236,6 +236,7 @@ public class JVG extends Group {
   public ImageView toImageView(Image image) {
     var view = new ImageView(image);
     this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
+    view.setBlendMode(this.getBlendMode());
     return view;
   }
 
