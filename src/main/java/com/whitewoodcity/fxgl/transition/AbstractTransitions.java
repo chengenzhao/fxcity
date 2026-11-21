@@ -13,24 +13,24 @@ public abstract class AbstractTransitions {
   protected Transition currentTransition;
   protected final Map<String, Transition> transitions = new HashMap<>();
 
-  public boolean containsKey(String name){
+  public boolean containsKey(String name) {
     return transitions.containsKey(name);
   }
 
-  public boolean containsValue(Transition tran){
+  public boolean containsValue(Transition tran) {
     return transitions.containsValue(tran);
   }
 
-  public Transition record(String name, Transition transition){
+  public Transition record(String name, Transition transition) {
     transitions.put(name, transition);
     return transition;
   }
 
-  public Transition play(String name){
-    return this.play(name,1);
+  public Transition play(String name) {
+    return this.play(name, 1);
   }
 
-  public Transition play(String name, int cycleCount){
+  public Transition play(String name, int cycleCount) {
     setTransition(name);
     return play(cycleCount);
   }
@@ -40,7 +40,7 @@ public abstract class AbstractTransitions {
     return play();
   }
 
-  public Transition loop(String name){
+  public Transition loop(String name) {
     return loopTransition(name);
   }
 
@@ -49,13 +49,14 @@ public abstract class AbstractTransitions {
     return loop();
   }
 
-  public Transition gotoLoop(String name){
+  public Transition gotoLoop(String name) {
     var currentTrans = getCurrentTransition();
-    if(currentTrans == transitions.get(name) && currentTrans.getCycleCount() == Animation.INDEFINITE){
+    if (currentTrans == null) {
+      return loop(name);
+    } else if (currentTrans == transitions.get(name) && currentTrans.getCycleCount() == Animation.INDEFINITE) {
       currentTrans.play();
       return currentTrans;
-    }
-    else {
+    } else {
       currentTrans.stop();
       return loop(name);
     }
@@ -63,12 +64,13 @@ public abstract class AbstractTransitions {
 
   /**
    * Try to loop an action but do nothing if there is an action is running
+   *
    * @param loopName
    * @return false if there is an action running and do nothing
    * true if successfully run the loop.
    */
-  public boolean loopIdle(String loopName){
-    if(isRunning()) return false;
+  public boolean loopIdle(String loopName) {
+    if (isRunning()) return false;
 
     stopTransition();
     loopTransition(loopName);
@@ -78,11 +80,12 @@ public abstract class AbstractTransitions {
 
   /**
    * Try to loop an action but do nothing if there is an action is running
+   *
    * @return false if there is an action running and do nothing
    * true if successfully run the play.
    */
-  public boolean playIdle(String name){
-    if(isRunning()) return false;
+  public boolean playIdle(String name) {
+    if (isRunning()) return false;
 
     stopTransition();
     play(name);
@@ -94,8 +97,8 @@ public abstract class AbstractTransitions {
    * @return whether this method has broken the loop,
    * false means there is a loop running while true means successfully start a new loop
    */
-  public boolean playNoOverride(String name){
-    if(isPlaying(name))
+  public boolean playNoOverride(String name) {
+    if (isPlaying(name))
       return false;
 
     stopTransition();
@@ -108,8 +111,8 @@ public abstract class AbstractTransitions {
    * @return whether this method has broken the loop,
    * false means there is a loop running while true means successfully start a new loop
    */
-  public boolean loopNoOverride(String loopName){
-    if(isLooping(loopName))
+  public boolean loopNoOverride(String loopName) {
+    if (isLooping(loopName))
       return false;
 
     stopTransition();
@@ -126,7 +129,7 @@ public abstract class AbstractTransitions {
     currentTransition = transitions.get(name);
     if (currentTransition != null)
       currentTransition.setCycleCount(cycleCount);
-    else throw new RuntimeException("The transition with name:"+name + " doesn't exist~!");
+    else throw new RuntimeException("The transition with name:" + name + " doesn't exist~!");
 
     return currentTransition;
   }
@@ -147,7 +150,7 @@ public abstract class AbstractTransitions {
     return currentTransition;
   }
 
-  public Transition play(){
+  public Transition play() {
     return this.play(1);
   }
 
@@ -163,8 +166,7 @@ public abstract class AbstractTransitions {
     if (currentTransition != null) {
       currentTransition.setCycleCount(Timeline.INDEFINITE);
       currentTransition.play();
-    }
-    else throw new RuntimeException("The transition is null~!");
+    } else throw new RuntimeException("The transition is null~!");
     return currentTransition;
   }
 
@@ -192,11 +194,11 @@ public abstract class AbstractTransitions {
     else return false;
   }
 
-  public boolean isRunning(String transition){
+  public boolean isRunning(String transition) {
     return isRunning() && currentTransition == transitions.get(transition);
   }
 
-  public boolean isPlaying(String transition){
+  public boolean isPlaying(String transition) {
     return isPlaying() && currentTransition == transitions.get(transition);
   }
 
@@ -206,7 +208,7 @@ public abstract class AbstractTransitions {
     else return false;
   }
 
-  public boolean isLooping(String transition){
+  public boolean isLooping(String transition) {
     return isLooping() && currentTransition == transitions.get(transition);
   }
 
