@@ -13,6 +13,14 @@ public abstract class AbstractTransitions {
   protected Transition currentTransition;
   protected final Map<String, Transition> transitions = new HashMap<>();
 
+  public boolean containsKey(String name){
+    return transitions.containsKey(name);
+  }
+
+  public boolean containsValue(Transition tran){
+    return transitions.containsValue(tran);
+  }
+
   public Transition record(String name, Transition transition){
     transitions.put(name, transition);
     return transition;

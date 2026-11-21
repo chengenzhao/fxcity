@@ -62,6 +62,14 @@ public class Rotates extends AbstractTransitions {
     }
   }
 
+  public boolean containsTransition(String name){
+    return super.containsKey(name);
+  }
+
+  public boolean containsPose(String name){
+    return poses.containsKey(name);
+  }
+
   private ObjectNode zoom(ObjectNode obj, double ratio, boolean round) {
     zoomField(obj, RotateJsonKeys.X, ratio, round);
     zoomField(obj, RotateJsonKeys.Y, ratio, round);
