@@ -49,6 +49,18 @@ public abstract class AbstractTransitions {
     return loop();
   }
 
+  public Transition gotoLoop(String name){
+    var currentTrans = getCurrentTransition();
+    if(currentTrans == transitions.get(name) && currentTrans.getCycleCount() == Animation.INDEFINITE){
+      currentTrans.play();
+      return currentTrans;
+    }
+    else {
+      currentTrans.stop();
+      return loop(name);
+    }
+  }
+
   /**
    * Try to loop an action but do nothing if there is an action is running
    * @param loopName
