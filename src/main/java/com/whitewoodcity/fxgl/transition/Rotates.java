@@ -142,6 +142,7 @@ public class Rotates extends AbstractTransitions {
     if (json.has(RotateJsonKeys.X.key()) || json.has(RotateJsonKeys.Y.key())) {
       var x = 0.;
       var y = 0.;
+      var o = 1.;
       if (json.has(RotateJsonKeys.X.key())) {
         x = json.get(RotateJsonKeys.X.key()).asDouble();
       }
@@ -150,15 +151,21 @@ public class Rotates extends AbstractTransitions {
         y = json.get(RotateJsonKeys.Y.key()).asDouble();
       }
 
+      if(json.has(RotateJsonKeys.OPACITY.key())){
+        o = json.get(RotateJsonKeys.OPACITY.key()).asDouble();
+      }
+
       switch (getNode()) {
-        case JVG jvg -> jvg.set(x, y);
+        case JVG jvg -> jvg.set(x, y).setOpacity(o);
         case ImageView imageView -> {
           imageView.setX(x);
           imageView.setY(y);
+          imageView.setOpacity(o);
         }
         case Rectangle rectangle -> {
           rectangle.setX(x);
           rectangle.setY(y);
+          rectangle.setOpacity(o);
         }
         case null -> throw new RuntimeException("Node is null");
         default ->
