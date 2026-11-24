@@ -29,7 +29,13 @@ public class Texture extends ImageView implements View, Copyable<Texture> {
 
   @Override
   public Texture copy() {
-    return new Texture(this.getImage());
+    var texture = new Texture(this.getImage());
+    texture.setX(this.getX());
+    texture.setY(this.getY());
+    texture.setOpacity(this.getOpacity());
+    texture.setFitWidth(this.getFitWidth());
+    texture.setFitHeight(this.getFitHeight());
+    return texture;
   }
 
   /**

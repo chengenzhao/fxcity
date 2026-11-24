@@ -184,7 +184,9 @@ public class JVG extends Group {
   }
 
   public JVG copy() {
-    return new JVG(this.toJsonString());
+    var jvg = new JVG(this.toJsonString());
+    jvg.setOpacity(this.getOpacity());
+    return jvg;
   }
 
   public JVG prototype(){
