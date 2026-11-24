@@ -10,6 +10,7 @@ public enum RotateJsonKeys {
   PIVOT_Y("pivotY"),
   ANGLE("angle"),
   TIME("time"),
+  OPACITY("opacity"),
   ;
 
   private final String key;

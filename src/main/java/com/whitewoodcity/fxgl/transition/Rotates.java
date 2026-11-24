@@ -62,11 +62,11 @@ public class Rotates extends AbstractTransitions {
     }
   }
 
-  public boolean containsTransition(String name){
+  public boolean containsTransition(String name) {
     return super.containsKey(name);
   }
 
-  public boolean containsPose(String name){
+  public boolean containsPose(String name) {
     return poses.containsKey(name);
   }
 
@@ -162,7 +162,7 @@ public class Rotates extends AbstractTransitions {
         }
         case null -> throw new RuntimeException("Node is null");
         default ->
-          throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
+            throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
       }
     }
 
@@ -177,10 +177,10 @@ public class Rotates extends AbstractTransitions {
     if (json.has(RotateJsonKeys.ROTATES.key())) {
       var rotates = json.withArray(RotateJsonKeys.ROTATES.key());
       List<Rotate> transforms =
-        getNode().getTransforms().stream()
-          .filter(Rotate.class::isInstance)
-          .map(Rotate.class::cast)
-          .toList();
+          getNode().getTransforms().stream()
+              .filter(Rotate.class::isInstance)
+              .map(Rotate.class::cast)
+              .toList();
       for (int i = 0; i < rotates.size(); i++) {
         var r = rotates.get(i);
         var rotate = transforms.get(i);
@@ -240,8 +240,12 @@ class CustomTransition extends Transition {
         }
         case null -> throw new RuntimeException("Node is null");
         default ->
-          throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
+            throw new RuntimeException("Unable to move Node by x&y coordinates, only ImageView, JVG and Rectangle could be moved by setting x & y coordinates");
       }
+    }
+
+    if (start.has(RotateJsonKeys.OPACITY.key())) {
+      node.setOpacity((end.get(RotateJsonKeys.OPACITY.key()).asDouble() - start.get(RotateJsonKeys.OPACITY.key()).asDouble()) * frac + start.get(RotateJsonKeys.OPACITY.key()).asDouble());
     }
 
     if (start.has(RotateJsonKeys.TRANSLATE_X.key()))
