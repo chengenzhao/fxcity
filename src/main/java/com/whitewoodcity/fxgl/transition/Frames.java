@@ -2,14 +2,16 @@ package com.whitewoodcity.fxgl.transition;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.whitewoodcity.javafx.imageviews.ImageViews;
-import com.whitewoodcity.javafx.jvg.JVG;
+import io.javafx.whitewoodcity.ImageViews;
+import io.javafx.whitewoodcity.jvg.JVG;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+
 import java.util.List;
+
 @Deprecated
 public class Frames extends AbstractTransitions{
   private final String defaultTransitionName = "_";
