@@ -3,7 +3,7 @@ package com.whitewoodcity.javafx.jvg;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Shape;
-
+@Deprecated
 /**
  * Utility for calculating LinearGradient projection parameter t,
  * used to judge whether a shape renders as a solid stop color,

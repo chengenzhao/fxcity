@@ -1,14 +1,8 @@
 package com.whitewoodcity.fxgl.transition;
 
-import javafx.animation.Animation;
-import javafx.animation.Timeline;
-import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import module javafx.graphics;
+import module java.base;
+@Deprecated
 public abstract class AbstractTransitions {
   protected Transition currentTransition;
   protected final Map<String, Transition> transitions = new HashMap<>();

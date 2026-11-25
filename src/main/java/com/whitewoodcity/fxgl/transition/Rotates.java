@@ -4,9 +4,8 @@ import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
 import com.whitewoodcity.javafx.jvg.JVG;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
+@Deprecated
 public class Rotates extends AbstractTransitions {
   private final Node node;
 
@@ -206,10 +205,10 @@ public class Rotates extends AbstractTransitions {
   }
 
 }
-
+@Deprecated
 record TransitionData(ObjectNode start, ObjectNode end) {
 }
-
+@Deprecated
 class CustomTransition extends Transition {
 
   private final Node node;

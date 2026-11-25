@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class JVGs {
 
   private final List<JVG> jvgs = new ArrayList<>();

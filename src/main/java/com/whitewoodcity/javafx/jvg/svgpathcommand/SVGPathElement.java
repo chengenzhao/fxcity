@@ -1,7 +1,7 @@
 package com.whitewoodcity.javafx.jvg.svgpathcommand;
 
 import javafx.beans.property.SimpleDoubleProperty;
-
+@Deprecated
 public sealed interface SVGPathElement permits CurveTo, LineTo, MoveTo, QuadraticTo, SmoothTo, TransitTo {
   String command();
   SimpleDoubleProperty x();

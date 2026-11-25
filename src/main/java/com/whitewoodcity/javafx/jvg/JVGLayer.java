@@ -12,11 +12,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
+@Deprecated
 sealed public interface JVGLayer permits JVGPath, JVGCircle, JVGEllipse, JVGRectangle{
 
   String _GAUSSIAN_BLUR = "gaussianBlur";

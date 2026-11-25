@@ -3,10 +3,9 @@ package com.whitewoodcity.javafx.jvg;
 import module com.fasterxml.jackson.databind;
 import module java.base;
 import module javafx.controls;
-import com.whitewoodcity.javafx.imageviews.JImageView;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-
+@Deprecated
 public class JVG extends Group {
 
   private final boolean isPrototype;
@@ -241,21 +240,7 @@ public class JVG extends Group {
     view.setBlendMode(this.getBlendMode());
     return view;
   }
-
-  public JImageView toJImageView() {
-    return toJImageView(toImage());
-  }
-
-  public JImageView toJImageView(Rectangle2D viewport) {
-    return toJImageView(toImage(viewport));
-  }
-
-  public JImageView toJImageView(Image image) {
-    var view = new JImageView(image);
-    this.getTransforms().forEach(e -> view.getTransforms().add(e.clone()));
-    return view;
-  }
-
+@Deprecated
   @FunctionalInterface
   public interface JsonPreset {
     JVGLayer create(ObjectNode objectNode);

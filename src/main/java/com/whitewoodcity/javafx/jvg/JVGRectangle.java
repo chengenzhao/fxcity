@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-
+@Deprecated
 public final class JVGRectangle extends Rectangle implements JVGLayer {
   @Override
   public Shape daemon() {

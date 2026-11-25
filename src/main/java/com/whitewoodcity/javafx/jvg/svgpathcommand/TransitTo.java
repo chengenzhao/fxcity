@@ -1,7 +1,7 @@
 package com.whitewoodcity.javafx.jvg.svgpathcommand;
 
 import javafx.beans.property.SimpleDoubleProperty;
-
+@Deprecated
 //T(transit to) = smooth quadratic Bézier curveto (create a smooth quadratic Bézier curve)
 public record TransitTo(SimpleDoubleProperty x, SimpleDoubleProperty y) implements SVGPathElement {
   @Override

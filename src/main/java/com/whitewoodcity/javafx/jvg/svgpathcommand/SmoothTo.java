@@ -1,7 +1,7 @@
 package com.whitewoodcity.javafx.jvg.svgpathcommand;
 
 import javafx.beans.property.SimpleDoubleProperty;
-
+@Deprecated
 public record SmoothTo(SimpleDoubleProperty x2, SimpleDoubleProperty y2, SimpleDoubleProperty x, SimpleDoubleProperty y) implements SVGPathElement {
   @Override
   public String command() {

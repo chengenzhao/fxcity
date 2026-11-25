@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
-
+@Deprecated
 public final class JVGEllipse extends Ellipse implements JVGLayer {
   @Override
   public Shape daemon() {

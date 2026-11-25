@@ -1,7 +1,7 @@
 package com.whitewoodcity.javafx.jvg;
 
 import static com.whitewoodcity.javafx.jvg.JVGLayer.*;
-
+@Deprecated
 public enum JsonKeys {
   STROKE_WIDTH("strokeWidth"),
   FILL("fill"),

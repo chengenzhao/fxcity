@@ -5,7 +5,7 @@
 
     <groupId>io.github.chengenzhao</groupId>
     <artifactId>fxcity</artifactId>
-    <version>8.0</version>
+    <version>8.1</version>
     <name>fxcity</name>
     <description>JavaFX, FXGL, AtlantaFX extension project. Providing useful tools based on our game-dev experiences.
     </description>
@@ -88,6 +88,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.chengenzhao</groupId>
+            <artifactId>transitfx</artifactId>
+            <version>2.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>

@@ -9,9 +9,8 @@ import javafx.animation.Transition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
 import java.util.List;
-
+@Deprecated
 public class Frames extends AbstractTransitions{
   private final String defaultTransitionName = "_";
   private int currentFrame = 0;

@@ -1,5 +1,5 @@
 package com.whitewoodcity.fxgl.transition;
-
+@Deprecated
 public enum RotateJsonKeys {
   X("x"),
   Y("y"),

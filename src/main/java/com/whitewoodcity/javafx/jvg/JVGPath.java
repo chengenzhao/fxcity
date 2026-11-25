@@ -7,7 +7,7 @@ import com.whitewoodcity.javafx.jvg.svgpathcommand.*;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
-
+@Deprecated
 public final class JVGPath extends SVGPath implements JVGLayer {
 
   private final List<SVGPathElement> svgPathElements = new ArrayList<>();

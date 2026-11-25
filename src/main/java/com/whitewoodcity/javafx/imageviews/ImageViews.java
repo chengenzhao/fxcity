@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.List;
 
+@Deprecated
 public class ImageViews extends ImageView {
   private final List<Image> images;
 

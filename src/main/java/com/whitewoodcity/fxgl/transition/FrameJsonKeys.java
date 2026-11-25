@@ -1,5 +1,5 @@
 package com.whitewoodcity.fxgl.transition;
-
+@Deprecated
 public enum FrameJsonKeys {
   DURATION("duration"),
   START_FRAME("startFrame"),
