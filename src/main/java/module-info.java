@@ -9,8 +9,6 @@ module com.whitewoodcity.fxcity {
   requires io.javafx.whitewoodcity.transitfx;
 
   exports com.whitewoodcity.javafx.binding;
-//  exports com.whitewoodcity.javafx.jvg;
-//  exports com.whitewoodcity.javafx.jvg.svgpathcommand;
 
   exports com.whitewoodcity.flame;
   exports com.whitewoodcity.flame.pushnpoppane;
@@ -28,10 +26,8 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.entity;
   exports com.whitewoodcity.fxgl.texture;
   exports com.whitewoodcity.fxgl.animation;
-//  exports com.whitewoodcity.fxgl.transition;
   exports com.whitewoodcity.fxgl.dsl;
 
   opens com.whitewoodcity.atlantafx.base.theme;//for css&bss files
   exports com.whitewoodcity.atlantafx.base.theme;
-//  exports com.whitewoodcity.javafx.imageviews;
 }
