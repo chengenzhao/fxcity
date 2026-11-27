@@ -7,6 +7,7 @@ module com.whitewoodcity.fxcity {
   requires javafx.base;
   requires java.desktop;
   requires io.javafx.whitewoodcity.transitfx;
+  requires io.vertx.core;
 
   exports com.whitewoodcity.javafx.binding;
 
@@ -27,6 +28,7 @@ module com.whitewoodcity.fxcity {
   exports com.whitewoodcity.fxgl.texture;
   exports com.whitewoodcity.fxgl.animation;
   exports com.whitewoodcity.fxgl.dsl;
+  exports com.whitewoodcity.fxgl.transitfx;
 
   opens com.whitewoodcity.atlantafx.base.theme;//for css&bss files
   exports com.whitewoodcity.atlantafx.base.theme;
